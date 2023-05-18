@@ -1,0 +1,23 @@
+#1. tascore 설치
+0. cd ~/workspace/tas
+1. ./install.sh -a
+2. /opt/laonpeople/tasv3/bin/tas 확인
+오류날 시 vi /etc/ld.so.conf.d/tas.conf 환경 설정 후 -> ldconfig
+3. cd ~/workspace/tas
+4. cd tas
+5. cd tascore
+6. ./install.sh 확인 후 
+7. cd ~/workspace/tas 
+8. /opt/laonpeople/tasv3/bin/tas -> 서버 실행
+
+
+#2. tas 서버 실행 이후 tas-ui(nodejs)
+0. cd ~/workspace/tas-ui/
+1. sudo -s
+2. ./install.sh 해서 환경 설정
+3. tas-ui에 있는 be 폴더로 cd
+4. yarn start
+--------------
+http://localhost:9300/
+admin
+123

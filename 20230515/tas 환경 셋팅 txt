@@ -1,0 +1,9 @@
+추가 인스톨 매니저
+
+1. ./install-manager.sh -> sudo -s 를 통해 #에서 설치
+1-1. 파일 권한을 위해서 chmod +x install_manager.sh
+2. jetson은 보드에서 설치할 때 사용 pc는 --gpu 옵션 활용
+
+-> 
+
+./install_manager.sh --gpu --id kimheejae --password ATBB54KKKpZ3qa9RaSTaUCHSmc3h1DCE5F15 --cudnn ~/Downloads/cudnn-11.3-linux-x64-v8.2.0.53.tgz --tensorrt ~/Downloads/TensorRT-8.2.3.0.Linux.x86_64-gnu.cuda-11.4.cudnn8.2.tar.gz

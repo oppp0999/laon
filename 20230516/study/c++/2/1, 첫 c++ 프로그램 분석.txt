@@ -1,0 +1,15 @@
+#include <iostream>
+int main(){
+    std::cout << "Hello, World!!" << std::endl;
+    return 0;
+}
+
+CODE 1 -> iostream이라는 헤더 파일을 include,
+iostream 헤더 파일은 c++에서 표준 입출력에 필요한 것들을 포함함 (std::cout, std::endl) <-> C와 다르게 헤더 파일 이름 뒤에 .h가 붙지 않음 
+
+CODE 2 -> main 함수를 정의하는 부분, 프로그램이 실행될 때 가장 먼저 실행되는 함수
+
+CODE 3 -> std::cout (출력용 함수), '계속하려면 아무 키나 누르세요'가 개행되어있는 나와있는 것을 보니 std::endl은 한 줄 엔터를 쳐서 나타내라는 표시
+
+CODE 4 -> main 함수의 return
+
