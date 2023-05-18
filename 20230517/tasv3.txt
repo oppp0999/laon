@@ -1,6 +1,6 @@
-#1. tascore 설치
-0. cd ~/workspace/tas
-1. ./install.sh -a
+#1. tas 설치
+0. cd ~/workspace/tas -> clone
+1. ./install.sh (-a)
 2. /opt/laonpeople/tasv3/bin/tas 확인
 오류날 시 vi /etc/ld.so.conf.d/tas.conf 환경 설정 후 -> ldconfig
 3. cd ~/workspace/tas
@@ -10,6 +10,10 @@
 7. cd ~/workspace/tas 
 8. /opt/laonpeople/tasv3/bin/tas -> 서버 실행
 
+
+오류  Train file List init fail -> lptm 확인하기.
+
+3 ~7 -> ./install.sh --pull --all
 
 #2. tas 서버 실행 이후 tas-ui(nodejs)
 0. cd ~/workspace/tas-ui/

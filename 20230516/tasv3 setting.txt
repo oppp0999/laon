@@ -1,4 +1,10 @@
 1. Bitbucket tas-ui repository clone
 2. anyang branch
-2-1. git checkout 후에 --list에 있는 anyang 브런치로 변경
+2-1. git checkout 후에 --list에 있는 anyang 브런치로 변경 -> 변경할 때 -t 옵션 활용
+git checkout -t origin/anyang
+
 3. 변경된 isntall.sh 실행
+
+4. mysql
+
+5. symlink
