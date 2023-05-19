@@ -1,0 +1,128 @@
+* this -> 자기 자신을 가리키는 포인터
+    //ex1
+    Marine& Marine::be_attacked(int damage_earn) {
+    hp -= damage_earn;
+    if (hp <= 0) is_dead = true;
+
+    return *this;
+    }
+    -> this는 이 멤버 함수를 호출하는 객체 자신을 가리키는 것
+
+    //ex2
+    Marine& Marine::be_attacked(int damage_earn) {
+    this->hp -= damage_earn;
+    if (this->hp <= 0) this->is_dead = true;
+
+    return *this;
+    }
+    -> ex1과 동일한 의미가 된다.
+    -> 구조체 포인터 변수에서 -> 를 이용해서 구조체 원소들에 접근했던 것을 상기
+    -> 실제로 모든 멤버 함수 내에서 this 키워드가 정의되어 있으며, 클래스 안에서 정의된 함수 중에서 this 키워드가 없는 함수는 static 뿐
+
+* 레퍼런스를 리턴하는 함수
+    int& access_x() {return x;}
+
+    int& c = a.access_x();
+    c = 4;
+    a.show_x();
+    -> 레퍼런스 c는 x의 레퍼런스 , 즉 x의 별명을 받음
+    --> 레퍼런스를 리턴하는 함수는 그 함 수 부분을 원래의 변수로 치환했다고 생각해도 상관 X
+즉, 값은 a가 가진 x의 값이 레퍼런스 c=4에 의해 x값이 4로 바뀐다.
+- 하지만 int access_x() {return x;} 로 레퍼런스가 아닌 타입을 리턴하는 경우 '값'이 복사가 되기때문에 임시 객체가 생성되면서 레퍼런스를 가질 수 없음.
+
+* const -> 변수들의 값을 바꾸지 않고 읽기만 하는, 마치 상수 같은 멤버 함수를 '상수 함수'
+    (기존의 함수의 정의) const;
+    //ex
+    int Marine::attack() const { return default_damage; }
+    -> 상수 함수로 정의하여 다른 변수의 값을 바꾸지 않는 함수라고 명시 시킬 수 있다.
+    -> 상수 함수 내에서는 객체들의 읽기 만이 수행되며 상수 함수 내에서 호출 할 수 있는 함수로는 다른 상수 함수 밖에 없다.
+
+* explicit -> 기본적인 implicit Conversion 이 존재
+즉, 생성자를 생성할 때 매개변수의 타입이 지정되지 않아도 컴파일러가 이를 눈치채고 묵시적으로 타입 변환을 해줌.
+-> 이를 막기 위해 explicit를 이용
+    //ex1
+    #include <iostream>
+
+    class Test
+    {
+        public:
+            int test_value;
+            Test(int);
+    };
+    Test::Test(int test_value){
+        this->test_value = test_value;
+    }
+
+    void function(Test test){
+        std::cout<<test.test_value<<std::endl;
+    }
+    int main(){
+        Test test1 = 10;
+        Test test3 = Test(10);
+
+        function(10);
+        function(Test(5));
+
+        return 0;
+    }
+    
+CODE 17 -> 객체를 생성해서 거이에 10이라는 값을 넣는다는 뜻이지만, 묵시적으로 c++컴파일러에서 자동으로 생성자로 생성하게 됨.
+
+CODE 20 -> 매게변수로 Test형으로 취해여쟈하지만 자동으로 Test형으로 변환을 시켜주게 됨.
+
+문제점 -> 묵시적으로 타입 변환을 원치 않을 경우 원치 않는 값이 들어갈 수 있다.
+
+    //ex2
+    #include <iostream>
+
+    class Test
+    {
+        public:
+            int test_value;
+            explicit Test(int);
+    };
+    Test::Test(int test_value){
+        this->test_value = test_value;
+    }
+
+    void function(Test test){
+        std::cout<<test.test_value<<std::endl;
+    }
+    int main(){
+        Test test1 = 10;
+        Test test3 = Test(10);
+
+        function(10);
+        function(Test(5));
+
+        return 0;
+    }
+
+CODE 17, 20 -> 묵시적으로 타입이 변화가 됐던 두 문장에서 에러가 발생
+- c2440: 'initializer' : cannot convert from 'const int' to 'class Test'
+
+* mutable -> const 멤버 함수에서 mutable를 사용 할 수 있다.
+    #include<iostream>
+
+    class AAA{
+        mutable int val1;
+        int val2;
+
+        public:
+        void SetData(int a, int b) const{
+            val1 = a;            
+            val2 = b;           
+        }
+    };
+    
+    int main(void){
+    AAA a1;
+    a1.SetData(10, 20);
+
+    return 0;
+    }
+
+CODE 4 -> val1 값에 mutable 을 지정해주면서 값을 const로 부터 조작할 수 있다.
+
+CODE 9 -> 값 조절 가능
+CODE 10 -> const 이기에 불가능
