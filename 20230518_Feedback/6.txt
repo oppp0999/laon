@@ -1,0 +1,17 @@
+PascalCase, camelCase, snake_case
+
+#1. PascalCase -> 카멜식이랑 비슷하지만 차이점은 첫단어를 대문자로 시작.
+- 원문 : USER LOGIN LOG
+-> UserLoginLog
+
+#2. camelCase -> 낙타 모양에서 따온 방법으로 첫글자는 소문자로 시작, 두번째 단어부터는 대문자로 표현하는 방식
+- 원문 : USER LOGIN LOG
+-> userLoginLog
+
+#3. snake_case -> 케밥식은 하이픈(-) 스네이크식은 (_)
+- 원문 : USER LOGIN LOG
+-> user_login_log 또는 USER_LOGIN_LOG
+
+#4. kebabcase -> 먹는 케밥에 꼬챙이를 낀 모습 (-)
+- 원문 : USER LOGIN LOG
+-> user-login-log
