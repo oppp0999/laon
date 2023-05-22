@@ -4,6 +4,6 @@
 1-1. 파일 권한을 위해서 chmod +x install_manager.sh
 2. jetson은 보드에서 설치할 때 사용 pc는 --gpu 옵션 활용
 
--> 
+-> --jetson 옵션은 보드에서 설치할 때 사용하는 옵션으로 해당 옵션을 체크하면 ffmpeg이 설치되지 않고,  --gpu 옵션을 선택하면 cuda, cudnn, tensorrt, tensorrt_version, opencv, ffmpeg, darknet 를 설치
 
 ./install_manager.sh --gpu --id kimheejae --password ATBB54KKKpZ3qa9RaSTaUCHSmc3h1DCE5F15 --cudnn ~/Downloads/cudnn-11.3-linux-x64-v8.2.0.53.tgz --tensorrt ~/Downloads/TensorRT-8.2.3.0.Linux.x86_64-gnu.cuda-11.4.cudnn8.2.tar.gz

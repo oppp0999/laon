@@ -15,3 +15,16 @@ PascalCase, camelCase, snake_case
 #4. kebabcase -> 먹는 케밥에 꼬챙이를 낀 모습 (-)
 - 원문 : USER LOGIN LOG
 -> user-login-log
+
+
+
+[TAS Coding Rules]
+TAS는 Google과 OpenCV의 style guide를 따릅니다
+- Class 명 : PascalCase
+- public 함수 : camelCase
+- private 함수 & 변수 : _camelCase
+- 매개 변수 및 함수 내 변수 : snake_case
+
+[참고자료]
+- Google C++ Style Guide : https://google.github.io/styleguide/cppguide.html
+- OpenCV Style Guide : https://github.com/opencv/opencv/wiki/Coding_Style_Guide
