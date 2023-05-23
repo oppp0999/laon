@@ -1,0 +1,213 @@
+# 클래스의 상속
+
+* 표준 string 클래스
+    ex1)
+    #include <iostream>
+    #include <string>
+
+    int main() {
+        // 표준이므로 std 안에 string 이 정의
+        std::string s = "abc";
+
+        std::cout << s <<  std::endl;
+
+        return 0;
+    }
+    -> 기본적으로 abc는 컴파일러 상에서 c 형식 문자열이 인식
+    -> 즉, string 클래스의 인자를 const char* 로 받는 생성자를 호출
+
+    ex2)
+    #include <iostream>
+    #include <string>
+
+    int main() {
+        std::string s = "abc";
+        std::string t = "def";
+        std::string s2 = s;
+
+        std::cout << s << " 의 길이 : " << s.length() <<  std::endl; // abc 의 길이 : 3
+        std::cout << s << " 뒤에 " << t << " 를 붙이면 : " << s + t <<  std::endl; // abc 뒤에 def 를 붙이면 : abcdef
+
+        if (s == s2) {
+            std::cout << s << " 와 " << s2 << " 는 같다 " <<  std::endl; // abc 와 abc 는 같다 
+        }
+        if (s != t) {
+            std::cout << s << " 와 " << t << " 는 다르다 " <<  std::endl; // abc 와 def 는 다르다
+        }
+        return 0;
+    }
+    -> 문자열의 길이 출력 -> length 함수
+    -> 연산자 오버로딩을 사용해 + 연산자가 실제로 문자열을 결합시키는 함수
+    -> 비교하는 부분에서 ==, != 은 c에서는 strcmp 함수를 이용함
+        -> string 클래스에서 ==, != 을 오버로딩해서 비교 수행 (>= , <= 도 가능)
+
+    ex3) -> 회사 사원들의 월급을 계산해 한 달에 총 얼마나 되는 돈을 지출해야하는지 알려주는 프로그램
+            -> 사원들의 필요한 데이터는 이름, 나이, 직책과 직책의 순위에 해당하는 숫자값 (예를 들어 평사원이면 1, 대리면 2 이런 식으로) 정도 
+
+    #include <iostream>
+    #include <string>
+
+    class Employee {
+        std::string name;
+        int age;
+
+        std::string position;  // 직책 (이름)
+        int rank;         // 순위 (값이 클 수록 높은 순위)
+
+        public:
+            Employee(std::string name, int age, std::string position, int rank)
+                : name(name), age(age), position(position), rank(rank) {}
+
+            // 복사 생성자
+            Employee(const Employee& employee) {
+                name = employee.name;
+                age = employee.age;
+                position = employee.position;
+                rank = employee.rank;
+            }
+
+            // 디폴트 생성자
+            Employee() {}
+
+            void print_info() {
+                std::cout << name << " (" << position << " , " << age << ") ==> "
+                    << calculate_pay() << "만원" <<  std::endl;
+            }
+            int calculate_pay() { return 200 + rank * 50; }
+    };
+
+    class Manager {
+        std::string name;
+        int age;
+
+        std::string position;  // 직책 (이름)
+        int rank;         // 순위 (값이 클 수록 높은 순위)
+        int year_of_service;
+
+        public:
+            Manager(std::string name, int age, std::string position, int rank, int year_of_service)
+                : year_of_service(year_of_service),
+                    name(name),
+                    age(age),
+                    position(position),
+                    rank(rank) {}
+
+            // 복사 생성자
+            Manager(const Manager& manager) {
+                name = manager.name;
+                age = manager.age;
+                position = manager.position;
+                rank = manager.rank;
+                year_of_service = manager.year_of_service;
+            }
+
+            // 디폴트 생성자
+            Manager() {}
+
+            int calculate_pay() { return 200 + rank * 50 + 5 * year_of_service; }
+            void print_info() {
+                std::cout << name << " (" << position << " , " << age << ", " << year_of_service
+                    << "년차) ==> " << calculate_pay() << "만원" <<  std::endl;
+            }
+    };
+    class EmployeeList {
+        int alloc_employee;  // 할당한 총 직원 수
+
+        int current_employee;  // 현재 직원 수
+        int current_manager;   // 현재 매니저 수
+
+        Employee** employee_list;  // 직원 데이터
+        Manager** manager_list;    // 매니저 데이터
+
+        public:
+            EmployeeList(int alloc_employee) : alloc_employee(alloc_employee) {
+                employee_list = new Employee*[alloc_employee];
+                manager_list = new Manager*[alloc_employee];
+
+                current_employee = 0;
+                current_manager = 0;
+            }
+            void add_employee(Employee* employee) {
+                // 사실 current_employee 보다 alloc_employee 가 더
+                // 많아지는 경우 반드시 재할당을 해야 하지만, 여기서는
+                // 최대한 단순하게 생각해서 alloc_employee 는
+                // 언제나 current_employee 보다 크다고 생각한다.
+                // (즉 할당된 크기는 현재 총 직원수 보다 많음)
+                employee_list[current_employee] = employee;
+                current_employee++;
+            }
+            void add_manager(Manager* manager) {
+                manager_list[current_manager] = manager;
+                current_manager++;
+            }
+            int current_employee_num() { return current_employee + current_manager; }
+
+            void print_employee_info() {
+                int total_pay = 0;
+                for (int i = 0; i < current_employee; i++) {
+                employee_list[i]->print_info();
+                total_pay += employee_list[i]->calculate_pay();
+                }
+                for (int i = 0; i < current_manager; i++) {
+                manager_list[i]->print_info();
+                total_pay += manager_list[i]->calculate_pay();
+                }
+                std::cout << "총 비용 : " << total_pay << "만원 " <<  std::endl;
+            }
+            ~EmployeeList() {
+                for (int i = 0; i < current_employee; i++) {
+                delete employee_list[i];
+                }
+                for (int i = 0; i < current_manager; i++) {
+                delete manager_list[i];
+                }
+                delete[] employee_list;
+                delete[] manager_list;
+            }
+    };
+    int main() {
+        EmployeeList emp_list(10);
+        emp_list.add_employee(new Employee("노홍철", 34, "평사원", 1));
+        emp_list.add_employee(new Employee("하하", 34, "평사원", 1));
+
+        emp_list.add_manager(new Manager("유재석", 41, "부장", 7, 12));
+        emp_list.add_manager(new Manager("정준하", 43, "과장", 4, 15));
+        emp_list.add_manager(new Manager("박명수", 43, "차장", 5, 13));
+        emp_list.add_employee(new Employee("정형돈", 36, "대리", 2));
+        emp_list.add_employee(new Employee("길", 36, "인턴", -2));
+        emp_list.print_employee_info();
+        return 0;
+    }
+
+---- EmployeeList ----
+CODE 4 ~ 31 -> Employee 클래스에서 각 멤버 변수, 기본 생성자, 복사 생성자, 디폴트 생성자
+    -> 사원 데이터를 출력해주는 print_info 함수
+    -> 월급을 리턴해주는 calculate_pay 함수
+
+CODE 67 ~ 121 -> 사원 데이터를 위한 EmployeeList 클래스
+    -> 멤버 변수
+        1. int alloc_employee; -> 할당한 총 직원 수
+        2. int current_employee; -> 현재 직원 수
+        3. Employee **employee_list; -> 직원 데이터
+
+CODE 77 ~ 83 -> 클래스의 생성자 구성 ->alloc_employee값을 이용해 employee_list, manager_list를 동적으로 할당
+    -> alloc_employee 값에 따라 배열의 크키가 변하거나 추가적인 요소를 배열에 추가해야할 수 있어서, 동적 배열이 필요
+
+
+CODE 84 ~ 92 -> 사원을 추가하는 함수
+    - alloc_employee이 current_employee 보다 많아진다면 새로 재할당을 하고 데이터를 모두 복사.
+
+CODE 97 -> 총 직원 수를 리턴
+
+CODE 111 ~ 120 -> EmployeeList객체가 소멸되는 시점인 일번적으로 자동으로 호출
+
+---- Manager ----
+
+CODE 33 ~ 67 -> 멤버변수 
+    1. int alloc_employee; -> 할당한 총 직원 수
+    2. int current_employee; -> 현재 직원 수
+    3. int current_manager; -> 현재 매니저 수
+    4. Employee **employee_list; -> 직원 데이터
+    5. Manager **manager_list; -> 매니저 데이터
+
+-> 클래스 사이에서 **를 통해서 다른 클래스 객체를 생성하여 데이터를 이용

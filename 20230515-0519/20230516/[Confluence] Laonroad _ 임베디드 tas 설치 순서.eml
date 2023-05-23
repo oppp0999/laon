@@ -1,0 +1,896 @@
+Return-path: <bounce@mail-us.atlassian.net>
+Received: from [10.0.1.30] ([10.0.1.30]) 
+          by mail1.daouoffice.com ([10.0.1.16]) 
+          with ESMTP id 1684210153.168612.139838303332096.mail1
+          for <hjkim@laonroad.com>; 
+          Tue, 16 May 2023 13:09:13 +0900 (KST) 
+Received: from [10.0.1.28] ([10.0.1.28]) 
+          by mail2.daouoffice.com ([10.0.1.30]) 
+          with ESMTP id 1684210153.30439.140602331100928.mail2
+          for <hjkim@laonroad.com>; 
+          Tue, 16 May 2023 13:09:13 +0900 (KST) 
+Received: from [192.174.81.127] ([192.174.81.127]) 
+          by inbound2.daouoffice.com ([192.168.0.20]) 
+          with ESMTP id 1684210150.836859.140695676397312.inbound2
+          for <hjkim@laonroad.com>; 
+          Tue, 16 May 2023 13:09:11 +0900 (KST) 
+X-MSFBL: vLVBAhrPYojXfdCRPhoj7bNiweaL/vDkkaMIWdfwovE=|eyJ0ZW5hbnRfaWQiOiJ
+	hdGxhc3NpYW51cyIsImN1c3RvbWVyX2lkIjoiMSIsInIiOiJoamtpbUBsYW9ucm9
+	hZC5jb20iLCJzdWJhY2NvdW50X2lkIjoiNCIsIm1lc3NhZ2VfaWQiOiI2NDYyZTU
+	wMTYzNjQ1Mzg5YTJlZiJ9
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=mail-us.atlassian.net; s=sparkpost0223; t=1684210150;
+	i=@mail-us.atlassian.net;
+	bh=iMp2z21/0s0jjMZPmMSWPSpMO4g14PKQW3E4Ck54GII=;
+	h=Date:From:To:Message-ID:Subject:Content-Type:From:To:Cc:Subject;
+	b=UDCvIXqS8ImW/5JFPI/YvZoi+aqR4S3Ybjk7I9XkqM0YNU6N+kse2KwgLGIDqGNk/
+	 zLmsL+J3fo8Fn05ZEBmtj+JgkS+HJX6cNKhcjkXZocfBvOkY8fJsMMqan8F7jBqADH
+	 QP1KSgx72jhHSzhNG6MTwS+oHD38GcEpFdTGIG+iUaeEY0x2+OwOXhFRtSe5WzZMsm
+	 4waPuPo704etqnfYS9c57+EhBQLSKbSsqUrLCD0TrA0MtLfiRs+Umf7HyjILRodmlV
+	 h7qhZQxmUltDpYFPxv6yOwAfOC5T0P50mXFst9DftJGdUDF7G3u2E6Ac61sFN/SkAD
+	 gvflEeAeWlPig==
+Authentication-Results:  gc.mta2vsmtp.cc.prd.sparkpost smtp.user=<hidden>; auth=pass (LOGIN)
+Received: from [52.77.70.205] ([52.77.70.205:60226] helo=a8711e039e05)
+	by gc.mta2vsmtp.cc.prd.sparkpost (envelope-from <bounce@mail-us.atlassian.net>)
+	(ecelerity 4.4.1.18009 r(msys-ecelerity:tags/4.4.1.2)) with ESMTPSA (cipher=AES-256-GCM) 
+	id 2A/FE-06180-5E103646; Tue, 16 May 2023 04:09:10 +0000
+Date: Tue, 16 May 2023 04:09:07 +0000 (UTC)
+From: =?UTF-8?Q?=EA=B3=A0=EB=B4=89=EC=84=9D_=28Confluence=29?=
+ <confluence@laonroad.atlassian.net>
+Sender: confluence@mail-us.atlassian.net
+To: hjkim@laonroad.com
+Message-ID: <1427819772.25994.1684210149892@a8711e039e05>
+Subject: =?UTF-8?Q?[Confluence]_Laonro?=
+ =?UTF-8?Q?ad_>_=EC=9E=84=EB=B2=A0=EB=94=94=EB=93=9C?=
+ =?UTF-8?Q?_tas_=EC=84=A4=EC=B9=98_=EC=88=9C=EC=84=9C?=
+X-TERRACE-DUMMYSUBJECT: Terrace Spam system                                  *
+MIME-Version: 1.0
+Content-Type: multipart/related; 
+	boundary="----=_Part_25992_1852649183.1684210147449"
+X-ATLASSIAN-NOTIFICATIONS-VERSION: 1000.0.0-6d00854cb08a
+Auto-Submitted: auto-generated
+Precedence: bulk
+X-TERRACE-SPAMMARK: NO       (SR:3.00)                     
+  (by Terrace)                                                   
+X-TERRACE-SID: 1684210153.168612.139838303332096.mail1
+
+------=_Part_25992_1852649183.1684210147449
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html; charset="UTF-8"
+Content-Disposition: inline
+
+<html>=0D=0A<head>=0D=0A<title>Message Title</title> =0D=0A<meta http-equiv=
+=3D"X-UA-Compatible" content=3D"IE=3Dedge,chrome=3D1"> =0D=0A<meta http-equ=
+iv=3D"Content-Type" content=3D"text/html; charset=3DUTF-8"> =0D=0A<meta nam=
+e=3D"viewport" content=3D"width=3Ddevice-width, initial-scale=3D1.0, maximu=
+m-scale=3D1.0"> =0D=0A<base href=3D"https://laonroad.atlassian.net/wiki">  =
+=0D=0A<style type=3D"text/css">@media (max-device-width: 480px) {.mobile-on=
+ly {=0D=0A    width: auto !important;=0D=0A    height: auto !important;=0D=
+=0A    overflow: visible !important;=0D=0A    line-height: normal !importan=
+t;=0D=0A    font-size: inherit !important;=0D=0A    mso-hide: all;=0D=0A}=
+=0D=0A=0D=0A.desktop-only {=0D=0A    display: none !important;=0D=0A}=0D=0A=
+=0D=0A/* iPhone 3GS fix for unwanted 20px right margin */=0D=0Abody {=0D=0A=
+    min-width: 100% !important;=0D=0A    padding: 0;=0D=0A    margin: 0;=0D=
+=0A}=0D=0A=0D=0A#center-content-table {=0D=0A    max-width: none !important=
+;=0D=0A}=0D=0A=0D=0A#header-pattern-container {=0D=0A    padding: 10px 10px=
+ 10px 10px !important;=0D=0A    line-height: 20px !important;=0D=0A}=0D=0A=
+=0D=0A#header-avatar-image-container {=0D=0A    padding-right: 8px !importa=
+nt;=0D=0A}=0D=0A=0D=0A#email-content-mobile-header-message td, #email-conte=
+nt-mobile-footer td {=0D=0A    display: table-cell !important;=0D=0A}=0D=0A=
+=0D=0A#mobile-app-download-links {=0D=0A    display: none !important;=0D=0A=
+}=0D=0A=0D=0A#mobile-app-download-links.ff-off {=0D=0A    display: table-ro=
+w !important;=0D=0A}=0D=0A=0D=0A#email-content-mobile-footer table {=0D=0A =
+   max-width: 400px;=0D=0A}=0D=0A=0D=0A.mobile-resize-text {=0D=0A    font-=
+size: 16px !important;=0D=0A    line-height: 22px !important;=0D=0A}=0D=0A=
+=0D=0A#page-title-pattern-header {=0D=0A    font-size: 20px !important;=0D=
+=0A    line-height: 28px !important;=0D=0A}=0D=0A=0D=0A#page-title-pattern-=
+icon-image-container-cell {=0D=0A    padding-top: 7px !important;=0D=0A}=0D=
+=0A=0D=0A#inline-user-pattern {=0D=0A    display: block !important;=0D=0A}=
+=0D=0A=0D=0A#inline-user-pattern-avatar {=0D=0A    padding-top: 3px !import=
+ant;=0D=0A}=0D=0A=0D=0A.contextual-area-pattern {=0D=0A    border-bottom: 1=
+px solid #ccc !important;=0D=0A    padding: 15px 10px 0 10px !important;=0D=
+=0A}=0D=0A=0D=0A.users-involved-pattern-column-table {=0D=0A    width: 100%=
+ !important;=0D=0A}=0D=0A=0D=0A.users-involved-pattern-avatar-table-cell {=
+=0D=0A    padding: 3px 5px 5px 0 !important;=0D=0A}=0D=0A=0D=0A.users-invol=
+ved-pattern-column-container {=0D=0A    padding-right: 0 !important;=0D=0A}=
+=0D=0A=0D=0A.contextual-excerpt-pattern, #users-involved-pattern {=0D=0A   =
+ border: 0 !important;=0D=0A}=0D=0A=0D=0A/** Aui Typography upsized for mob=
+ile **/=0D=0A#content-excerpt-pattern-container, #contextual-excerpt-patter=
+n-text-container {=0D=0A    font-size: 16px !important;=0D=0A    line-heigh=
+t: 22px !important;=0D=0A}=0D=0A=0D=0A#content-excerpt-pattern-container h1=
+, #contextual-excerpt-pattern-text-container h1 {=0D=0A    font-size: 24px =
+!important;=0D=0A    line-height: 28px !important;=0D=0A}=0D=0A=0D=0A#conte=
+nt-excerpt-pattern-container h2, #contextual-excerpt-pattern-text-container=
+ h2 {=0D=0A    font-size: 20px !important;=0D=0A    line-height: 28px !impo=
+rtant;=0D=0A}=0D=0A=0D=0A#content-excerpt-pattern-container h3, #contextual=
+-excerpt-pattern-text-container h3 {=0D=0A    font-size: 18px !important;=
+=0D=0A    line-height: 24px !important;=0D=0A}=0D=0A=0D=0A#content-excerpt-=
+pattern-container h4, #contextual-excerpt-pattern-text-container h4 {=0D=0A=
+    font-size: 16px !important;=0D=0A    line-height: 22px !important;=0D=
+=0A}=0D=0A=0D=0A#content-excerpt-pattern-container h5, #contextual-excerpt-=
+pattern-text-container h5 {=0D=0A    font-size: 14px !important;=0D=0A    l=
+ine-height: 20px !important;=0D=0A}=0D=0A=0D=0A#content-excerpt-pattern-con=
+tainer h6, #contextual-excerpt-pattern-text-container h6 {=0D=0A    font-si=
+ze: 14px !important;=0D=0A    line-height: 20px !important;=0D=0A}=0D=0A=0D=
+=0A.user-mention {=0D=0A    line-height: 18px !important;=0D=0A}=0D=0A=0D=
+=0A/** Aui Typography end **/=0D=0A=0D=0A/* Show appropriate footer logo on=
+ mobile, display links vertically */=0D=0A#footer-pattern {=0D=0A    paddin=
+g: 15px 10px !important;=0D=0A}=0D=0A=0D=0A#footer-pattern-logo-desktop-con=
+tainer {=0D=0A    padding: 0 !important;=0D=0A}=0D=0A=0D=0A#footer-pattern-=
+logo-desktop {=0D=0A    width: 0 !important;=0D=0A    height: 0 !important;=
+=0D=0A}=0D=0A=0D=0A#footer-pattern-logo-mobile {=0D=0A    padding-top: 10px=
+ !important;=0D=0A    width: 30px !important;=0D=0A    height: 27px !import=
+ant;=0D=0A    display: inline !important;=0D=0A}=0D=0A=0D=0A#footer-pattern=
+-text {=0D=0A    display: block !important;=0D=0A}=0D=0A=0D=0A#footer-patte=
+rn-links-container {=0D=0A    line-height: 0 !important;=0D=0A}=0D=0A=0D=0A=
+=2Efooter-pattern-links.mobile-resize-text,=0D=0A.footer-pattern-links.mobi=
+le-resize-text,=0D=0A#footer-pattern-text.mobile-resize-text,=0D=0A#footer-=
+pattern-links-container.no-footer-links {=0D=0A    font-size: 14px !importa=
+nt;=0D=0A    line-height: 20px !important;=0D=0A}=0D=0A=0D=0A.footer-link {=
+=0D=0A    display: block !important;=0D=0A}=0D=0A=0D=0A#footer-pattern-link=
+s-container table {=0D=0A    display: inline-block !important;=0D=0A    flo=
+at: none !important;=0D=0A}=0D=0A=0D=0A#footer-pattern-links-container, #fo=
+oter-pattern-text {=0D=0A    text-align: center !important;=0D=0A}=0D=0A=0D=
+=0A#footer-pattern-links {=0D=0A    padding-bottom: 5px !important;=0D=0A}=
+=0D=0A=0D=0A/** Team Calendar overrides, these should be removed when notif=
+ications are updated in Team Calendars. For now CSS=0D=0A    overrides are =
+being used because the structure of the content can't change without rerele=
+asing the plugin */=0D=0A.mail-calendar-container .day-header + table tr td=
+:first-child {=0D=0A    vertical-align: top !important;=0D=0A    padding-to=
+p: 5px !important;=0D=0A}}=0D=0A@media (min-width: 900px) {#center-content-=
+table { width: 900px; }}=0D=0A@media all {#outlook a {=0D=0A    padding: 0;=
+=0D=0A}=0D=0A=0D=0A/* Force Outlook to provide a "view in browser" menu lin=
+k. */=0D=0A/* Prevent Webkit and Windows Mobile platforms from changing def=
+ault font sizes.*/=0D=0Abody {=0D=0A    -webkit-text-size-adjust: 100%;=0D=
+=0A    -ms-text-size-adjust: 100%;=0D=0A}=0D=0A=0D=0A.ExternalClass {=0D=0A=
+    width: 100%;=0D=0A}=0D=0A=0D=0A/* Force Hotmail to display emails at fu=
+ll width */=0D=0A#background-table {=0D=0A    margin: 0;=0D=0A    padding: =
+0;=0D=0A    width: 100% !important;=0D=0A}=0D=0A=0D=0A/* Needed to override=
+ highlighting on date and time links in iOS */=0D=0A.grey a {=0D=0A    colo=
+r: #707070;=0D=0A    text-decoration: none;=0D=0A}/* These styles are appen=
+ded to the head element of a notification in order to prevent Apple Mail an=
+d similar=0D=0A   clients from underlining the due dates with a blue hyperl=
+ink */=0D=0A/* a lozenge outside an inline task should always be #333, loze=
+nges inside an inline task should be=0D=0A   colored according to their upc=
+oming due dates, a completed task date lozenge or deleted task date=0D=0A  =
+ lozenge should always be #707070 */=0D=0A.date-time-lozenge a {color: #333=
+333; text-decoration: none; }=0D=0A.inline-task-text-container .date-time-l=
+ozenge.date-upcoming a {color: #DF6F00; text-decoration: none; }=0D=0A.inli=
+ne-task-text-container .date-time-lozenge.date-past a {color: #D04437; text=
+-decoration: none; }=0D=0A.inline-task-text-container.content-deleted-color=
+ .date-time-lozenge a,=0D=0A.inline-task-text-container.checked .date-time-=
+lozenge a {=0D=0A    color: #707070; text-decoration: none;=0D=0A}}=0D=0A</=
+style> =0D=0A</head>=0D=0A<body>=0D=0A<table id=3D"background-table" cellpa=
+dding=3D"0" cellspacing=3D"0" width=3D"100%" style=3D"border-collapse: coll=
+apse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; color: #333333; backgro=
+und-color: #f5f5f5" bgcolor=3D"#f5f5f5"> =0D=0A<tbody> =0D=0A<tr> =0D=0A<td=
+ id=3D"header-pattern-container" style=3D"padding: 0px; border-collapse: co=
+llapse; padding: 10px 20px"> =0D=0A<table id=3D"header-pattern" cellspacing=
+=3D"0" cellpadding=3D"0" border=3D"0" style=3D"border-collapse: collapse; m=
+so-table-lspace: 0pt; mso-table-rspace: 0pt; color: #333333"> =0D=0A<tbody>=
+ =0D=0A<tr> =0D=0A<td id=3D"header-avatar-image-container" valign=3D"top" s=
+tyle=3D"padding: 0px; border-collapse: collapse; vertical-align: top; width=
+: 32px; padding-right: 9px" width=3D"32"><a href=3D"https://laonroad.atlass=
+ian.net/wiki/display/~62f0643e25abc07e51c72817=3Fsrc=3Dmail&src.mail.timest=
+amp=3D1684210147377&src.mail.notification=3Dcom.atlassian.confluence.plugin=
+s.confluence-content-notifications-plugin%3Apage-created-notification&src.m=
+ail.recipient=3D712020%3Aad393d03-df47-4060-a4a8-b3d38de55454&atlOrigin=3De=
+yJpIjoiMTEwNGQyOWQ3ZWNiNDc0Yzg1Zjk1MjQxZTk5MjZkZDMiLCJwIjoiYyJ9" style=3D"c=
+olor: #3b73af; text-decoration: none"><img id=3D"header-avatar-image" class=
+=3D"image_fix" src=3D"cid:avatar_56ef81f903140b8e58c6ef4cfa1bd849" height=
+=3D"32" width=3D"32" border=3D"0" style=3D"border-radius: 3px; vertical-ali=
+gn: top"></a></td>=0D=0A<td id=3D"header-text-container" valign=3D"middle" =
+style=3D"padding: 0px; border-collapse: collapse; vertical-align: middle; f=
+ont-family: Arial, sans-serif; font-size: 14px; line-height: 20px; mso-line=
+-height-rule: exactly; mso-text-raise: 1px">=EA=B3=A0=EB=B4=89=EC=84=9D =EB=
+=8B=98=EC=9D=B4 =ED=8E=98=EC=9D=B4=EC=A7=80=EB=A5=BC <strong>=EC=9E=91=EC=
+=84=B1=ED=96=88=EC=8A=B5=EB=8B=88=EB=8B=A4.</strong></td> =0D=0A</tr> =0D=
+=0A</tbody> =0D=0A</table> </td> =0D=0A</tr> <!-- End Header pattern --> =
+=0D=0A<tr> =0D=0A<td id=3D"email-content-container" style=3D"padding: 0px; =
+border-collapse: collapse; padding: 0 20px"> =0D=0A<table id=3D"email-conte=
+nt-table" cellspacing=3D"0" cellpadding=3D"0" border=3D"0" width=3D"100%" s=
+tyle=3D"border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace:=
+ 0pt; color: #333333; border-spacing: 0; border-collapse: separate"> =0D=0A=
+<tbody> =0D=0A<tr> =0D=0A<td class=3D"email-content-rounded-top mobile-expa=
+nd" style=3D"padding: 0px; border-collapse: collapse; color: #ffffff; paddi=
+ng: 0 15px 0 16px; height: 15px; background-color: #ffffff; border-left: 1p=
+x solid #cccccc; border-top: 1px solid #cccccc; border-right: 1px solid #cc=
+cccc; border-bottom: 0; border-top-right-radius: 5px; border-top-left-radiu=
+s: 5px" height=3D"15" bgcolor=3D"#ffffff">&nbsp;</td> =0D=0A</tr> =0D=0A<tr=
+> =0D=0A<td class=3D"email-content-main mobile-expand" style=3D"padding: 0p=
+x; border-collapse: collapse; border-left: 1px solid #cccccc; border-right:=
+ 1px solid #cccccc; border-top: 0; border-bottom: 0; padding: 0 15px 15px 1=
+6px; background-color: #ffffff" bgcolor=3D"#ffffff"> =0D=0A<table id=3D"pag=
+e-title-pattern" cellspacing=3D"0" cellpadding=3D"0" border=3D"0" width=3D"=
+100%" style=3D"border-collapse: collapse; mso-table-lspace: 0pt; mso-table-=
+rspace: 0pt; color: #333333"> =0D=0A<tbody> =0D=0A<tr> =0D=0A<td id=3D"page=
+-title-pattern-icon-image-container" valign=3D"top" style=3D"padding: 0px; =
+border-collapse: collapse; width: 16px; vertical-align: top" width=3D"16"> =
+=0D=0A<table cellspacing=3D"0" cellpadding=3D"0" border=3D"0" style=3D"bord=
+er-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; color:=
+ #333333"> =0D=0A<tbody> =0D=0A<tr> =0D=0A<td id=3D"page-title-pattern-icon=
+-image-container-cell" style=3D"padding: 0px; border-collapse: collapse; wi=
+dth: 16px; padding: 9px 8px 0px 0px; mso-text-raise: 5px; mso-line-height-r=
+ule: exactly" width=3D"16"><a href=3D"https://laonroad.atlassian.net/wiki/s=
+paces/LAONROAD/pages/118194177=3Fsrc=3Dmail&src.mail.timestamp=3D1684210147=
+377&src.mail.notification=3Dcom.atlassian.confluence.plugins.confluence-con=
+tent-notifications-plugin%3Apage-created-notification&src.mail.recipient=3D=
+712020%3Aad393d03-df47-4060-a4a8-b3d38de55454&atlOrigin=3DeyJpIjoiMTEwNGQyO=
+WQ3ZWNiNDc0Yzg1Zjk1MjQxZTk5MjZkZDMiLCJwIjoiYyJ9&src.mail.action=3Dview" tit=
+le=3D"page icon" style=3D"vertical-align: top;; color: #3b73af; text-decora=
+tion: none"><img style=3D"vertical-align: top; display: block;" src=3D"cid:=
+page-icon" alt=3D"page icon" title=3D"page icon" height=3D"16" width=3D"16"=
+ border=3D"0"></a></td> =0D=0A</tr> =0D=0A</tbody> =0D=0A</table> </td>=0D=
+=0A<td style=3D"vertical-align: top;; padding: 0px; border-collapse: collap=
+se; padding-right: 5px; font-size: 20px; line-height: 30px; mso-line-height=
+-rule: exactly" id=3D"page-title-pattern-header-container"><span id=3D"page=
+-title-pattern-header" style=3D"font-family: Arial, sans-serif; padding: 0;=
+ font-size: 20px; line-height: 30px; mso-text-raise: 2px; mso-line-height-r=
+ule: exactly; vertical-align: middle"><a href=3D"https://laonroad.atlassian=
+=2Enet/wiki/spaces/LAONROAD/pages/118194177=3Fsrc=3Dmail&src.mail.timestamp=
+=3D1684210147377&src.mail.notification=3Dcom.atlassian.confluence.plugins.c=
+onfluence-content-notifications-plugin%3Apage-created-notification&src.mail=
+=2Erecipient=3D712020%3Aad393d03-df47-4060-a4a8-b3d38de55454&atlOrigin=3Dey=
+JpIjoiMTEwNGQyOWQ3ZWNiNDc0Yzg1Zjk1MjQxZTk5MjZkZDMiLCJwIjoiYyJ9&src.mail.act=
+ion=3Dview" title=3D"=EC=9E=84=EB=B2=A0=EB=94=94=EB=93=9C tas =EC=84=A4=EC=
+=B9=98 =EC=88=9C=EC=84=9C" style=3D"color: #3b73af; text-decoration: none">=
+=EC=9E=84=EB=B2=A0=EB=94=94=EB=93=9C tas =EC=84=A4=EC=B9=98 =EC=88=9C=EC=84=
+=9C</a></span></td> =0D=0A</tr> =0D=0A</tbody> =0D=0A</table> </td> =0D=0A<=
+/tr> =0D=0A<tr> =0D=0A<td class=3D"email-content-main mobile-expand" style=
+=3D"padding: 0px; border-collapse: collapse; border-left: 1px solid #cccccc=
+; border-right: 1px solid #cccccc; border-top: 0; border-bottom: 0; padding=
+: 0 15px 15px 16px; background-color: #ffffff" bgcolor=3D"#ffffff"> =0D=0A<=
+table class=3D"content-excerpt-pattern" cellspacing=3D"0" cellpadding=3D"0"=
+ border=3D"0" width=3D"100%" style=3D"border-collapse: collapse; mso-table-=
+lspace: 0pt; mso-table-rspace: 0pt; color: #333333; font-family: Arial, san=
+s-serif; font-size: 14px; line-height: 20px; mso-line-height-rule: exactly;=
+ mso-text-raise: 1px"> =0D=0A<tbody> =0D=0A<tr> =0D=0A<td class=3D"content-=
+excerpt-pattern-container mobile-resize-text " style=3D"padding: 0px; borde=
+r-collapse: collapse; padding: 0 0 0 24px"> =0D=0A<ul style=3D"margin: 10px=
+ 0 0 0; margin-top: 0"> =0D=0A<li> <p style=3D"margin: 10px 0 0 0; margin-t=
+op: 0">Jetpack =EC=84=A4=EC=B9=98</p> =0D=0A<ol start=3D"1" style=3D"margin=
+: 10px 0 0 0"> =0D=0A<li> <p style=3D"margin: 10px 0 0 0; margin-top: 0">=
+=ED=98=B8=EC=8A=A4=ED=8A=B8 PC=EC=99=80 micro 5pin=EC=9D=84 =EC=9D=B4=EC=9A=
+=A9=ED=95=B4 =EC=97=B0=EA=B2=B0</p> </li> =0D=0A<li> <p style=3D"margin: 10=
+px 0 0 0; margin-top: 0">Jetson 4.6.2 =EC=84=A4=EC=B9=98</p> </li> =0D=0A<l=
+i> <p style=3D"margin: 10px 0 0 0; margin-top: 0">=EC=B0=B8=EA=B3=A0 =EC=82=
+=AC=EC=9D=B4=ED=8A=B8 <a class=3D"external-link" data-card-appearance=3D"in=
+line" href=3D"https://jstar0525.tistory.com/58" rel=3D"nofollow" style=3D"c=
+olor: #3b73af; text-decoration: none">https://jstar0525.tistory.com/58</a> =
+</p> </li> =0D=0A</ol> </li> =0D=0A</ul> =0D=0A<ol start=3D"1" style=3D"mar=
+gin: 10px 0 0 0"> =0D=0A<li> <p style=3D"margin: 10px 0 0 0; margin-top: 0"=
+></p> </li> =0D=0A<li> <p style=3D"margin: 10px 0 0 0; margin-top: 0">insta=
+ll manager=EB=A5=BC =EC=9D=B4=EC=9A=A9=ED=95=9C =EA=B8=B0=EB=B3=B8 =ED=8C=
+=A8=ED=82=A4=EC=A7=80 =EC=84=A4=EC=B9=98</p> </li> =0D=0A</ol> =0D=0A<ul st=
+yle=3D"margin: 10px 0 0 0"> =0D=0A<li> <p style=3D"margin: 10px 0 0 0; marg=
+in-top: 0">bitbucket=EC=97=90=EC=84=9C install manager=EB=A5=BC clone</p> <=
+/li> =0D=0A<li> <p style=3D"margin: 10px 0 0 0; margin-top: 0">README =ED=
+=99=95=EC=9D=B8=ED=95=B4=EC=84=9C =EC=9A=B0=EB=B6=84=ED=88=AC =EB=B2=84=EC=
+=A0=84=EC=97=90 =EB=A7=9E=EB=8A=94 install manager=EC=9D=B8=EC=A7=80 =EC=B2=
+=B4=ED=81=AC</p> </li> =0D=0A<li> <p style=3D"margin: 10px 0 0 0; margin-to=
+p: 0">install_manager.sh =EC=8B=A4=ED=96=89(-h =EC=98=B5=EC=85=98=EC=9C=BC=
+=EB=A1=9C =EC=98=B5=EC=85=98 =ED=99=95=EC=9D=B8)</p> </li> =0D=0A<li> <p st=
+yle=3D"margin: 10px 0 0 0; margin-top: 0">=EA=B8=B0=EB=B3=B8=EC=A0=81=EC=9C=
+=BC=EB=A1=9C --jetson --id --password =EC=98=B5=EC=85=98=EB=A7=8C =ED=95=84=
+=EC=9A=94(jetson sdk =EC=84=A4=EC=B9=98=EB=A1=9C cuda=EB=93=B1=EC=9D=80 =EC=
+=84=A4=EC=B9=98=EB=90=98=EC=96=B4=EC=9E=88=EC=9D=8C)</p> </li> =0D=0A<li> <=
+p style=3D"margin: 10px 0 0 0; margin-top: 0">=EC=84=A4=EC=B9=98 =EC=B0=BD=
+=EC=97=90=EC=84=9C cmake =EC=B2=B4=ED=81=AC,opencv =EC=B2=B4=ED=81=AC, redi=
+s++=EC=B2=B4=ED=81=AC =ED=95=B4=EC=A0=9C =ED=95=98=EA=B3=A0 =EC=84=A4=EC=B9=
+=98</p> </li> =0D=0A<li> <p style=3D"margin: 10px 0 0 0; margin-top: 0">odb=
+c=EB=8A=94 jetson=EC=9A=A9=EC=9C=BC=EB=A1=9C =EB=94=B0=EB=A1=9C =EC=84=A4=
+=EC=B9=98 =ED=95=84=EC=9A=94</p> </li> =0D=0A<li> <p style=3D"margin: 10px =
+0 0 0; margin-top: 0"> <a class=3D"external-link" href=3D"http://10.101.0.5=
+9:5000/" rel=3D"nofollow" style=3D"color: #3b73af; text-decoration: none">h=
+ttp://10.101.0.59:5000/</a> 02.=ED=94=84=EB=A1=9C=EC=A0=9D=ED=8A=B8/2022_12=
+_=EC=84=B1=EB=82=A8=ED=9A=A1=EB=8B=A8=EB=B3=B4=EB=8F=84 =EC=97=90=EC=84=9C =
+odbc =EB=8B=A4=EC=9A=B4 =ED=9B=84 =EC=95=95=EC=B6=95 =ED=92=80=EA=B8=B0</p>=
+ </li> =0D=0A<li> <p style=3D"margin: 10px 0 0 0; margin-top: 0">=EC=95=95=
+=EC=B6=95=EC=9D=84 =ED=91=BC =EB=94=94=EB=A0=89=ED=86=A0=EB=A6=AC =EB=82=B4=
+=EB=B6=80=EC=97=90 =EC=9E=88=EB=8A=94 libmaodbc.so =ED=8C=8C=EC=9D=BC=EC=9D=
+=84 /usr/lib/ =EB=A1=9C =EC=9D=B4=EB=8F=99</p> </li> =0D=0A<li> <p style=3D=
+"margin: 10px 0 0 0; margin-top: 0">/etc/odbc.ini=EC=97=90 =EB=8B=A4=EC=9D=
+=8C=EA=B3=BC =EA=B0=99=EC=9D=B4 =EA=B8=B0=EB=A1=9D</p> </li> =0D=0A<li> <p =
+style=3D"margin: 10px 0 0 0; margin-top: 0">[MariaDB-server]<br>Description=
+=3DMariaDB server<br>Driver=3DMariaDB ODBC 3.1 Driver<br>SERVER=3D127.0.0.1=
+<br>USER=3Dtas<br>PASSWORD=3Dnvidia<br>DATABASE=3Dtas<br>PORT=3D3306</p> </=
+li> =0D=0A<li> <p style=3D"margin: 10px 0 0 0; margin-top: 0">/etc/odbcinst=
+=2Eini=EC=97=90 =EB=8B=A4=EC=9D=8C=EA=B3=BC =EA=B0=99=EC=9D=B4 =EA=B8=B0=EB=
+=A1=9D</p> </li> =0D=0A<li> <p style=3D"margin: 10px 0 0 0; margin-top: 0">=
+[MariaDB ODBC 3.1 Driver]<br>Description =3D MariaDB Connector/ODBC v.3.1<b=
+r>Driver =3D /usr/lib/libmaodbc.so</p> </li> =0D=0A</ul> =0D=0A<ol start=3D=
+"1" style=3D"margin: 10px 0 0 0"> =0D=0A<li> <p style=3D"margin: 10px 0 0 0=
+; margin-top: 0">=EC=8A=A4=EB=A7=88=ED=8A=B8 =ED=9A=A1=EB=8B=A8=EB=B3=B4=EB=
+=8F=84 =EB=B9=8C=EB=93=9C</p> </li> =0D=0A</ol> =0D=0A<ul style=3D"margin: =
+10px 0 0 0"> =0D=0A<li> <p style=3D"margin: 10px 0 0 0; margin-top: 0">cros=
+swalk-seongnam =EB=A6=AC=ED=8F=AC=EC=A7=80=ED=86=A0=EB=A6=AC =ED=81=B4=EB=
+=A1=A0=ED=96=89</p> </li> =0D=0A<li> <p style=3D"margin: 10px 0 0 0; margin=
+-top: 0">/opt/laonpeople/3rdparty/share/tensorrt_info.txt =ED=8C=8C=EC=9D=
+=BC =EB=A7=8C=EB=93=A0 =EB=92=A4 7.0=EC=9D=B4=EB=9D=BC=EA=B3=A0 =EA=B8=B0=
+=EB=A1=9D</p> </li> =0D=0A<li> <p style=3D"margin: 10px 0 0 0; margin-top: =
+0">/etc/ld.so.conf.d/tas.conf =ED=8C=8C=EC=9D=BC =EC=83=9D=EC=84=B1 =EB=92=
+=A4 /opt/laonpeople/3rdparty/lib/ =EC=9E=85=EB=A0=A5 =ED=9B=84 =EC=A0=80=EC=
+=9E=A5. ldconfig</p> </li> =0D=0A<li> <p style=3D"margin: 10px 0 0 0; margi=
+n-top: 0">/opt/laonpeople/tas/share/train =ED=8F=B4=EB=8D=94=EC=97=90 =EB=
+=AA=A8=EB=8D=B8(lptm =ED=8C=8C=EC=9D=BC) =EC=9D=B4=EB=8F=99. =EB=AA=A8=EB=
+=8D=B8=EC=9D=80 seongnam-crosswalk =EB=A6=AC=ED=8F=AC=EC=A7=80=ED=86=A0=EB=
+=A6=AC downloads=EC=97=90 =EC=9E=88=EC=9D=8C. =EC=9D=B4=EB=8F=99=EC=8B=9C d=
+efault.lptm=EC=9C=BC=EB=A1=9C =EC=9D=B4=EB=A6=84 =EB=B0=94=EA=BF=94=EC=84=
+=9C =EC=98=AE=EA=B8=B8 =EA=B2=83.</p> </li> =0D=0A<li> <p style=3D"margin: =
+10px 0 0 0; margin-top: 0">install.sh =EC=8B=A4=ED=96=89</p> </li> =0D=0A<l=
+i> <p style=3D"margin: 10px 0 0 0; margin-top: 0">=EB=B9=8C=EB=93=9C =ED=9B=
+=84 /opt/laonpeople/tas/bin/tas =EB=A5=BC =EC=8B=A4=ED=96=89</p> </li> =0D=
+=0A</ul> <p style=3D"margin: 10px 0 0 0">&nbsp;</p> =0D=0A<ol start=3D"1" s=
+tyle=3D"margin: 10px 0 0 0"> =0D=0A<li> <p style=3D"margin: 10px 0 0 0; mar=
+gin-top: 0">ui =EB=B9=8C=EB=93=9C</p> </li> =0D=0A</ol> </td> =0D=0A</tr> =
+=0D=0A</tbody> =0D=0A</table> </td> =0D=0A</tr> =0D=0A<tr> =0D=0A<td class=
+=3D"email-content-main mobile-expand action-padding last-row-padding" style=
+=3D"padding: 0px; border-collapse: collapse; border-left: 1px solid #cccccc=
+; border-right: 1px solid #cccccc; border-top: 0; border-bottom: 0; padding=
+: 0 15px 15px 16px; background-color: #ffffff; padding-bottom: 10px; paddin=
+g-bottom: 10px" bgcolor=3D"#ffffff"> =0D=0A<table id=3D"actions-pattern" ce=
+llspacing=3D"0" cellpadding=3D"0" border=3D"0" width=3D"100%" style=3D"bord=
+er-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; color:=
+ #333333; font-family: Arial, sans-serif; font-size: 14px; line-height: 20p=
+x; mso-line-height-rule: exactly; mso-text-raise: 1px"> =0D=0A<tbody> =0D=
+=0A<tr> =0D=0A<td id=3D"actions-pattern-container" valign=3D"middle" style=
+=3D"padding: 0px; border-collapse: collapse; padding: 15px 0 0 24px; vertic=
+al-align: middle"> =0D=0A<table align=3D"left" style=3D"border-collapse: co=
+llapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; color: #333333"> =0D=
+=0A<tbody> =0D=0A<tr> =0D=0A<td class=3D"actions-pattern-action-icon-contai=
+ner" style=3D"padding: 0px; border-collapse: collapse; font-family: Arial, =
+sans-serif; font-size: 14px; line-height: 20px; mso-line-height-rule: exact=
+ly; mso-text-raise: 0px; vertical-align: middle"><a href=3D"https://laonroa=
+d.atlassian.net/wiki/spaces/LAONROAD/pages/118194177=3Fsrc=3Dmail&src.mail.=
+timestamp=3D1684210147377&src.mail.notification=3Dcom.atlassian.confluence.=
+plugins.confluence-content-notifications-plugin%3Apage-created-notification=
+&src.mail.recipient=3D712020%3Aad393d03-df47-4060-a4a8-b3d38de55454&atlOrig=
+in=3DeyJpIjoiMTEwNGQyOWQ3ZWNiNDc0Yzg1Zjk1MjQxZTk5MjZkZDMiLCJwIjoiYyJ9&src.m=
+ail.action=3Dview" title=3D"=ED=8E=98=EC=9D=B4=EC=A7=80 =EB=B3=B4=EA=B8=B0 =
+Icon" style=3D"color: #3b73af; text-decoration: none"><img class=3D"actions=
+-pattern-action-icon-image" height=3D"16" width=3D"16" border=3D"0" title=
+=3D"=ED=8E=98=EC=9D=B4=EC=A7=80 =EB=B3=B4=EA=B8=B0 Icon" src=3D"cid:com.atl=
+assian.confluence.plugins.confluence-email-resources_view-page-email-adg-fo=
+oter-item_icon" alt=3D"=ED=8E=98=EC=9D=B4=EC=A7=80 =EB=B3=B4=EA=B8=B0 Icon"=
+ style=3D"vertical-align: middle"></a></td>=0D=0A<td class=3D"actions-patte=
+rn-action-text-container" style=3D"padding: 0px; border-collapse: collapse;=
+ font-family: Arial, sans-serif; font-size: 14px; line-height: 20px; mso-li=
+ne-height-rule: exactly; mso-text-raise: 4px; padding-left: 5px; white-spac=
+e: nowrap"><a href=3D"https://laonroad.atlassian.net/wiki/spaces/LAONROAD/p=
+ages/118194177=3Fsrc=3Dmail&src.mail.timestamp=3D1684210147377&src.mail.not=
+ification=3Dcom.atlassian.confluence.plugins.confluence-content-notificatio=
+ns-plugin%3Apage-created-notification&src.mail.recipient=3D712020%3Aad393d0=
+3-df47-4060-a4a8-b3d38de55454&atlOrigin=3DeyJpIjoiMTEwNGQyOWQ3ZWNiNDc0Yzg1Z=
+jk1MjQxZTk5MjZkZDMiLCJwIjoiYyJ9&src.mail.action=3Dview" title=3D"=ED=8E=98=
+=EC=9D=B4=EC=A7=80 =EB=B3=B4=EA=B8=B0" style=3D"color: #3b73af; text-decora=
+tion: none">=ED=8E=98=EC=9D=B4=EC=A7=80 =EB=B3=B4=EA=B8=B0</a></td>=0D=0A<t=
+d class=3D"actions-pattern-action-bull" style=3D"padding: 0px; border-colla=
+pse: collapse; font-family: Arial, sans-serif; font-size: 14px; line-height=
+: 20px; mso-line-height-rule: exactly; mso-text-raise: 4px; color: #999999;=
+ padding: 0 5px">=E2=80=A2</td> =0D=0A</tr> =0D=0A</tbody> =0D=0A</table> =
+=0D=0A<table align=3D"left" style=3D"border-collapse: collapse; mso-table-l=
+space: 0pt; mso-table-rspace: 0pt; color: #333333"> =0D=0A<tbody> =0D=0A<tr=
+> =0D=0A<td class=3D"actions-pattern-action-icon-container" style=3D"paddin=
+g: 0px; border-collapse: collapse; font-family: Arial, sans-serif; font-siz=
+e: 14px; line-height: 20px; mso-line-height-rule: exactly; mso-text-raise: =
+0px; vertical-align: middle"><a href=3D"https://laonroad.atlassian.net/wiki=
+/spaces/LAONROAD/pages/118194177=3FshowComments=3Dtrue&showCommentArea=3Dtr=
+ue&src=3Dmail&src.mail.timestamp=3D1684210147377&src.mail.notification=3Dco=
+m.atlassian.confluence.plugins.confluence-content-notifications-plugin%3Apa=
+ge-created-notification&src.mail.recipient=3D712020%3Aad393d03-df47-4060-a4=
+a8-b3d38de55454&atlOrigin=3DeyJpIjoiMTEwNGQyOWQ3ZWNiNDc0Yzg1Zjk1MjQxZTk5MjZ=
+kZDMiLCJwIjoiYyJ9&src.mail.action=3Dcomment#addcomment" title=3D"=EB=8C=93=
+=EA=B8=80 =EC=B6=94=EA=B0=80 Icon" style=3D"color: #3b73af; text-decoration=
+: none"><img class=3D"actions-pattern-action-icon-image" height=3D"16" widt=
+h=3D"16" border=3D"0" title=3D"=EB=8C=93=EA=B8=80 =EC=B6=94=EA=B0=80 Icon" =
+src=3D"cid:com.atlassian.confluence.plugins.confluence-email-resources_add-=
+comment-to-content-email-adg-footer-item_icon" alt=3D"=EB=8C=93=EA=B8=80 =
+=EC=B6=94=EA=B0=80 Icon" style=3D"vertical-align: middle"></a></td>=0D=0A<t=
+d class=3D"actions-pattern-action-text-container" style=3D"padding: 0px; bo=
+rder-collapse: collapse; font-family: Arial, sans-serif; font-size: 14px; l=
+ine-height: 20px; mso-line-height-rule: exactly; mso-text-raise: 4px; paddi=
+ng-left: 5px; white-space: nowrap"><a href=3D"https://laonroad.atlassian.ne=
+t/wiki/spaces/LAONROAD/pages/118194177=3FshowComments=3Dtrue&showCommentAre=
+a=3Dtrue&src=3Dmail&src.mail.timestamp=3D1684210147377&src.mail.notificatio=
+n=3Dcom.atlassian.confluence.plugins.confluence-content-notifications-plugi=
+n%3Apage-created-notification&src.mail.recipient=3D712020%3Aad393d03-df47-4=
+060-a4a8-b3d38de55454&atlOrigin=3DeyJpIjoiMTEwNGQyOWQ3ZWNiNDc0Yzg1Zjk1MjQxZ=
+Tk5MjZkZDMiLCJwIjoiYyJ9&src.mail.action=3Dcomment#addcomment" title=3D"=EB=
+=8C=93=EA=B8=80 =EC=B6=94=EA=B0=80" style=3D"color: #3b73af; text-decoratio=
+n: none">=EB=8C=93=EA=B8=80 =EC=B6=94=EA=B0=80</a></td>=0D=0A<td class=3D"a=
+ctions-pattern-action-bull" style=3D"padding: 0px; border-collapse: collaps=
+e; font-family: Arial, sans-serif; font-size: 14px; line-height: 20px; mso-=
+line-height-rule: exactly; mso-text-raise: 4px; color: #999999; padding: 0 =
+5px">=E2=80=A2</td> =0D=0A</tr> =0D=0A</tbody> =0D=0A</table> =0D=0A<table =
+style=3D"border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace=
+: 0pt; color: #333333"> =0D=0A<tbody> =0D=0A<tr> =0D=0A<td class=3D"actions=
+-pattern-action-icon-container" style=3D"padding: 0px; border-collapse: col=
+lapse; font-family: Arial, sans-serif; font-size: 14px; line-height: 20px; =
+mso-line-height-rule: exactly; mso-text-raise: 0px; vertical-align: middle"=
+><a href=3D"https://laonroad.atlassian.net/wiki/spaces/LAONROAD/pages/11819=
+4177=3Faction=3Dreact&contentId=3D118194177&contentType=3Dpage&src=3Dmail&s=
+rc.mail.timestamp=3D1684210147377&src.mail.notification=3Dcom.atlassian.con=
+fluence.plugins.confluence-content-notifications-plugin%3Apage-created-noti=
+fication&src.mail.recipient=3D712020%3Aad393d03-df47-4060-a4a8-b3d38de55454=
+&atlOrigin=3DeyJpIjoiMTEwNGQyOWQ3ZWNiNDc0Yzg1Zjk1MjQxZTk5MjZkZDMiLCJwIjoiYy=
+J9" title=3D"=EB=B0=98=EC=9D=91 =EC=B6=94=EA=B0=80 Icon" style=3D"color: #3=
+b73af; text-decoration: none"><img class=3D"actions-pattern-action-icon-ima=
+ge" height=3D"16" width=3D"16" border=3D"0" title=3D"=EB=B0=98=EC=9D=91 =EC=
+=B6=94=EA=B0=80 Icon" src=3D"cid:com.atlassian.confluence.plugins.confluenc=
+e-reaction_view-email-adg-content_icon" alt=3D"=EB=B0=98=EC=9D=91 =EC=B6=94=
+=EA=B0=80 Icon" style=3D"vertical-align: middle"></a></td>=0D=0A<td class=
+=3D"actions-pattern-action-text-container" style=3D"padding: 0px; border-co=
+llapse: collapse; font-family: Arial, sans-serif; font-size: 14px; line-hei=
+ght: 20px; mso-line-height-rule: exactly; mso-text-raise: 4px; padding-left=
+: 5px; white-space: nowrap"><a href=3D"https://laonroad.atlassian.net/wiki/=
+spaces/LAONROAD/pages/118194177=3Faction=3Dreact&contentId=3D118194177&cont=
+entType=3Dpage&src=3Dmail&src.mail.timestamp=3D1684210147377&src.mail.notif=
+ication=3Dcom.atlassian.confluence.plugins.confluence-content-notifications=
+-plugin%3Apage-created-notification&src.mail.recipient=3D712020%3Aad393d03-=
+df47-4060-a4a8-b3d38de55454&atlOrigin=3DeyJpIjoiMTEwNGQyOWQ3ZWNiNDc0Yzg1Zjk=
+1MjQxZTk5MjZkZDMiLCJwIjoiYyJ9" title=3D"=EB=B0=98=EC=9D=91 =EC=B6=94=EA=B0=
+=80" style=3D"color: #3b73af; text-decoration: none">=EB=B0=98=EC=9D=91 =EC=
+=B6=94=EA=B0=80</a></td> =0D=0A</tr> =0D=0A</tbody> =0D=0A</table> </td> =
+=0D=0A</tr> =0D=0A</tbody> =0D=0A</table> </td> =0D=0A</tr> =0D=0A<tr id=3D=
+"mobile-app-download-links"> =0D=0A<td class=3D"email-content-main mobile-e=
+xpand email-content-mobile-message" style=3D"padding: 0px; border-collapse:=
+ collapse; border-left: 1px solid #cccccc; border-right: 1px solid #cccccc;=
+ border-top: 0; border-bottom: 0; padding: 0 15px 15px 16px; background-col=
+or: #ffffff; padding: 7px 42px 0 42px" bgcolor=3D"#ffffff"> =0D=0A<table st=
+yle=3D"border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: =
+0pt; color: #333333; width: 100%"> =0D=0A<tbody> =0D=0A<tr> =0D=0A<td style=
+=3D"padding: 0px; border-collapse: collapse; padding-top: 13px; padding-bot=
+tom: 9px; border-top: 1px solid #cccccc; font-size: 13px"><span>=F0=9F=94=
+=94 =EC=9D=B4=EB=8F=99 =EC=A4=91=EC=97=90=EB=8F=84 =EC=95=8C=EB=A6=BC=EC=9D=
+=84 =EB=B0=9B=EA=B3=A0 =EB=8C=93=EA=B8=80=EC=9D=84 =EC=B6=94=EA=B0=80=ED=95=
+=98=EC=84=B8=EC=9A=94. <a href=3D"https://apps.apple.com/app/apple-store/id=
+1006971684=3Fpt=3D696495&ct=3DEmailPromov2&mt=3D8" title=3D"Confluence iPho=
+ne mobile app" style=3D"color: #3b73af; text-decoration: none">iOS</a> =EB=
+=98=90=EB=8A=94 <a href=3D"https://atlassian.app.link/e/ConfluenceMobileEma=
+ilFooter" title=3D"Confluence android mobile app" style=3D"color: #3b73af; =
+text-decoration: none">Android</a>=EC=9A=A9 Confluence Cloud=EB=A5=BC =EB=
+=8B=A4=EC=9A=B4=EB=A1=9C=EB=93=9C=ED=95=98=EC=84=B8=EC=9A=94</span></td> =
+=0D=0A</tr> =0D=0A</tbody> =0D=0A</table> </td> =0D=0A</tr> =0D=0A<tr> =0D=
+=0A<td class=3D"email-content-rounded-bottom mobile-expand" style=3D"paddin=
+g: 0px; border-collapse: collapse; color: #ffffff; height: 5px; line-height=
+: 5px; padding: 0 15px 0 16px; background-color: #ffffff; border-bottom-rig=
+ht-radius: 5px; border-bottom-left-radius: 5px; border-top: 0; border-left:=
+ 1px solid #cccccc; border-bottom: 1px solid #cccccc; border-right: 1px sol=
+id #cccccc; mso-line-height-rule: exactly" height=3D"5" bgcolor=3D"#ffffff"=
+>&nbsp;</td> =0D=0A</tr> =0D=0A</tbody> =0D=0A</table> </td> =0D=0A</tr> =
+=0D=0A<tr> =0D=0A<td id=3D"footer-pattern" style=3D"padding: 0px; border-co=
+llapse: collapse; padding: 12px 20px"> =0D=0A<table id=3D"footer-pattern-co=
+ntainer" cellspacing=3D"0" cellpadding=3D"0" border=3D"0" width=3D"100%" st=
+yle=3D"border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: =
+0pt; color: #333333"> =0D=0A<tbody> =0D=0A<tr> =0D=0A<td id=3D"footer-patte=
+rn-links-container" width=3D"100%" style=3D"padding: 0px; border-collapse: =
+collapse; color: #999999; font-size: 12px; line-height: 18px; font-family: =
+Arial, sans-serif; mso-line-height-rule: exactly; mso-text-raise: 2px"> =0D=
+=0A<table align=3D"left" style=3D"border-collapse: collapse; mso-table-lspa=
+ce: 0pt; mso-table-rspace: 0pt; color: #333333; font-size: 12px; line-heigh=
+t: 18px; font-family: Arial, sans-serif; mso-line-height-rule: exactly; mso=
+-text-raise: 2px"> =0D=0A<tbody> =0D=0A<tr> =0D=0A<td class=3D"footer-patte=
+rn-links mobile-resize-text" style=3D"padding: 0px; border-collapse: collap=
+se"><a href=3D"https://laonroad.atlassian.net/wiki/users/removespacenotific=
+ation.action=3FspaceKey=3DLAONROAD&src=3Dmail&src.mail.timestamp=3D16842101=
+47377&src.mail.notification=3Dcom.atlassian.confluence.plugins.confluence-c=
+ontent-notifications-plugin%3Apage-created-notification&src.mail.recipient=
+=3D712020%3Aad393d03-df47-4060-a4a8-b3d38de55454&atlOrigin=3DeyJpIjoiMTEwNG=
+QyOWQ3ZWNiNDc0Yzg1Zjk1MjQxZTk5MjZkZDMiLCJwIjoiYyJ9&src.mail.action=3Dstop-w=
+atching&jwt=3DeyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ4c3JmOjcxMjAy=
+MDphZDM5M2QwMy1kZjQ3LTQwNjAtYTRhOC1iM2QzOGRlNTU0NTQiLCJxc2giOiI5ZDNjMTkyNTE=
+4ZjE4ZTJiNGEwYmY3MWYzMDgyZDgxNWVjYjlmZDM0ZGZmYWY4MzVkZmYwMTRkYjQwOTI3ZWI5Ii=
+wiaXNzIjoiY29uZmx1ZW5jZV9ub3RpZmljYXRpb25zQkNUWi1SUUtPLVpUTE4tRTVNNSIsImV4c=
+CI6MTY4NDgxNDk0NywiaWF0IjoxNjg0MjEwMTQ3fQ._saMUcA47EI3dZoHgOC03Msu2LHoYdSGA=
+NXL-SgjiAA" title=3D"" style=3D"color: #3b73af; text-decoration: none">=EC=
+=8A=A4=ED=8E=98=EC=9D=B4=EC=8A=A4 =EA=B4=80=EC=B0=B0 =EC=A4=91=EC=A7=80</a>=
+</td>=0D=0A<td class=3D"footer-pattern-links-bull" style=3D"padding: 0px; b=
+order-collapse: collapse; padding: 0 5px; color: #999999">=E2=80=A2</td> =
+=0D=0A</tr> =0D=0A</tbody> =0D=0A</table> =0D=0A<table style=3D"border-coll=
+apse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; color: #33333=
+3; font-size: 12px; line-height: 18px; font-family: Arial, sans-serif; mso-=
+line-height-rule: exactly; mso-text-raise: 2px"> =0D=0A<tbody> =0D=0A<tr> =
+=0D=0A<td class=3D"footer-pattern-links mobile-resize-text" style=3D"paddin=
+g: 0px; border-collapse: collapse"><a href=3D"https://laonroad.atlassian.ne=
+t/wiki/users/editmyemailsettings.action=3Fsrc=3Dmail&src.mail.timestamp=3D1=
+684210147377&src.mail.notification=3Dcom.atlassian.confluence.plugins.confl=
+uence-content-notifications-plugin%3Apage-created-notification&src.mail.rec=
+ipient=3D712020%3Aad393d03-df47-4060-a4a8-b3d38de55454&atlOrigin=3DeyJpIjoi=
+MTEwNGQyOWQ3ZWNiNDc0Yzg1Zjk1MjQxZTk5MjZkZDMiLCJwIjoiYyJ9&src.mail.action=3D=
+manage" title=3D"" style=3D"color: #3b73af; text-decoration: none">=EC=95=
+=8C=EB=A6=BC =EA=B4=80=EB=A6=AC</a></td> =0D=0A</tr> =0D=0A</tbody> =0D=0A<=
+/table> </td>=0D=0A<td id=3D"footer-pattern-logo-desktop-container" rowspan=
+=3D"2" valign=3D"top" style=3D"padding: 0px; border-collapse: collapse; pad=
+ding-left: 20px; vertical-align: top"> =0D=0A<table style=3D"border-collaps=
+e: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; color: #333333">=
+ =0D=0A<tbody> =0D=0A<tr> =0D=0A<td id=3D"footer-pattern-logo-desktop-paddi=
+ng" style=3D"padding: 0px; border-collapse: collapse; padding-top: 3px"><im=
+g id=3D"footer-pattern-logo-desktop" src=3D"cid:footer-desktop-logo" alt=3D=
+"Confluence logo big" title=3D"Confluence logo big" width=3D"132" height=3D=
+"20" class=3D"image_fix"></td> =0D=0A</tr> =0D=0A</tbody> =0D=0A</table> </=
+td> =0D=0A</tr> =0D=0A<tr> =0D=0A<td id=3D"footer-pattern-text" class=3D"mo=
+bile-resize-text" width=3D"100%" style=3D"padding: 0px; border-collapse: co=
+llapse; color: #999999; font-size: 12px; line-height: 18px; font-family: Ar=
+ial, sans-serif; mso-line-height-rule: exactly; mso-text-raise: 2px; displa=
+y: none">=EC=9D=B4 =EB=A9=94=EC=84=B8=EC=A7=80=EB=8A=94 Atlassian Confluenc=
+e 1000.0.0-6d00854cb08a=EC=97=90=EC=84=9C =EB=B0=9C=EC=86=A1=ED=96=88=EC=8A=
+=B5=EB=8B=88=EB=8B=A4.<br> <img id=3D"footer-pattern-logo-mobile" src=3D"ci=
+d:footer-mobile-logo" alt=3D"" title=3D"" width=3D"0" height=3D"0" style=3D=
+"display: none; mso-hide: all"></td> =0D=0A</tr> =0D=0A</tbody> =0D=0A</tab=
+le> </td> =0D=0A</tr> =0D=0A</tbody> =0D=0A</table> =0D=0A<table id=3D"seal=
+ed-section" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"0" st=
+yle=3D"border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: =
+0pt; color: #333333; display: none; mso-hide: all"> =0D=0A<tbody> =0D=0A<tr=
+> =0D=0A<td style=3D"padding: 0px; border-collapse: collapse; border: 0; fo=
+nt-size: 0px; line-height: 0; mso-line-height-rule: exactly"></td> =0D=0A</=
+tr> =0D=0A</tbody> =0D=0A</table>=0D=0A=0D=0A<img border=3D"0" width=3D"1" =
+height=3D"1" alt=3D"" src=3D"http://atlassian.et.e.sparkpost.com/q/IZjXq0Jt=
+79myO4OSUF1t7Q~~/AAAAAQA~/RgRmRDVlPlcLYXRsYXNzaWFudXNCCmRi5QFjZFOJou9SEmhqa=
+2ltQGxhb25yb2FkLmNvbVgEAAAABA~~">=0D=0A</body>=0D=0A</html>=0D=0A
+------=_Part_25992_1852649183.1684210147449
+Content-Type: image/png; name=page-icon.png
+Content-Transfer-Encoding: base64
+Content-ID: <page-icon>
+Content-Disposition: inline; filename=page-icon.png
+
+iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAPFBMVEX///+1tbWwsLCtra3////5
++fmLi4vZ2dnT09P8/PzPz8+rq6uhoaHR0dFycnJwcHB6enp4eHiDg4OAgIBog/vRAAAADnRSTlMA
+IiJV3e7u7u7u7u7u7rDOyYEAAABUSURBVHhepcpLDoAwCABRqkBbP9Dq/e9qLYS1ibN8GQBYWFVG
+fQWLWyFEJG0uknGmuz+CDnjYEzDqDpF8BrV+HBRHNThjyBP42qpBufmFxOIpJ3gAPTUGaYiilrsA
+AAAASUVORK5CYII=
+------=_Part_25992_1852649183.1684210147449
+Content-Type: image/png; 
+	name*0=com.atlassian.confluence.plugins.confluence-email-resources_; 
+	name*1=view-page-email-adg-footer-item_icon.png
+Content-Transfer-Encoding: base64
+Content-ID: <com.atlassian.confluence.plugins.confluence-email-resources_view-page-email-adg-footer-item_icon>
+Content-Disposition: inline; 
+	filename*0=com.atlassian.confluence.plugins.confluence-email-resources_; 
+	filename*1=view-page-email-adg-footer-item_icon.png
+
+iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAPFBMVEX///+1tbWwsLCtra3////5
++fmLi4vZ2dnT09P8/PzPz8+rq6uhoaHR0dFycnJwcHB6enp4eHiDg4OAgIBog/vRAAAADnRSTlMA
+IiJV3e7u7u7u7u7u7rDOyYEAAABUSURBVHhepcpLDoAwCABRqkBbP9Dq/e9qLYS1ibN8GQBYWFVG
+fQWLWyFEJG0uknGmuz+CDnjYEzDqDpF8BrV+HBRHNThjyBP42qpBufmFxOIpJ3gAPTUGaYiilrsA
+AAAASUVORK5CYII=
+------=_Part_25992_1852649183.1684210147449
+Content-Type: image/png; 
+	name*0=com.atlassian.confluence.plugins.confluence-email-resources_; 
+	name*1=add-comment-to-content-email-adg-footer-item_icon.png
+Content-Transfer-Encoding: base64
+Content-ID: <com.atlassian.confluence.plugins.confluence-email-resources_add-comment-to-content-email-adg-footer-item_icon>
+Content-Disposition: inline; 
+	filename*0=com.atlassian.confluence.plugins.confluence-email-resources_; 
+	filename*1=add-comment-to-content-email-adg-footer-item_icon.png
+
+iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAUpJREFUOBFj
+ZACCvLw8KyYmpoVApgqITwR4+v///4yJEyduYQEpBmqe/O/fv7ZJkybNJ0IzQ25urhvUQkkmkAag
+afJ///7dRIxmkJrJkyfvYmRkFHFwcGABGwAUY2ZlZf1LrAHI6mAGMAFd8A9Zglg22ACgc5g/fPhA
+vguAYcAMBOQbAHQB09evX8n3AsgFQD+T7wKgZqbVq1eT7wKgAc/z8/NdiA15oFpXoKvfHDhw4A84
+JQJTYQYwEBcWFBSIQw25/vTpU1Ogq76D+KGhoWxSUlIngGGlD5V/CYz2NCgbhQJFKxPQhjlAw6bA
+ZIB5pRcothQkB8UwKQawC+A8BgZwODx79ixXWlr6JFCTD1DuNxB7/f792xRIY4QTI5JmFGZOTo4G
+0FvboIIBwJx3CUUBlAOKPqzg1KlTbywsLN4CJU8ANW/HqggoCABbDHKBq2UuzQAAAABJRU5ErkJg
+gg==
+------=_Part_25992_1852649183.1684210147449
+Content-Type: image/png; 
+	name*0=com.atlassian.confluence.plugins.confluence-reaction_view-em; 
+	name*1=ail-adg-content_icon.png
+Content-Transfer-Encoding: base64
+Content-ID: <com.atlassian.confluence.plugins.confluence-reaction_view-email-adg-content_icon>
+Content-Disposition: inline; 
+	filename*0=com.atlassian.confluence.plugins.confluence-reaction_view-em; 
+	filename*1=ail-adg-content_icon.png
+
+iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAA
+AXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAIsSURBVHgBZVNbbtpQEJ25NvBZsgN3BaUraLuC
+sIPSj0o0QoojAf7EfEU8JBwJ8ptmBTgrgCW4KyhdQV01lQq2uZ1zbQviXsn29fHM3DNnjpkqq+vN
+3ivSbSLrkkk7Oaq/riaDT9hdDaYdVjyq7e23QXAT22Wi6y6aSeM4kmCXiJEUk6ZItrEmbiLm82Da
+kuR38t1J6mmn6y1CPiWnG/nQksRIwJvlZLA9Z9YbztuaaV0hHCvc85Mlmemxtv/zoZqMZR+srT7q
+sWy3ZVukyGWh4ViUfRdgJ32+BptDI/uoNP1YTvthfvqkfdSqVU/s4FBLXWgg+piDbEunPrGQVuwj
+2AQQj4QuWrswDDlbI2RfT+PGAUWScDUbRoaZUH+DXla3/UcAijnSOcUdVDbKe7OdFBWmxxKLrrz5
+GmIruVoAyl5Bu7Z/vkA7JXYve2DLqReWGGtypI22KgRpvpTsFf2/KpiM1zCWGe8w1xIXatdJI/sJ
+cUsMe2BfhjP3rIQZuTDQT/LS7IkDTUXS3/C0KN3Albkz4RHQ1ltziLgROWhdSYLpS4R7wAgxGult
+TEY03uCCgMDuC+VF6REeGaVj48SeNw+kwPW557veraOodikj/lX/+zsMAj8u7L6QuI4k3i0nffdk
+5Xq2ySeid6TZX03zsZ50QCv0wEYvHcGxKMplAIqkjczPmZhl5l306hRP/GZ39v7ZR3Lx/nKBuqVt
+3xgs9wjlk8qexDRh9T/5B/XDBfVBWyORAAAAAElFTkSuQmCC
+------=_Part_25992_1852649183.1684210147449
+Content-Type: image/png; name=avatar_56ef81f903140b8e58c6ef4cfa1bd849.png
+Content-Transfer-Encoding: base64
+Content-ID: <avatar_56ef81f903140b8e58c6ef4cfa1bd849>
+Content-Disposition: inline; 
+	filename=avatar_56ef81f903140b8e58c6ef4cfa1bd849.png
+
+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
+SUVORK5CYII=
+------=_Part_25992_1852649183.1684210147449
+Content-Type: image/png; name=footer-desktop-logo.png
+Content-Transfer-Encoding: base64
+Content-ID: <footer-desktop-logo>
+Content-Disposition: inline; filename=footer-desktop-logo.png
+
+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
+------=_Part_25992_1852649183.1684210147449
+Content-Type: image/png; name=footer-mobile-logo.png
+Content-Transfer-Encoding: base64
+Content-ID: <footer-mobile-logo>
+Content-Disposition: inline; filename=footer-mobile-logo.png
+
+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
+------=_Part_25992_1852649183.1684210147449--
+
+
+
+
+
