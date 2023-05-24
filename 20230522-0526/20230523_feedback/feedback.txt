@@ -1,2 +1,54 @@
 1. 해당 블로그에 위반 예제 및 SOLID 외 다른 개념들도 잘 정리되어 있어서 참고하시면 도움될 것 같습니다
 -> https://inpa.tistory.com/category/%EB%94%94%EC%9E%90%EC%9D%B8%20%ED%8C%A8%ED%84%B4/OOP
+
+
+2. [SOLID in TAS]
+단일 책임 원칙
+=> 추가적으로 결합도와 응집도에 대해서 공부해보시면 도움이 될 듯 합니다.
+
+EventModule
+tasv3 > taseventer > src > Channel > EventModuleMgr > EventMoudle 폴더 안에 각각 이벤트를 검지하는
+역할을 나눈 클래스들이 존재합니다.
+- AccidentDetection Class : 차량, 보행자 사고 검지
+- BusLaneViolation : 버스 전용 차선 위반 검지
+- ParkingViolation Class : 주정차 금지 검지
+
+APP ↔︎ UI 통신
+단일 책임 원칙 위배 : tasv2 > tascore > src > AnalyzerJsonDriver > AnalyzerJsonDriver.cpp
+단일 책임 원칙을 지켜 수정 : tasv3 > tascore > src > JsonDriver 폴더
+기본 tasv2(tas-화성, 성낭, 광양 참조)에서는 한개의 클래스에서 접근로, 교차로, 채널, App 정보 등의 다양한 역할을 처리했는데
+tasv3에서는 단일 책임 원칙을 지켜서 각각의 클래스로 수정했습니다.
+
+개방-패쇄 원칙
+=> 추가적으로 객체 지향 개념, 추상화에 대해서 공부해보시면 도움이 될 듯 합니다. 
+
+EventModule
+tasv3 > taseventer > src > Channel > EventModuleMgr > EventModule 폴더 안에서
+새로운 이벤트를 만들고 싶으면 EventModule Class를 상속받아서 쉽게 생성할 수 있습니다.
+
+Streamer - Decoder & Encoder
+tasv3 > tasstreamer > src > Transcoder > Decoder 
+Decoder Class를 상속 받은 하위 class를  tasstreamer의 CMakeLists에 option에 스마트 포인터로 생성하는 구조로
+추후 새로운 Decoder을 추가할 때 쉽게 생성할 수 있는 구조입니다.
+Encoder도 위와 같은 구조입니다.
+
+리스코프 치환 원칙
+=> 오버로딩, 오버라이딩, 다형성에 대해서 공부하시면 도움이 될 듯 합니다.
+
+Network
+tasv3 > tasnetwork > src 안에 폴더 들에서 connect, disconnect, isConnected, isRun 등과 같은 함수들은 하위 클래스에서 사용하는 의도와 상위 클래스의 의도와 동일되게 사용되믜로 리스코프 치환 원칙을 지킨 구조입니다.
+
+인터페이스 분리 원칙
+
+EventModule
+
+Network
+
+Streamer
+tasv3에서 대표적으로 위 3개의 모듈과 안에 클래스들이 인터페이스 분리 원칙을 지킨 구조입니다.
+
+의존관계 역전 원칙
+
+Streamer
+tasstreamer > transcoder 에서 decoder를 사용할 때 ffmpeg class을 사용하지 않고 상위 클래스인 decoder class를 사용합니다.
+tasstreamer > transcoder 에서 encoder를 사용할 때 WebByteEncoder class을 사용하지 않고 상위 클래스인 decoder class를 사용합니다.

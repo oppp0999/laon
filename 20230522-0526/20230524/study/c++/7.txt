@@ -1,0 +1,426 @@
+* 상속 (Inheritance) -> 다른 클래스의 내용을 그대로 포함할 수 있는 작업을 가능토록 해줌.
+    ex1)
+    #include <iostream>
+    #include <string>
+
+    class Base {
+        std::string s;
+
+        public:
+            Base() : s("기반") {  std::cout << "기반 클래스" <<  std::endl; }
+
+            void what() {  std::cout << s <<  std::endl; }
+    };
+
+    class Derived : public Base {
+        std::string s;
+
+        public:
+            Derived() : Base(), s("파생") {
+                std::cout << "파생 클래스" <<  std::endl;
+
+                // Base 에서 what() 을 물려 받았으므로
+                // Derived 에서 당연히 호출 가능하다
+                what();
+            }
+    };
+
+    int main() {
+        std::cout << " === 기반 클래스 생성 ===" <<  std::endl;
+        Base p;
+
+        std::cout << " === 파생 클래스 생성 ===" <<  std::endl;
+        Derived c;
+
+        return 0;
+    }
+
+CODE 13 ~ 16 -> class 정의 부분에서 Derived가 Base 를 public형식으로 상속 받겠다는 의미
+
+CODE 17 ~ 23 -> Derived 클래스에서 Base 클래스의 what 함수를 호출 할 수 있다.
+    -> Derived의 생성자는 리스트에서 기반의 생성자를 호출해 기반의 생성을 먼저 처리 한 다음,
+        Derived의 생성자가 실행
+    - Derived() : Base(), s("파생") -> 초기화 리스트에서 Base를 통해 기반의 생성자를 먼저 호출
+        -> 기반 클래스의 생성자를 명시적으로 호출하지 않을 경우 기반 클래스의 디폴트 생성자가 호출
+
+-> 출력 결과
+    === 기반 클래스 생성 ===
+    기반 클래스
+    === 파생 클래스 생성 ===
+    기반 클래스
+    파생 클래스
+    기반   
+
+    -> Derived의 s에 파생을 넣게 되고, Derived 생성자의 내부를 실행하기 전에 Base의 생성자를 먼저 호출
+        -> 파생 클래스 생성 바로 아래에 파생 클래스가 출력되기 전에 Base의 생성자가 호출되어 기반 클래스가 호출
+
+    -> Base에서 상속 받은 whia 함수는 Derived의 s가 아닌 Base s로 정의 되어 있기 때문에 기반으로 출력.
+        -> Derived class 안에 -> void what() {  std::cout << s <<  std::endl; }
+            ->로 재정의 해주게 되면 파생으로 출력. -> 이를 오버라이딩이라 함.
+
+    #1
+    -> main에서
+    Base p;
+    Derived c;
+
+    std::cout << "=== 포인터 버전 ===" << std::endl;
+    Base* p_c = &c;
+    p_c->what();
+    -> 처럼 작성하게 된다면 마지막 포인터 버전 밑에는 기반으로 출력이 된다.
+    -> 즉 Derived는 Base의 상속을 받고있기 때문에 Base의 객체로 봐도 무방 -> 이를 업캐스팅
+
+    #2
+    -> main에서 다음은  
+    Derived* p_p = &p;
+    p_p->what();
+    -> 다운캐스팅시 오류가 발생 -> 사실상 Derived는 what 함수를 가지고 있지 않기때문에
+
+
+
+
+
+* protected
+    -> public과 private 중간 위치에 있는 접근 지시자 -> 상속받는 클래스에서는 접근 가능하고 그 외의 기타 정보는 접근 불가능
+
+    ex1)
+    #include <iostream>
+    #include <string>
+
+    class Base {
+        std::string parent_string;
+
+        public:
+        Base() : parent_string("기반") {  std::cout << "기반 클래스" <<  std::endl; }
+
+        void what() {  std::cout << parent_string <<  std::endl; }
+    };
+    class Derived : public Base {
+        std::string child_string;
+
+        public:
+            Derived() : child_string("파생"), Base() {
+                std::cout << "파생 클래스" <<  std::endl;
+
+                // 그렇다면 현재 private 인 Base 의
+                // parent_string 에 접근할 수 있을까?
+                parent_string = "바꾸기";
+            }
+
+        void what() {  std::cout << child_string <<  std::endl; }
+    };
+
+
+    int main() {
+    std::cout << " === 기반 클래스 생성 ===" <<  std::endl;
+    Base p;
+
+    std::cout << " === 파생 클래스 생성 ===" <<  std::endl;
+    Derived c;
+
+    return 0;
+    }
+
+    -> 컴파일 에러
+    -> 클래스 멤버 변수의 접근성은 기본적으로 private로 되어있다.
+        -> private 멤버 변수들은 그 어떠한 경우에서도 자기 클래스 말고는 접근 할 수 없다.
+    -> Base 멤버 변수를 protected : 로 바꾸게 되면 실행이 되는 걸 확인할 수 있다.
+
+CODE 12
+    -> 즉, 상속 받는 클래스에서 기반 클래스의 멤버들이 어떻게 영향을 받는지?
+        1. public 형태로 상속 하였다면 기반 클래스의 접근 지시자들에 영향 없이 그대로 작동,
+        즉, 파생 클래스 입장에서 public 은 그대로 public 이고, protected 는 그대로 protected 이고, private은 private
+        2. protected 로 상속하였다면 파생 클래스 입장에서 public 은 protected 로 바뀌고 나머지는 그대로 유지
+        3. private 으로 상속하였다면 파생 클래스 입장에서 모든 접근 지시자들이 private
+
+    -> class Base 에서 멤버 변수를 public
+    -> class Derived : private Base
+    라면 main에서 Base 변수는 public 이지만 Derived에서 상속받은 Base 멤버 변수는 private처리.
+
+# 상속으로 작성한 회사 프로그램
+
+    #include <iostream>
+    #include <string>
+
+    class Employee {
+    protected:
+    std::string name;
+    int age;
+
+    std::string position;  // 직책 (이름)
+    int rank;              // 순위 (값이 클 수록 높은 순위)
+
+    public:
+    Employee(std::string name, int age, std::string position, int rank)
+        : name(name), age(age), position(position), rank(rank) {}
+
+    // 복사 생성자
+    Employee(const Employee& employee) {
+        name = employee.name;
+        age = employee.age;
+        position = employee.position;
+        rank = employee.rank;
+    }
+
+    // 디폴트 생성자
+    Employee() {}
+
+    void print_info() {
+        std::cout << name << " (" << position << " , " << age << ") ==> "
+                << calculate_pay() << "만원" << std::endl;
+    }
+    int calculate_pay() { return 200 + rank * 50; }
+    };
+
+    class Manager : public Employee {
+    int year_of_service;
+
+    public:
+    Manager(std::string name, int age, std::string position, int rank,
+            int year_of_service)
+        : Employee(name, age, position, rank), year_of_service(year_of_service) {}
+
+    // 복사 생성자
+    Manager(const Manager& manager)
+        : Employee(manager.name, manager.age, manager.position, manager.rank) {
+        year_of_service = manager.year_of_service;
+    }
+
+    // 디폴트 생성자
+    Manager() : Employee() {}
+
+    int calculate_pay() { return 200 + rank * 50 + 5 * year_of_service; }
+    void print_info() {
+        std::cout << name << " (" << position << " , " << age << ", "
+                << year_of_service << "년차) ==> " << calculate_pay() << "만원"
+                << std::endl;
+    }
+    };
+    class EmployeeList {
+    int alloc_employee;  // 할당한 총 직원 수
+
+    int current_employee;  // 현재 직원 수
+    int current_manager;   // 현재 매니저 수
+
+    Employee** employee_list;  // 직원 데이터
+    Manager** manager_list;    // 매니저 데이터
+
+    public:
+    EmployeeList(int alloc_employee) : alloc_employee(alloc_employee) {
+        employee_list = new Employee*[alloc_employee];
+        manager_list = new Manager*[alloc_employee];
+
+        current_employee = 0;
+        current_manager = 0;
+    }
+    void add_employee(Employee* employee) {
+        // 사실 current_employee 보다 alloc_employee 가 더
+        // 많아지는 경우 반드시 재할당을 해야 하지만, 여기서는
+        // 최대한 단순하게 생각해서 alloc_employee 는
+        // 언제나 current_employee 보다 크다고 생각한다.
+        // (즉 할당된 크기는 현재 총 직원수 보다 많음)
+        employee_list[current_employee] = employee;
+        current_employee++;
+    }
+    void add_manager(Manager* manager) {
+        manager_list[current_manager] = manager;
+        current_manager++;
+    }
+    int current_employee_num() { return current_employee + current_manager; }
+
+    void print_employee_info() {
+        int total_pay = 0;
+        for (int i = 0; i < current_employee; i++) {
+        employee_list[i]->print_info();
+        total_pay += employee_list[i]->calculate_pay();
+        }
+        for (int i = 0; i < current_manager; i++) {
+        manager_list[i]->print_info();
+        total_pay += manager_list[i]->calculate_pay();
+        }
+        std::cout << "총 비용 : " << total_pay << "만원 " << std::endl;
+    }
+    ~EmployeeList() {
+        for (int i = 0; i < current_employee; i++) {
+        delete employee_list[i];
+        }
+        for (int i = 0; i < current_manager; i++) {
+        delete manager_list[i];
+        }
+        delete[] employee_list;
+        delete[] manager_list;
+    }
+    };
+    int main() {
+    EmployeeList emp_list(10);
+    emp_list.add_employee(new Employee("노홍철", 34, "평사원", 1));
+    emp_list.add_employee(new Employee("하하", 34, "평사원", 1));
+    emp_list.add_manager(new Manager("유재석", 41, "부장", 7, 12));
+    emp_list.add_manager(new Manager("정준하", 43, "과장", 4, 15));
+    emp_list.add_manager(new Manager("박명수", 43, "차장", 5, 13));
+    emp_list.add_employee(new Employee("정형돈", 36, "대리", 2));
+    emp_list.add_employee(new Employee("길", 36, "인턴", -2));
+    emp_list.print_employee_info();
+    return 0;
+    }
+
+CODE 4 ~ 7 -> private 에서 접근성을 protected로 수정
+
+CODE 34 ~ 57 -> 상속을 받았기에 멤버 변수는 중복되지않게 삭제
+    -> 기본 생성자를 호출할 때 기반 클래스의 생성자를 우선적으로 호출
+        CODE 40
+
+
+* dynamic_cast -> 두 포인터들 간에 캐스팅을 해주는 dynamic_cast 라는 것을 지원
+    -> 사용법
+    Derived* p_c = dyanmic_cast<Derived*>(p_p);
+
+* virtual - 가상 함수
+    -> 파생 클래스, 기반 클래스의 함수를 오버라이드 하기 위해서는 두 함수의 꼴이 정확해야함.
+
+    ex1)
+    #include <iostream>
+
+    class Base {
+
+    public:
+        Base() { std::cout << "기반 클래스" << std::endl; }
+
+        virtual void what() { std::cout << "기반 클래스의 what()" << std::endl; }
+    };
+
+    class Derived : public Base {
+
+    public:
+        Derived() : Base() { std::cout << "파생 클래스" << std::endl; }
+
+        void what() { std::cout << "파생 클래스의 what()" << std::endl; }
+    };
+    int main() {
+        Base p;
+        Derived c;
+
+        Base* p_c = &c;
+        Base* p_p = &p;
+
+        std::cout << " == 실제 객체는 Base == " << std::endl;
+        p_p->what();
+
+        std::cout << " == 실제 객체는 Derived == " << std::endl;
+        p_c->what();
+
+        return 0;
+    }
+
+CODE 8 -> Base 클래스의 함수를 virtual로 변경
+
+*출력 결과
+    기반 클래스
+    기반 클래스
+    파생 클래스
+    == 실제 객체는 Base == 
+    기반 클래스의 what()
+    == 실제 객체는 Derived == 
+    파생 클래스의 what()
+
+    -> p_p 는 Base객체를 p_c는 Derived객체를 가리켜 적절한 what 함수를 호출
+
+    - 컴파일 시에 어떤 함수가 실행될 지 정해지지 않고 런타임 시에 정해지는 일을 가리키는 것 - '동적 바인딩'
+    - 컴파일에서 어떤 함수가 호출 될지 정해져있는 것 - '정적 바인딩'
+
+* override
+
+    ex1)
+    #include <iostream>
+    #include <string>
+
+    class Base {
+    std::string s;
+
+    public:
+    Base() : s("기반") { std::cout << "기반 클래스" << std::endl; }
+
+    virtual void incorrect() { std::cout << "기반 클래스 " << std::endl; }
+    };
+    class Derived : public Base {
+    std::string s;
+
+    public:
+    Derived() : Base(), s("파생") {}
+
+    void incorrect() { std::cout << "파생 클래스 " << std::endl; }
+    };
+    int main() {
+    Base p;
+    Derived c;
+
+    Base* p_c = &c;
+    Base* p_p = &p;
+
+    std::cout << " == 실제 객체는 Base == " << std::endl;
+    p_p->incorrect();
+
+    std::cout << " == 실제 객체는 Derived == " << std::endl;
+    p_c->incorrect();
+    return 0;
+    }
+
+    -> Base클래스 incorrect() -> virtual, Derived클래스 incorrect()
+        - 오버라이딩 발생
+
+    -> Base클래스 incorrect() -> virtual, Derived클래스 incorrect() const
+        - 오버라이딩 발생 x (상수함수 const)이기에 다른 함수로 간주
+
+    -> Base클래스 incorrect() -> virtual, Derived클래스 incorrect() const override
+        - 오버라이드 오류. ->override한다고 써있지만 실제론 아무것도 오버라이드 하지 않는다고 오류 발생
+        - Base 기반 클래스의 incorrect 가 const로 선언되어야한다. 시그니처가 일치해야함
+
+* virtual 소멸자 -> 상속 시에 소멸자를 가상함수로 만들어야 한다.
+
+    ex1)
+
+    #include <iostream>
+
+    class Parent {
+    public:
+        Parent() { std::cout << "Parent 생성자 호출" << std::endl; }
+        ~Parent() { std::cout << "Parent 소멸자 호출" << std::endl; }
+    };
+    class Child : public Parent {
+    public:
+        Child() : Parent() { std::cout << "Child 생성자 호출" << std::endl; }
+        ~Child() { std::cout << "Child 소멸자 호출" << std::endl; }
+    };
+    int main() {
+        std::cout << "--- 평범한 Child 만들었을 때 ---" << std::endl;
+        { Child c; }
+        std::cout << "--- Parent 포인터로 Child 가리켰을 때 ---" << std::endl;
+        {
+            Parent *p = new Child();
+            delete p;
+        }
+    }
+
+* 출력 결과
+    --- 평범한 Child 만들었을 때 ---
+    Parent 생성자 호출
+    Child 생성자 호출
+    Child 소멸자 호출
+    Parent 소멸자 호출
+    --- Parent 포인터로 Child 가리켰을 때 ---
+    Parent 생성자 호출
+    Child 생성자 호출
+    Parent 소멸자 호출
+
+CODE 14 ~ 15 -> 생성자와 소멸자의 호출 순서
+    - parent 생성자 -> child 생성자 -> child 소멸자 -> parent 소멸자
+
+CODE 16 ~ 20 -> parent 포인터가 child 객체를 가리킬 때.
+    -> delete p 를 하더라도, p가 가리키는 것은 parent가 아닌 child 객체 이기 때문에
+    -> child 객체가 소멸되는 것과 같은 순서로 생성자와 소멸자들이 호출 되어야하지만
+        -> 실제로는 child 소멸자가 호출되지 않음. -> 메모리 누수 발생
+
+-> 단순히 parent의 소멸자를 virtual로 만들면됨.
+    CODE 6 수정
+    -> virtual ~Parent() { std::cout << "Parent 소멸자 호출" << std::endl; }
+
+-> 상속될 여지가 있는 Base 클래스들은 반드시 소멸자를 virtual 로 만들어야 문제가 발생할 여지가 없게 된다.
