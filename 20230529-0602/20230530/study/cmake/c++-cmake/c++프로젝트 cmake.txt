@@ -1,0 +1,221 @@
+# 실행 파일 만들기
+
+*1. 
+  //main.cc
+  #include <iostream>
+
+  int main() {
+    std::cout << "Hello, CMake" << std::endl;
+    return 0;
+  }
+
+  //CMakeLists.txt
+  # CMake 프로그램의 최소 버전
+  cmake_minimum_required(VERSION 3.11)
+
+  # 프로젝트 정보
+  project(
+    ModooCode
+    VERSION 0.1
+    DESCRIPTION "예제 프로젝트"
+    LANGUAGES CXX)
+
+  add_executable (program main.cc)
+
+
+  --> main.cc, CMakeLists.txt 는 같은 경로에 있어야함.
+
+
+*2. 
+  ->  CMake 에서 권장하는 방법은 빌드 파일은 작업하는 디렉토리와 다른 디렉토리에서 만드는 것 -> build 폴더 만들기
+  $ tree
+  .
+  ├── build
+  ├── CMakeLists.txt
+  └── main.cc
+
+  -> 이후 build 폴더 안에서 cmake .. -> cmake에서 여러가지 설정들을 체크한 뒤 빌드 파일을 생성
+  CMakeLists.txt 가 위치한 폴더의 경로를 입력하기 위해 .. 를 사용
+
+  $ tree
+  .
+  ├── build
+  │   ├── CMakeCache.txt
+  │   ├── CMakeFiles
+  │   │   ├── 3.16.2
+  │   │   │   ├── CMakeCXXCompiler.cmake
+  │   │   │   ├── CMakeDetermineCompilerABI_CXX.bin
+  │   │   │   ├── CMakeSystem.cmake
+  │   │   │   └── CompilerIdCXX
+  │   │   │       ├── a.out
+  │   │   │       ├── CMakeCXXCompilerId.cpp
+  │   │   │       └── tmp
+  │   │   ├── cmake.check_cache
+  │   │   ├── CMakeDirectoryInformation.cmake
+  │   │   ├── CMakeOutput.log
+  │   │   ├── CMakeTmp
+  │   │   ├── Makefile2
+  │   │   ├── Makefile.cmake
+  │   │   ├── program.dir
+  │   │   │   ├── build.make
+  │   │   │   ├── cmake_clean.cmake
+  │   │   │   ├── DependInfo.cmake
+  │   │   │   ├── depend.make
+  │   │   │   ├── flags.make
+  │   │   │   ├── link.txt
+  │   │   │   └── progress.make
+  │   │   ├── progress.marks
+  │   │   └── TargetDirectories.txt
+  │   ├── cmake_install.cmake
+  │   └── Makefile
+  ├── c++프로젝트 cmake.txt
+  ├── CMakeLists.txt
+  └── main.cc
+
+  -> build 폴더에서 make 실행해보면 -> program 실행파일이 생성 -> ./program -> Hello, CMake
+
+*3. add_executable 생성할 실행 파일을 추가하는 명령
+  
+  -사용법-
+  add_executable (<실행 파일 이름> <소스1> <소스2> ... <소스들>)
+
+
+  ex1) main.cc, foo.cc 도 실행 파일이 필요하다고 하면
+
+  //foo.h
+  int foo();
+
+  //foo.cc
+  #include "foo.h"
+
+  int foo() { return 3; }
+
+  //main.cc
+  #include <iostream>
+
+  #include "foo.h"
+
+  int main() {
+    std::cout << "Foo : " << foo() << std::endl;
+    return 0;
+  }
+
+-> CMakeLists.txt 파일 부분에 add_executable (program main.cc foo.cc) 으로 수정
+-> build 폴더에서 make 실행 -> 오류
+-> makefile 을 바꿔야함 -> cmake .. -> make -> ./program
+
+
+*4. 컴파일 옵션 지정하기
+target_compile_options
+
+  -사용법-
+  target_compile_options(<실행 파일 이름> PUBLIC <컴파일 옵션1> <컴파일 옵션2> ...)
+
+  ex1)
+  target_compile_options(program PUBLIC -Wall -Werror) -> CMakeLists.txt 에 추가
+  -> program 을 빌드할 때 컴파일 옵션으로
+    1. -Wall (모든 경고 표시)
+    2. -Werror (경고는 컴파일 오류로 간주)
+    3. PUBLIC, INTERFACE, PRIVATE -> 
+
+  //main.cc
+  #include <iostream>
+
+  #include "foo.h"
+
+  int main() {
+    int i;
+    std::cout << "Foo : " << foo() << std::endl;
+    return 0;
+  }
+
+  -> main 수정 후에 bulid 폴더에서 cmake .. -> make -> 오류  확인
+
+*5. Cmake에서의 기본 개념 target, property
+
+target -> 작성한 프로그램을 구성하는 요소들 -> 실행파일이 될 수도, 라이브러리가 될 수도
+
+각 타겟의 속성(Property) -> 컴파일 옵션을 주는 것도, program 이라는 타겟에 컴파일 옵션 속성을 설정하는 등
+  그 외에도 어떤 라이브러리 링크, include 하는 파일은 어디서 보는지 등 여러가지 속성 정의 가능
+
+*6. include 경로 지정하기
+  -컴파일러는 #include <> 의 형태로 include 되는 헤더 파일들은 시스템 경로에서 찾고,
+   #include "" 의 형태로 include 된 헤더 파일의 경우는 따로 지정하지 않는 이상 현재 코드의 위치를 기준으로 찾음
+
+-> 라이브러리 만들 시에 헤어 파일들을 다른 곳에 위치시키는 경우 컴파일 시에 따로 경로를 지정
+
+  ex1)
+    $ tree
+  ├── CMakeLists.txt
+  ├── foo.cc
+  ├── includes
+  │   └── foo.h
+  └── main.cc
+  -> 컴파일 그냥 한다면 -> foo.h 오류
+  -> CMakeLists.txt ->target_include_directories(program PUBLIC ${CMAKE_SOURCE_DIR}/includes) 알려줘야함.
+    ${CMAKE_SOURCE_DIR} 은 CMake 에서 기본으로 제공하는 변수로, 최상위 CMakeLists.txt
+
+
+*7. 라이브러리
+  장점.
+  1. 라이브러리로 쪼개지 않고 하나의 거대한 실행 파일로 관리하게 되면, 코드가 바뀔 때 마다 전체를 다시 컴파일 해야 한다
+    반면의 라이브러리의 경우 바뀌지 않은 부분은 컴파일 하지 않아도 되서 (링킹만 하면 됨) 개발 속도가 빠르다.
+  2.라이브러리의 각 요소들을 전체를 한꺼번에 묶어 놓았을 때 보다 테스팅 하기 용이하다.
+
+  ex1)
+  // lib/shape.cc
+  #include "shape.h"
+
+  Rectangle::Rectangle(int width, int height) : width_(width), height_(height) {}
+
+  int Rectangle::GetSize() const {
+    // 직사각형의 넓이를 리턴한다.
+    return width_ * height_;
+  }
+
+  // include/shape.h
+  class Rectangle {
+  public:
+    Rectangle(int width, int height);
+
+    int GetSize() const;
+
+  private:
+    int width_, height_;
+  };
+
+  //main.cc
+  #include <iostream>
+  #include "shape.h"
+
+  int main() {
+    Rectangle rectangle(5, 6);
+    int size = rectangle.GetSize();
+    std::cout << "Get size: " << size << std::endl;
+  }
+
+
+  -> lib/CMakeLists.txt 옵션
+  # /lib/CMakeLists.txt
+
+  # 정적 라이브러리 shape 를 만든다.
+  add_library(shape STATIC shape.cc)
+
+  # 해당 라이브러리 컴파일 시 사용할 헤더파일 경로
+  target_include_directories(shape PUBLIC ${CMAKE_SOURCE_DIR}/includes)
+
+  # 해당 라이브러리를 컴파일 할 옵션
+  target_compile_options(shape PRIVATE -Wall -Werror)
+
+-최종 트리
+  $ tree
+  ├── CMakeLists.txt
+  ├── includes
+  │   └── shape.h
+  ├── lib
+  │   ├── CMakeLists.txt
+  │   └── shape.cc
+  └── main.cc
+
+
+  

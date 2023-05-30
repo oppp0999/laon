@@ -9,6 +9,7 @@ class Animal
 };
 
 class Bird : public Animal{
+    
     public:
         void makeSound() const override {
             std::cout << "Bird chirps" << std::endl;

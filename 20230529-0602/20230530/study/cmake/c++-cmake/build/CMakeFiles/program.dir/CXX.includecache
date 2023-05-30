@@ -1,0 +1,16 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../includes/shape.h
+
+/home/hjkim/laon/20230529-0602/20230530/study/cmake/c++-cmake/main.cc
+iostream
+-
+shape.h
+/home/hjkim/laon/20230529-0602/20230530/study/cmake/c++-cmake/shape.h
+

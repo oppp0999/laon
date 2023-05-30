@@ -1,0 +1,273 @@
+# CMake 란?
+    -> 빌드 파일을 생성해주는 프로그램
+        -> 즉, CMake를 통해서 프로젝트를 빌드를 하는 것이 아니라, CMake를 통해 빌드 파일을 생성하면
+           빌드 프로그램을 통해서 프로젝트를 빌드
+
+    -> CMake는 빌드 프로그램 아니라 빌드 파일을 생성하는 프로그램
+
+    ex1)
+    1. make를 사용한다면 Cmake를 통해 makefile을 생성
+    2. Ninja를 사용한다면 Cmake를 통해 .ninja 빌드 파일 생성
+    
+
+# Cmake 개요
+    -> cmake를 사용하는 모든 프로젝트에는 반드시 프로젝트 최상위 디렉토리에 CMakeLists.txt 파일이 존재
+    -> 해당 파일에는 CMake가 빌드 파일을 생성하는데 필요한 정보들이 들어있음.
+    
+* 컴파일 과정
+CMakeLists.txt -> (CMake) -> Makefile -> (make) -> 실행파일
+
+
+# 컴파일 ?
+    -> 작성한 소스 코드를 컴퓨터가 이해할 수 있는 어셈블리어로 변환하는 과정
+
+    ex1)
+    foo.hd 에 정의된 foo 함수
+    bar.h 에 정의된 bar 함수
+    -> main 함수에 호출하는 프로그램
+
+    //foo.h
+    int foo();
+
+    //foo.cc
+    #include <iostream>
+
+    #include "foo.h"
+
+    int foo() {
+    std::cout << "Foo!" << std::endl;
+    return 0;
+    }
+
+    //bar.h
+    int bar();
+
+    //bar.cc
+    #include <iostream>
+
+    #include "bar.h"
+
+    int bar() {
+    std::cout << "Bar!" << std::endl;
+    return 0;
+    }
+
+    //main.cc
+    #include "bar.h"
+    #include "foo.h"
+
+    int main() {
+    foo();
+    bar();
+    }
+
+    -> 
+    1. 컴파일을 위해선 -> $ g++ -c main.cc -> g++에 전달하는 -c 명령어는 인자 다음에 주어지는 파일을 컴파일해서 목적 파일(object file) 생성
+    2. 컴파일 성공 -> main.o 파일 생성
+    3. main.o 파일을 보면 -> 어셈블리 코드로 main.cc의 내용은 들어있지만, foo, bar는 없다.
+        -> 즉, 각 .cc파일을 컴파일하여 main, foo, bar 각 .o 파일을 하나로 합쳐야함. (링킹 작업)
+
+    -> g++ main.o foo.o bar.o -o main
+    -o 옵션은 그 뒤에 링킹 후에 생성할 실행 파일 이름을 이야기. 위 경우 main 이라는 실행 파일을 만들었고
+    -> 따로 지정하지 않는다면 그냥 ./a.out 이라는 파일을 디폴트로 생성
+
+    실제로 main파일을 실행하면 잘 실행됨
+
+# make 를 쓰는 이유?
+
+    ex1) 원래 main 실행 파일을 생성하기 위한 쉘 명령어
+    $ g++ -c main.cc
+    $ g++ -c foo.cc
+    $ g++ -c bar.cc
+    $ g++ main.o foo.o bar.o -o main
+    -> 파일 개수가 작다면 문제가 없으나, 프로젝트 크기가 커져 명령아가 많아 지면 복잡해짐.(특히 다른 디렉토리에 있다면)
+
+    - 그렇다면 쉘 스크립트를 짜면 되는 거 아닌가?
+    -> 예를 들어, main.cc 를 수정
+        1. $ g++ -c main.cc
+           $ g++ main.o foo.o bar.o -o main
+
+        2. main파일을 바꾼다고해서 foo나 bar의 컴파일 된 내용이 바뀌지 않음
+        3. 하지만 단순하게 쉘 스크립트를 짜게 된다면 파일 하나만 바꿔도 전체 모든 파일들을 컴파일 하게 되므로 컴파일 시간이 매우 길어짐.
+    
+# make
+    -> 주어진 쉘 명령어들을 조건에 맞게 실행하는 프로그램
+    -> 어떠한 조건으로 명령어를 실행할지 담은 파일을 Makefile -> make를 터미널 상에서 실행하게 된다면 해당 위치에 있는 makefile을 읽음
+
+    ex1)
+    target … : prerequisites …
+    (탭)recipe
+                    …
+                    …
+    -> makefile은 기본적으로 3가지 요소로 구성
+
+* target -> make를 실행할 때 make abc 과 같이 어떤 것을 make할 지 전달하게 되는데 이를 타겟(target)
+    - make abc 를 하였을 때 abc 를 찾아서 이에 대응되는 명령을 실행
+
+* 실행할 명령어(recipes)
+    -> 주어진 타겟을 make할 때 실행할 명령어들의 나열
+    -> 중요한 점 -> recipe 자리에 명령어를 쓸 때 반드시 탭 한 번으로 들여쓰기를 해줘야함.
+
+* 필요 조건들 (prerequisites)
+    -> 주어진 타겟을 make할 때 사용될 파일들의 목록
+        -> 의존 파일 이라고도 함 -> 해당 타겟을 처리하기 위해 건드려야 할 파일들을 써놨기 때문
+    -> 주어진 파일들의 수정 시간보다 타겟이 나중에 수정 되었다면, 해당 타겟의 명령어를 실행하지 않음
+        -> 이미 이전에 타겟이 만들어져있다고 간주
+
+    ex2)
+    1. 타겟이 main.o 이고, 명령어가 g++ -c main.cc 라면, 
+    2. 필요 조건들은 main.cc, foo.h, bar.h -> 왜냐하면 파일들 중 하나라도 바뀐다면 main 을 새로 컴파일 해야 하기 때문
+    3. main.o 의 생성 시간이 main.cc, foo.h, bar.h 들의 마지막 수정 시간 보다 나중이라면, main.o 를 다시 컴파일 할 필요 X
+
+    foo.o : foo.h foo.cc
+	    g++ -c foo.cc
+
+    bar.o : bar.h bar.cc
+        g++ -c bar.cc
+
+    main.o : main.cc foo.h bar.h
+        g++ -c main.cc
+
+    main : foo.o bar.o main.o
+        g++ foo.o bar.o main.o -o main
+
+    -> make main 명령어 실행
+    1. makefile에서 타켓 main 찾기
+    2. main에 필요한 파일 foo.o bar.o main.o -> 필요한 파일 다시 타켓으로 찾음
+    3. foo.o 경우 -> 필요한 파일 foo.cc 없으니 주어진 명령어 실행 = 나머지 bar.o, main.o 도 컴파일
+    4. 마지막으로 g++ foo.o bar.o main.o -o main 실행
+
+    -> make main 을 실행했지만 foo.cc를 수정했다면
+    3. -> 필요한 파일 foo.cc -> foo.o 보다 수정 시간이 더 나중이라면, 명령어 다시 실행.
+    4. 진행
+
+# 변수
+    -> makefile에서 변수를 정의
+    
+    ex1)
+    CC = g++
+    -> CC는 해당 변수의 문자열인 g++로 치환
+    -> 변수로 사용하기 위해서 $(CC) 와 같이 $() 안에 사용하고자 하는 변수의 이름을 지정하면됨
+        ex1)
+        CC = g++
+
+        foo.o : foo.h foo.cc
+            $(CC) -c foo.cc     ->  g++ -c foo.cc 와 같음
+
+    
+* 변수를 정의하는 두 가지 방법
+
+    1. =
+        ex1)
+        B = $(A)
+        C = $(B)
+        A = a
+    -> B, C는 값을 처음에 가지고 있지않기 때문에 A가 정의될 때까지 대기
+    -> 이후에 B,C가 a로 결정
+
+    2. :=
+        ex1)
+        B := $(A)
+        A = a
+    -> A가 값을 가지고 있지 않기 때문에, B에서는 빈 문자열 값 대입
+    -> 이후에 A는 a의 값 -> B는 그대로 빈문자열
+
+
+# PHONY
+    -> 흔히 추가하는 기능으로 빌드 관련된 파일들 (.o) 을 모두 제거하는 명령어
+
+    ex1)
+    clean:
+	rm -f $(OBJS) main
+    -> 실제로 make clean 을 실행해보면 모든 목적 파일과 main 을 지워버림
+    -> clean 이라는 파일이 생성
+
+- clean 을 PHONY라고 등록하는 이유?
+1. make clean -> 실행하면 -> clean이라는 파일이 생성
+2. 다시 한 번 clean을 원할 때 make clean을 하게 되면 -> clean 파일이 있으니까 recipe를 실행 안해도 된다고 판단 -> 즉, make clean 무시
+3. 2. 와 같은 상황을 막기 위해 
+    .PHONY: clean
+    clean:
+        rm -f $(OBJS) main
+
+    -> 으로 등록 후 -> make clean
+
+* 패턴 사용하기
+    -> 패던 매칭을 통해서 특정 조건에 부합하는 파일들에 대해서 간단하게 recipe 를 작성
+
+    ex1)
+    foo.o : foo.h foo.cc
+	    $(CC) $(CXXFLAGS) -c foo.cc
+
+    bar.o : bar.h bar.cc
+        $(CC) $(CXXFLAGS) -c bar.cc
+
+    --->
+
+    %.o: %.cc %.h
+	    $(CC) $(CXXFLAGS) -c $<
+
+    -> %.o 는 와일드카드로 따지면 마치  *.o 와 같다고 볼 수 있음.
+        - 즉, .o로 끝나는 파일 이름의 타겟
+    -> 패턴은 target 과 prerequisites 부분에만 사용할 수 있다.
+
+    -> $< 는 prerequisites 첫 번째 파일의 이름에 대응되어 있는 변수
+        -> 즉 (% - 타겟이 된).cc 파일
+
+-------------------------------------------
+    이 외에 자동 변수
+
+    $@ : 타겟 이름에 대응됩니다.
+
+    $< : 의존 파일 목록에 첫 번째 파일에 대응됩니다.
+
+    $^ : 의존 파일 목록 전체에 대응됩니다.
+
+    $? : 타겟 보다 최신인 의존 파일들에 대응됩니다.
+
+    $+ : $^ 와 비슷하지만, 중복된 파일 이름들 까지 모두 포함합니다.
+-------------------------------------------
+
+* 자동으로 prerequisites 만들기
+    
+    ex1)
+    $ g++ -c -MD main.cc -> 실행하면 main.d 파일 생성
+    -> main.d 에는 main.o: main.cc /usr/include/stdc-predef.h foo.h bar.h 이 적혀있는데,
+        makefile의 target : prerequisites 부분
+    -> -MD 옵션을 추가해주면, 목적 파일 말고도 컴파일 한 소스파일을 타겟으로 하는 의존파일 목록을 담은 파일 생성
+
+    -> usr/include/stdc-predef.h -> 암묵적으로 컴파일러가 참조하는 헤더
+
+    ex2) -> 생성된 main.d를 makefile에 포함하는 방법
+    CC = g++
+    CXXFLAGS = -Wall -O2
+    OBJS = foo.o bar.o main.o
+
+    %.o: %.cc %.h
+        $(CC) $(CXXFLAGS) -c $<
+
+    main : $(OBJS)
+        $(CC) $(CXXFLAGS) $(OBJS) -o main
+
+    .PHONY: clean
+    clean:
+        rm -f $(OBJS) main
+
+    include main.d
+    
+    -> 마지막에 적어주면되는데,
+        컴팡일러가 생성한 .d 파일로 대체하는 방법
+        -> -include $(OBJS:.o=.d)   ---->   -include foo.d bar.d main.d 가 됨
+        -> OBJS 에서 .o 로 끝나는 부분을 .d 로 모두 대체하라는 의미
+        -> include 될 때 이미 있는 %.o: %.cc 는 같은 타겟에 대해서 여러 의존 파일이 목록들이 정해져 있다면 이는 make에 의해 모두 하나로 합쳐짐
+
+        -> -include 의 경우 포함하고자 하는 파일이 존재하지 않아도 make메세지 출력하지 않음
+
+    즉, 맨 처음에 make할 때 .d 파일들이 제대로 생성되지 않은 상태이기 때문에 include가 아무런 .d 파일들을 포함 X
+    어차피 .o 파일들도 make가 %.o:%.cc 부분의 명령어들을 실행하면서 컴파일을 하기 때문에 다음 make할 때 .d 파일들을 로드
+
+    
+
+
+
+
