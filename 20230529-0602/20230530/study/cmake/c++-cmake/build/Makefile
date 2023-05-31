@@ -136,6 +136,19 @@ shape/fast:
 	$(MAKE) -f lib/CMakeFiles/shape.dir/build.make lib/CMakeFiles/shape.dir/build
 .PHONY : shape/fast
 
+#=============================================================================
+# Target rules for targets named fmt
+
+# Build rule for target.
+fmt: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 fmt
+.PHONY : fmt
+
+# fast build rule for target.
+fmt/fast:
+	$(MAKE) -f _deps/fmt-build/CMakeFiles/fmt.dir/build.make _deps/fmt-build/CMakeFiles/fmt.dir/build
+.PHONY : fmt/fast
+
 main.o: main.cc.o
 
 .PHONY : main.o
@@ -173,6 +186,7 @@ help:
 	@echo "... program"
 	@echo "... edit_cache"
 	@echo "... shape"
+	@echo "... fmt"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

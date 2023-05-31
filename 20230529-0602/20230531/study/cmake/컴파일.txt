@@ -1,0 +1,46 @@
+* 정의(Definition) 과 선언 (Declaration)
+1. 선언 -> TU애 새로운 이름을 도입하거나, 기존에 선언된 이름을 재선언 하는 것
+    ex1)
+    int f();
+    -> f 함수를 선언
+
+2. 정의 -> 선언된 개체를 완전히 정의함을 뜻
+    ex2)
+    int a;
+    -> a라는 int 변수를 정의
+
+*extern 지정자가 들어간 선언의 경우 명시적으로 초기화 되지 않는다면 선언이다.
+    ex1)
+    extern const int a;      // a 를 선언하였지만 정의하지 않음
+    extern const int b = 1;  // b 를 정의함
+
+    ex2) - 클래스 정의 내부에 inline 이 아닌 static 멤버의 경우 정의
+    struct S {
+        int n;                // S::n 정의
+        static int i;         // S::i 를 선언하지만 정의는 아님
+        inline static int x;  // S::x 를 정의
+    };                      // S 를 정의
+    int S::i;               // S::i 를 정의
+
+///////
+인라인 - 함수의 내용을 호출을 통해서 실행시키는 것이 아니라, 호출하는 코드 자체가 함수 내용의 코드가 됨
+-> 헤더파일에다가 정의해도 되지만 헤더파일에 정의하지않고 따로 정의 후에 헤더파일만 include한다면 오류 발생
+ex -> A.h( inline 선언) A.cc(inline 정의) B.cc(A.h include 후 호출() -> 오류)
+///////
+
+* 유일 정의 규칙 - ODR(One Definition Rule)
+- 각 TU 에 존재하는 모든 변수, 함수, 클래스, enum, 템플릿 등등의 정의(Definition) 은 유일 해야 하고 
+  inline 이 아닌 모든 함수의 변수들의 정의는 전체 프로그램에서 유일해야 한다.
+
+//TU란? C++컴파일러에서 컴파일의 단위를 나타냄. -> 한 개의 소스파일(.cpp, cxx)과 해당 파일에서 포함된 헤더 파일들로 구성
+
+    -> 정의는 유일해야한다. -> 즉 선언은 문제없음
+        ex1)
+        int f();  // f 의 선언
+        int f();  // f 의 선언
+        int f();  // f 의 선언
+
+        int main() {}
+
+        int f(){}, int f(){} -> 정의가 두 개 이상이기에 오류발생
+

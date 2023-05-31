@@ -236,3 +236,94 @@ Parsed CXX implicit link information from above output:
   implicit fwks: []
 
 
+Performing C++ SOURCE FILE Test has_std_11_flag succeeded with the following output:
+Change Dir: /home/hjkim/laon/20230529-0602/20230530/study/cmake/c++-cmake/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_53ee6/fast && /usr/bin/make -f CMakeFiles/cmTC_53ee6.dir/build.make CMakeFiles/cmTC_53ee6.dir/build
+make[1]: Entering directory '/home/hjkim/laon/20230529-0602/20230530/study/cmake/c++-cmake/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_53ee6.dir/src.cxx.o
+/usr/bin/c++    -Dhas_std_11_flag   -std=c++11 -std=gnu++11 -o CMakeFiles/cmTC_53ee6.dir/src.cxx.o -c /home/hjkim/laon/20230529-0602/20230530/study/cmake/c++-cmake/build/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_53ee6
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_53ee6.dir/link.txt --verbose=1
+/usr/bin/c++   -Dhas_std_11_flag    CMakeFiles/cmTC_53ee6.dir/src.cxx.o  -o cmTC_53ee6 
+make[1]: Leaving directory '/home/hjkim/laon/20230529-0602/20230530/study/cmake/c++-cmake/build/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test has_std_0x_flag succeeded with the following output:
+Change Dir: /home/hjkim/laon/20230529-0602/20230530/study/cmake/c++-cmake/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_15442/fast && /usr/bin/make -f CMakeFiles/cmTC_15442.dir/build.make CMakeFiles/cmTC_15442.dir/build
+make[1]: Entering directory '/home/hjkim/laon/20230529-0602/20230530/study/cmake/c++-cmake/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_15442.dir/src.cxx.o
+/usr/bin/c++    -Dhas_std_0x_flag   -std=c++0x -std=gnu++11 -o CMakeFiles/cmTC_15442.dir/src.cxx.o -c /home/hjkim/laon/20230529-0602/20230530/study/cmake/c++-cmake/build/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_15442
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_15442.dir/link.txt --verbose=1
+/usr/bin/c++   -Dhas_std_0x_flag    CMakeFiles/cmTC_15442.dir/src.cxx.o  -o cmTC_15442 
+make[1]: Leaving directory '/home/hjkim/laon/20230529-0602/20230530/study/cmake/c++-cmake/build/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test SUPPORTS_USER_DEFINED_LITERALS succeeded with the following output:
+Change Dir: /home/hjkim/laon/20230529-0602/20230530/study/cmake/c++-cmake/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_6e6e4/fast && /usr/bin/make -f CMakeFiles/cmTC_6e6e4.dir/build.make CMakeFiles/cmTC_6e6e4.dir/build
+make[1]: Entering directory '/home/hjkim/laon/20230529-0602/20230530/study/cmake/c++-cmake/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_6e6e4.dir/src.cxx.o
+/usr/bin/c++    -DSUPPORTS_USER_DEFINED_LITERALS -std=c++11   -std=gnu++11 -o CMakeFiles/cmTC_6e6e4.dir/src.cxx.o -c /home/hjkim/laon/20230529-0602/20230530/study/cmake/c++-cmake/build/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_6e6e4
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6e6e4.dir/link.txt --verbose=1
+/usr/bin/c++   -DSUPPORTS_USER_DEFINED_LITERALS -std=c++11    CMakeFiles/cmTC_6e6e4.dir/src.cxx.o  -o cmTC_6e6e4 
+make[1]: Leaving directory '/home/hjkim/laon/20230529-0602/20230530/study/cmake/c++-cmake/build/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+
+  void operator"" _udl(long double);
+  int main() {}
+Performing C++ SOURCE FILE Test FMT_HAS_VARIANT succeeded with the following output:
+Change Dir: /home/hjkim/laon/20230529-0602/20230530/study/cmake/c++-cmake/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_adc1e/fast && /usr/bin/make -f CMakeFiles/cmTC_adc1e.dir/build.make CMakeFiles/cmTC_adc1e.dir/build
+make[1]: Entering directory '/home/hjkim/laon/20230529-0602/20230530/study/cmake/c++-cmake/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_adc1e.dir/src.cxx.o
+/usr/bin/c++    -DFMT_HAS_VARIANT -std=c++1z   -std=gnu++11 -o CMakeFiles/cmTC_adc1e.dir/src.cxx.o -c /home/hjkim/laon/20230529-0602/20230530/study/cmake/c++-cmake/build/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_adc1e
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_adc1e.dir/link.txt --verbose=1
+/usr/bin/c++   -DFMT_HAS_VARIANT -std=c++1z    CMakeFiles/cmTC_adc1e.dir/src.cxx.o  -o cmTC_adc1e 
+make[1]: Leaving directory '/home/hjkim/laon/20230529-0602/20230530/study/cmake/c++-cmake/build/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+
+  #include <variant>
+  int main() {}
+Determining if the strtod_l exist passed with the following output:
+Change Dir: /home/hjkim/laon/20230529-0602/20230530/study/cmake/c++-cmake/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_99b67/fast && /usr/bin/make -f CMakeFiles/cmTC_99b67.dir/build.make CMakeFiles/cmTC_99b67.dir/build
+make[1]: Entering directory '/home/hjkim/laon/20230529-0602/20230530/study/cmake/c++-cmake/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_99b67.dir/CheckSymbolExists.cxx.o
+/usr/bin/c++    -std=gnu++11 -o CMakeFiles/cmTC_99b67.dir/CheckSymbolExists.cxx.o -c /home/hjkim/laon/20230529-0602/20230530/study/cmake/c++-cmake/build/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx
+Linking CXX executable cmTC_99b67
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_99b67.dir/link.txt --verbose=1
+/usr/bin/c++       CMakeFiles/cmTC_99b67.dir/CheckSymbolExists.cxx.o  -o cmTC_99b67 
+make[1]: Leaving directory '/home/hjkim/laon/20230529-0602/20230530/study/cmake/c++-cmake/build/CMakeFiles/CMakeTmp'
+
+
+File /home/hjkim/laon/20230529-0602/20230530/study/cmake/c++-cmake/build/CMakeFiles/CMakeTmp/CheckSymbolExists.cxx:
+/* */
+#include <stdlib.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef strtod_l
+  return ((int*)(&strtod_l))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}

@@ -8,13 +8,20 @@ set(CMAKE_DEPENDS_CHECK_CXX
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
+# Preprocessor definitions for this target.
+set(CMAKE_TARGET_DEFINITIONS_CXX
+  "FMT_LOCALE"
+  )
+
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "../includes"
+  "_deps/fmt-src/include"
   )
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
+  "/home/hjkim/laon/20230529-0602/20230530/study/cmake/c++-cmake/build/_deps/fmt-build/CMakeFiles/fmt.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

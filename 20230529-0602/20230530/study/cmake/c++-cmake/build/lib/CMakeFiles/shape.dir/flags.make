@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_FLAGS =   -Wall -Werror
 
-CXX_DEFINES = 
+CXX_DEFINES = -DFMT_LOCALE
 
-CXX_INCLUDES = -I/home/hjkim/laon/20230529-0602/20230530/study/cmake/c++-cmake/includes 
+CXX_INCLUDES = -I/home/hjkim/laon/20230529-0602/20230530/study/cmake/c++-cmake/includes -I/home/hjkim/laon/20230529-0602/20230530/study/cmake/c++-cmake/build/_deps/fmt-src/include 
 

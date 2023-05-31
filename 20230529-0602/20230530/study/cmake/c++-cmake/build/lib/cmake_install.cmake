@@ -37,3 +37,9 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
   set(CMAKE_CROSSCOMPILING "FALSE")
 endif()
 
+if(NOT CMAKE_INSTALL_LOCAL_ONLY)
+  # Include the install script for each subdirectory.
+  include("/home/hjkim/laon/20230529-0602/20230530/study/cmake/c++-cmake/build/_deps/fmt-build/cmake_install.cmake")
+
+endif()
+
