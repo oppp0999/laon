@@ -1,0 +1,76 @@
+#/tas/cmakeLists.txt
+
+3rdparty -> 다른 회사 제품에 이용되는 소프트웨어나 하드웨어을 개발
+
+13 -> switch 변수로 true(또는 1)로 지정하면 빌드 상세 과정을 출력하는 makefile 생성
+    -> 빌드 스크립트를 작성할 때 키는 것이 좋음
+    -> PROJECT() 명령을 만나면 false로 초기화되므로 이 보다 뒤에 위치시켜야함.
+
+17 ~ 19 -> -> std 옵션
+
+33 -> 1. file -> cmake에서 파일 또는 디렉토리에 대한 작업을 수행하는 명령어
+    2. GLOB_RECURSE -> 지정된 디렉토리와 그 하위 디렉토리에서 재귀적으로 검색 수행
+    3. SRC_FILES -> 파일 목록을 저장할 변수
+    4. CONFIGURE_DEPENDS -> 파일이 변경되면 다시 평가
+    5. ${CMAKE_CURRENT_SOURCE_DIR}/src/* -> 경로에 포함될 파일을 지정 src하위에 모든 파일(*)
+    
+    -> SRC_FILES변수에 src디렉토리와 하위 디렉토리에서 찾은 파일 목록 저장
+
+35 -> 1. add_executable -> cmake 에서 실행 가능한 대상을 추가
+    2. ${PROJECT_NAME} 현재 프로젝트의 이름을 나타내는 변수
+    3. ${SRC_FILES} 소스 파일의 목록을 나타내는 변수
+    
+    -> 프로젝트 이름으로 지정된 대상을 생성 후 지정된 소스 파일을 포함 -> 컴파일하여 실행 가능한 프로그램으로 생성
+
+37 ~ 40 -> 1. target_include_directories -> 대상에 포함된 디렉토리를 설정
+    2. 프로젝트 이름 변수
+    3. PRIVATE 비공개로 설정하여 해당 대상에만 적용
+    4. GNUInstallDirs -> 플랫폼별로 일반적으로 사용되는 설치 디렉토리 경로를 정의
+
+    -> ${PROJECT_NAME}으로 지정된 대상에게 GNUInstallDirs 모듈에서 정의된 디렉토리 경로를 비공개 설정
+     GNUInstallDirs 모듈에서 제공하는 경로에 있는 헤더 파일들을 포함
+
+45 -> 1. find_program -> 실행 프로그램 경로 찾는 명령어
+    2. CCACHE_EXECUTABLE -> 경로를 지정하기 위한 변수
+    3. ccache -> 찾는 경로
+    4. HINTS 프로그램을 찾기 위한 경로 지정
+    
+    -> ccache 라는 프로그램의 실행 경로를 찾는다. 그리고 CCACHE_EXECUTABLE 경로를 할당
+
+47 -> 1. message - 메세지 출력하는 명령어
+    2. STATUS -> 메세지 출력 수준
+    3. "use ccache" 문자열
+
+48 -> 1. set -> 변수를 설정하는 명령어
+    2. CMAKE_CXX_COMPILER_LAUNCHER -> 컴파일러 런처를 설정하기 위한 변수
+    3. ${CCACHE_EXECUTABLE} -> CCACHE_EXECUTABLE 변수에 저장된 ccashe 실행경로 할당
+    4. CACHE PATH "ccache" FORCE -> CACHE 키워드를 사용하여 캐시르 저장하고 경로 형식은, ccache값을 지정, force는 캐시 값이 있어도 강제로 덮어씌우는 기능
+    
+    -> c++ 컴파일 런처를 ccache로 설정
+
+    ##set 추가 설명
+        1. CMAKE_ARCHIVE_OUTPUT_DIRECTORY -> 정적 라이브러리(.a, .lib) 파일 출력 디첵토리 설정 변수
+        2. CMAKE_LIBRARY_OUTPUT_DIRECTORY -> 공유 라이브러리(.so, .dll) 파일 출력 디렉토리 설정 변수
+        3. CMAKE_PDB_OUTPUT_DIRECTORY -> PDB(Debug 정보) 파일의 출력 디렉토리 설정 변수
+        4. CMAKE_RUNTIME_OUTPUT_DIRECTORY -> 실행 파일의 출력 디렉토리 설정 변수
+
+55 -> tascommon 이라는 라이브러리를 힌트를 통해 파일 경로를 찾아 TAS_TASCOMMON에 할당
+    이를 통해 프로젝트에 라이브러리 사용 가능
+
+56 -> target_link_libraries 대상에게 라이브러리를 링크하는 명령어
+    -> PROJECT_NAME으로 지정된 대상에게 TAS_TASCOMMON에 저장된 라이브러리를 링크
+
+183 ~ 191 -> 컴파일에서 경고를 오류로 취급하기 위해 매크로를 정의하는 부분
+    -> /WX 또는 -Werror 옵션이 컴파일 경고를 오류로 취급
+    -> GNU, Clang 에선 -Werror
+    -> MSVC 에선 /WX
+        -> /W4 는 경계 수준
+         
+199 ~ 207 -> 각 컴파일 과정에서 Clang, GNU, Intel에 대한 추가적으로 여러 경고 옵션을 추가.
+
+212 ~ 219 -> 1. if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT) 변수 CMAKE_INSTALL_PREFIX 가 초기화 된 경우 블록을 싱행
+                1.1 CMAKE_INSTALL_PREFIX가 설정되지 않았다는 오류 메시지
+            2. ${PROJECT_NAME}으로 지정된 대상(실행 파일)을 ${CMAKE_INSTALL_PREFIX}/bin 경로로 설치
+                2.1 PERMISSIONS 옵션을 사용해서 실행 파일의 소유자에 대한 실행, 쓰기, 읽기 권한을 설정할 수 있다.
+
+

@@ -1,1 +1,5 @@
 1. tasv2 부분에 install.sh 와 cmakeLists.txt 보고 변수나 링크부분확인하기
+
+2. 링킹 마무리
+
+3. tas gs test

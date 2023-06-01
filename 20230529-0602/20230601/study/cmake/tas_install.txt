@@ -1,0 +1,15 @@
+#/tas/install.sh
+
+cmake 에서 사용되는 변수를 정의하는 옵션
+    -D 변수명 = 값
+
+명령줄 인수를 왼쪽으로 이동시키는 명령어
+    shift
+
+    ./script.sh argument1 argument2 argument3 argument4
+    와 같이 인수가 전달된다면
+    shift 2 명령어를 통해 인수가 왼쪽으로 2개 이동되고, 이후의 인수들은 $1과 $2에 할당
+    $1 = argument3
+    $2 = argument4
+
+;; -> case문을 뜨내는 키워드
