@@ -1,0 +1,123 @@
+# 벡터 클래스 (vector)
+    - 기본적인 벡터 클래스의 구성
+
+    class Vector {
+        string* data;
+        int capacity;
+        int length;
+
+        public:
+            // 생성자
+            Vector(int n = 1);
+
+            // 맨 뒤에 새로운 원소를 추가한다.
+            void push_back(string s);
+
+            // 임의의 위치의 원소에 접근한다.
+            string operator[](int i);
+
+            // x 번째 위치한 원소를 제거한다.
+            void remove(int x);
+
+            // 현재 벡터의 크기를 구한다.
+            int size();
+
+            ~Vector();
+    };
+
+CODE 2~ 4 -> 
+    data 데이터를 보관하기 위한 (문자열 배열로 만들 예정)
+    capacity - 현재 할당되어 있는 크기를 알려줌
+    length - 현재 실제로 사용하는 양
+
+CODE 8 -> 생성자 인자가 int n = 1로 되어있다는 것은 인자를 지정하지 않으면 n = 1로 지정됨
+    이를 디폴트 인자라고 한다. -> Vector a(), Vector a(1) -> 동일한 작업
+        -> c++ 규칙으로 클래스 내부 함수 선언에서 디폴드 인자를 명시하였다면, 함수 본체에서 명시하지 않고
+            반대로 함수 본체에 명시하였다면 클래스 내부 함수 선언에 명시하면 안됨
+
+
+    ex2)
+    void Vector::push_back(string s) {
+    if (capacity <= length) {
+        string* temp = new string[capacity * 2];
+        for (int i = 0; i < length; i++) {
+        temp[i] = data[i];
+        }
+        delete[] data;
+        data = temp;
+        capacity *= 2;
+    }
+
+    data[length] = s;
+    length++;
+    }
+
+    string Vector::operator[](int i) { return data[i]; }
+
+    void Vector::remove(int x) {
+    for (int i = x + 1; i < length; i++) {
+        data[i - 1] = data[i];
+    }
+    length--;
+    }
+
+    int Vector::size() { return length; }
+
+    Vector::~Vector() {
+    if (data) {
+        delete[] data;
+    }
+
+    -> vector 클래스의 함수들
+
+    -> push_back 함수는 배열 맨 끝에 원소를 집어넣는 클래스이다.
+        -> 배열이 다 차게 되면 1칸을 더 늘리는 것이 아니라 현재 크기의 두 배만 큼 새로 할당하고 새로 할당한 공간에 복사
+        -> 가장 효율적인 공간과 시간을 활용
+
+* 스택 클래스
+    -> linked list 를 이용하기 때문에 node 구조체 이용
+
+    struct Node {
+    Node* prev;
+    string s;
+
+    Node(Node* prev, string s) : prev(prev), s(s) {}
+    };
+    
+    ->
+    1. 자기 보다 하위 node를 가리키는 포인터(prev)
+    2. 자신이 보관하는 데이터에 관한 값 (s)
+
+
+    - 스택 클래스의 구성
+    class Stack {
+    struct Node {
+        Node* prev;
+        string s;
+
+        Node(Node* prev, string s) : prev(prev), s(s) {}
+    };
+
+        Node* current;
+        Node start;
+
+        public:
+        Stack();
+
+        // 최상단에 새로운 원소를 추가한다.
+        void push(string s);
+
+        // 최상단의 원소를 제거하고 반환한다.
+        string pop();
+
+        // 최상단의 원소를 반환한다. (제거 안함)
+        string peek();
+
+        // 스택이 비어있는지의 유무를 반환한다.
+        bool is_empty();
+
+        ~Stack();
+    };
+
+    -> Node 리스트 관리하기 위한 -> current(최상위 노드 가리킴), start(최하위 노드를 가리킴)
+    -> start 노드를 둔 이유는, 마지막 노드에 도달하였을 때 그 여부를 알아야하기 때문
