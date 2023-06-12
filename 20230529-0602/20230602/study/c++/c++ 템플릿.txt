@@ -100,3 +100,15 @@ CODE 53 -> 정의한 템플릿의 인자에 값을 전달하기 위해서 사용
 
     template <>
     class test<int, int, double> {};
+
+    ex2)
+    template<>
+    class Vector<bool> {
+        ...
+    }
+
+    -> Vector<bool> 을 구현하기 위해서 int 배열을 이용
+        -> int 는 4 바이트 이므로 -> 32개의 bool 데이터들을 묶어서 저장 가능
+        -> 비트를 이용하여 각 위치에 1 0 을 이용해서 bool로 활용 가능
+            -> (1 << (i % 32))) != 0 를 사용하여 or이나 and 이용, |, &
+

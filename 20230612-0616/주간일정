@@ -1,0 +1,28 @@
+4주차[6/21 ~ 6/16]: TAS SDK 이용하여 detection하고, tracking 직접 구현하여 보여주기
+
+1. detection, tracking 개념
+2. tas에서 detection -> tracking 분석
+-> taseventer : ChannelImpl::_analysisThread()
+3. 코드를 이용해서 이미지를 불러와서 d -> t -> 보여줌
+
+week_4
+|- src
+    |- main.cpp // 동영상 불러오기, 동영상 한프레임씩 반복하기
+    |- tracking
+    
+|- tasinfer
+
+
+TAS
+src
+|- main.cpp
+   \_ tascore : coreImlp.cpp
+	|- tas:core : AnalyzerImpl.cpp (this->_channels[channel_id]->init)
+		|- tas::eventer : channelImpl.cu
+			|- ChannelImpl::_analysisThread()
+
+
+
+-> 코드 실행
+/workspace/tas -> install.sh 실행
+/opt/laonpeople/tasv3/bin 에 실행파일이 생성됨 -> tas 실행

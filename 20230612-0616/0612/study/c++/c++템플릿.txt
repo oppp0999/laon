@@ -1,0 +1,894 @@
+* 함수 템플릿(Function template) - 클래스 템플릿이 아닌 함수 템플릿
+
+    ex1)
+    #include <iostream>
+    #include <string>
+
+    template <typename T>
+    T max(T& a, T& b) {
+        return a > b ? a : b;
+    }
+
+    int main() {
+        int a = 1, b = 2;
+        std::cout << "Max (" << a << "," << b << ") ? : " << max(a, b) << std::endl;
+
+        std::string s = "hello", t = "world";
+        std::cout << "Max (" << s << "," << t << ") ? : " << max(s, t) << std::endl;
+    }
+
+CODE 4 ~ 7 -> 템플릿 함수 정의, 클래스 템플릿과 마찬가지로 함수도 인스턴스화 되기 전까지는 컴파일 시에 아무런 코드로 변환 X
+
+CODE 11 -> 실제 템플릿 함수가 인스턴스화 되는 부분 - max(a,b)가 호출되는 부분
+    -> 클래스를 인스턴스화 했을 때와 다르게 <> 하는 부분이 없다.
+    -> c++ 컴파일러에서 a, b의 타입을 보고 자동으로 - max(a, b) 를 max<int>(a, b)
+
+
+    ex2)
+    #include <iostream>
+
+    template <typename T>
+    class Vector {
+    T* data;
+    int capacity;
+    int length;
+
+    public:
+    // 어떤 타입을 보관하는지
+    typedef T value_type;
+
+    // 생성자
+    Vector(int n = 1) : data(new T[n]), capacity(n), length(0) {}
+
+    // 맨 뒤에 새로운 원소를 추가한다.
+    void push_back(int s) {
+        if (capacity <= length) {
+        int* temp = new T[capacity * 2];
+        for (int i = 0; i < length; i++) {
+            temp[i] = data[i];
+        }
+        delete[] data;
+        data = temp;
+        capacity *= 2;
+        }
+
+        data[length] = s;
+        length++;
+    }
+
+    // 임의의 위치의 원소에 접근한다.
+    T operator[](int i) { return data[i]; }
+
+    // x 번째 위치한 원소를 제거한다.
+    void remove(int x) {
+        for (int i = x + 1; i < length; i++) {
+        data[i - 1] = data[i];
+        }
+        length--;
+    }
+
+    // 현재 벡터의 크기를 구한다.
+    int size() { return length; }
+
+    // i 번째 원소와 j 번째 원소 위치를 바꾼다.
+    void swap(int i, int j) {
+        T temp = data[i];
+        data[i] = data[j];
+        data[j] = temp;
+    }
+
+    ~Vector() {
+        if (data) {
+        delete[] data;
+        }
+    }
+    };
+
+    template <typename Cont>
+    void bubble_sort(Cont& cont) {
+    for (int i = 0; i < cont.size(); i++) {
+        for (int j = i + 1; j < cont.size(); j++) {
+        if (cont[i] > cont[j]) {
+            cont.swap(i, j);
+        }
+        }
+    }
+    }
+
+    int main() {
+        Vector<int> int_vec;
+        int_vec.push_back(3);
+        int_vec.push_back(1);
+        int_vec.push_back(2);
+        int_vec.push_back(8);
+        int_vec.push_back(5);
+        int_vec.push_back(3);
+
+        std::cout << "정렬 이전 ---- " << std::endl;
+        for (int i = 0; i < int_vec.size(); i++) {
+            std::cout << int_vec[i] << " ";
+        }
+
+        std::cout << std::endl << "정렬 이후 ---- " << std::endl;
+        bubble_sort(int_vec);
+        for (int i = 0; i < int_vec.size(); i++) {
+            std::cout << int_vec[i] << " ";
+        }
+        std::cout << std::endl;
+    }
+
+CODE 60 ~ 69 -> 정렬 함수를 템플릿으로 구현
+    -> size(), operator[], swap() -> cont로 전달된 타입에 클래스에 각 함수들이 정의가 되어있어야함.
+
+
+CODE 86 -> 인자로 전달된 객체의 타입을 보고 인스턴스화 한 뒤에 컴파일
+    -> 이 경우 int_vec 는 vector<int> 이므로 cont 에 vector<int>가 전달
+
+* 함수 객체(Function Object - functor) 도입
+    
+    ex1)
+    - 내림차순 오름차순으로 정렬하기 위해서는 연산자를 <, > 를 반대로 두는 방식을 사용하는데 c++에서 함수 템플릿을 이용하여 쉽게 정렬하는 예시
+
+    #include <iostream>
+
+    template <typename T>
+    class Vector {
+    T* data;
+    int capacity;
+    int length;
+
+    public:
+    // 어떤 타입을 보관하는지
+    typedef T value_type;
+
+    // 생성자
+    Vector(int n = 1) : data(new T[n]), capacity(n), length(0) {}
+
+    // 맨 뒤에 새로운 원소를 추가한다.
+    void push_back(int s) {
+        if (capacity <= length) {
+        int* temp = new T[capacity * 2];
+        for (int i = 0; i < length; i++) {
+            temp[i] = data[i];
+        }
+        delete[] data;
+        data = temp;
+        capacity *= 2;
+        }
+
+        data[length] = s;
+        length++;
+    }
+
+    // 임의의 위치의 원소에 접근한다.
+    T operator[](int i) { return data[i]; }
+
+    // x 번째 위치한 원소를 제거한다.
+    void remove(int x) {
+        for (int i = x + 1; i < length; i++) {
+        data[i - 1] = data[i];
+        }
+        length--;
+    }
+
+    // 현재 벡터의 크기를 구한다.
+    int size() { return length; }
+
+    // i 번째 원소와 j 번째 원소 위치를 바꾼다.
+    void swap(int i, int j) {
+        T temp = data[i];
+        data[i] = data[j];
+        data[j] = temp;
+    }
+
+    ~Vector() {
+        if (data) {
+        delete[] data;
+        }
+    }
+    };
+
+    template <typename Cont>
+    void bubble_sort(Cont& cont) {
+    for (int i = 0; i < cont.size(); i++) {
+        for (int j = i + 1; j < cont.size(); j++) {
+        if (cont[i] > cont[j]) {
+            cont.swap(i, j);
+        }
+        }
+    }
+    }
+
+    template <typename Cont, typename Comp>
+    void bubble_sort(Cont& cont, Comp& comp) {
+    for (int i = 0; i < cont.size(); i++) {
+        for (int j = i + 1; j < cont.size(); j++) {
+        if (!comp(cont[i], cont[j])) {
+            cont.swap(i, j);
+        }
+        }
+    }
+    }
+
+    struct Comp1 {
+    bool operator()(int a, int b) { return a > b; }
+    };
+
+    struct Comp2 {
+    bool operator()(int a, int b) { return a < b; }
+    };
+
+    int main() {
+    Vector<int> int_vec;
+    int_vec.push_back(3);
+    int_vec.push_back(1);
+    int_vec.push_back(2);
+    int_vec.push_back(8);
+    int_vec.push_back(5);
+    int_vec.push_back(3);
+
+    std::cout << "정렬 이전 ---- " << std::endl;
+    for (int i = 0; i < int_vec.size(); i++) {
+        std::cout << int_vec[i] << " ";
+    }
+
+    Comp1 comp1;
+    bubble_sort(int_vec, comp1);
+
+    std::cout << std::endl << std::endl << "내림차순 정렬 이후 ---- " << std::endl;
+    for (int i = 0; i < int_vec.size(); i++) {
+        std::cout << int_vec[i] << " ";
+    }
+    std::cout << std::endl;
+
+    Comp2 comp2;
+    bubble_sort(int_vec, comp2);
+
+    std::cout << std::endl << "오름차순 정렬 이후 ---- " << std::endl;
+    for (int i = 0; i < int_vec.size(); i++) {
+        std::cout << int_vec[i] << " ";
+    }
+    std::cout << std::endl;
+    }
+
+CODE 71 ~ 80 -> cont 클래스 템플릿 인자와 함수 자체 comp 객체를 따로 받는다.
+    75 -> if문에서 함수를 호출하는 것처럼 사용하지만 cont[i], cont[j] 를 받아서 내부적으로 크기를 비교 수행한 뒤 리턴하는 방식
+        -> comp는 함수가 아닌 사실 객체 => comp 클래스에서 () 연산자를 오버로딩
+
+CODE 82 ~ 88 -> comp1, comp2 객체들은 bubble_sort 함수에서 함수 처럼 사용되고 있다.
+    -> 함수는 아니지만 함수 인 척을 하는 객체를 함수 객체 -> functor 라고 부름
+        -> 객체 비교하는 부분을 사용자가 편하고 원하는 대로 사용할 수 있다.
+
+CODE 105, 114 -> 각 필요한 부분을 functor 객체를 받아 수행할 수 있고,
+    ->bubble_sort(int_vec); 를 사용해도 첫 번째 버전으로 템플릿 인스턴스화 되어 호출 됨
+
+* 타입이 아닌 템플릿 인자 (non-type template arguments)
+
+    ex1)
+    #include <iostream>
+
+    template <typename T, int num>
+    T add_num(T t) {
+    return t + num;
+    }
+
+    int main() {
+    int x = 3;
+    std::cout << "x : " << add_num<int, 5>(x) << std::endl;
+    }
+
+CODE 3 ~ 6 -> template 인자로 T를 받고 함수인 인자 처럼 int num을 받고있다.
+    -> 즉, add_num 함수를 호출 할 때 <> 를 통해 전달하는 인자들이 들어가게 됨.
+    
+CODE 10 -> add_num 에 템플릿 인자 <> 를 지정하지 않았다면 오류 발생 -> num에 값이 뭐가 들어가는지 알수 없기 때문
+    -> 템플릿 인자로 전달할 수 있는 타입들의 내용 
+        1. 정수 타입들 (bool, char, int, long 등등). 당연히 float 과 double 은 제외
+        2. 포인터 타입
+        3. enum 타입
+        4. std::nullptr_t (널 포인터)
+
+
+    ex2)
+    #include <iostream>
+    #include <array>
+
+    template <typename T>
+    void print_array(const T& arr) {
+    for (int i = 0; i < arr.size(); i++) {
+        std::cout << arr[i] << " ";
+    }
+    std::cout << std::endl;
+    }
+
+    int main() {
+    std::array<int, 5> arr = {1, 2, 3, 4, 5};
+    std::array<int, 7> arr2 = {1, 2, 3, 4, 5, 6, 7};
+    std::array<int, 3> arr3 = {1, 2, 3};
+
+    print_array(arr);
+    print_array(arr2);
+    print_array(arr3);
+    }
+
+-> std::array의 생성자를 활용한 예제인데 이때 함수 print_array에서도 array의 크기 별로 함수를 만들어줘야하는데 
+    -> 이때 std::array<int, 5>, std::array<int, 7>.... 등 하나 자체의 타입으로 받아 들이기 때문에
+       5 -> 함수 템플릿을 이용하여 손 쉽게 각 함수별 타입으로 사용할 수 있다.
+
+* 디폴트 템플릿 인자
+    ex1 )
+    #include <iostream>
+
+    template <typename T, int num = 5>
+    T add_num(T t) {
+    return t + num;
+    }
+
+    int main() {
+    int x = 3;
+    std::cout << "x : " << add_num(x) << std::endl;
+    }
+
+CODE 3 -> = (디폴트 값) 을 넣어 줌으로써 자동으로 인자를 지정할 수 있다.
+
+# 타입 역시 사용 가능
+    ex2)
+    #include <iostream>
+    #include <string>
+
+    template <typename T>
+    struct Compare {
+    bool operator()(const T& a, const T& b) const { return a < b; }
+    };
+
+    template <typename T, typename Comp = Compare<T>>
+    T Min(T a, T b) {
+    Comp comp;
+    if (comp(a, b)) {
+        return a;
+    }
+    return b;
+    }
+
+    int main() {
+    int a = 3, b = 5;
+    std::cout << "Min " << a << " , " << b << " :: " << Min(a, b) << std::endl;
+
+    std::string s1 = "abc", s2 = "def";
+    std::cout << "Min " << s1 << " , " << s2 << " :: " << Min(s1, s2)
+                << std::endl;
+    }
+
+CODE 10 ~ 16 -> min 함수의 원소 비교는 comp라는 객체 함수가 수행
+    -> comp라는 클래스가 필요하게 되는데 ->Min<int, Compare<int>>(a, b) 처럼 굳이 Compare을 원래 써서 전달 해줘야함.
+        9 -> comp 로 디폴트 타입인 Compare<T> 를 전달 시켜 Min(a, b) 로 쉽게 사용할 수 있게 만든다.
+
+
+* 가변 길이 템플릿
+
+    ex1)
+    #include <iostream>
+
+    template <typename T>
+    void print(T arg) {
+    std::cout << arg << std::endl;
+    }
+
+    template <typename T, typename... Types>
+    void print(T arg, Types... args) {
+    std::cout << arg << ", ";
+    print(args...);
+    }
+
+    int main() {
+    print(1, 3.1, "abc");
+    print(1, 2, 3, 4, 5, 6, 7);
+    }
+
+CODE 8 -> typename 뒤에 ...으로 오는 것을 템플릿 파라미터 팩이라고 부름
+    -> 템플릿 파라미터 팩의 경우 0개 이상의 템플릿 인자들을 나타냄
+    9 -> 함수에도 인자로 ... 오는 것을 함수 파라미터 팩, 0 개 이상의 함수 인자를 나타냄
+
+    -> 템플릿 파라미터 팩 - 함수 파라미터 팩의 차이점
+        -> ...의 타입 위치에 맞춰 위치가 달라짐
+            1. 템플릿 파라미터 팩 -> Types 앞에 ...
+            2. 함수 파라미터 팩 -> Types 뒤에 ...
+
+CODE 15 -> print 함수 호출 하는 과정에 두 개의 함수 print를 살펴보면서 선택함
+    4 -> 같은 함수의 경우 인자를 1개만 받기 때문에 두 번째 print가 선택
+    8 ~ 12 -> 첫 번째 인자는 1이므로 T는 int 추론, arg에는 1이 오게 됨
+        -> args 에는 3.1과 "abc"가 오게 됨
+    11 -> args...에는 전달되었던 나머지 인자들이 옴
+        -> 
+        void print(int arg, double arg2, const char* arg3) {
+            std::cout << arg << ", ";
+            print(arg2, arg3);
+        }
+        과 마찬가지로 재귀적으로 다시 인자 2개를 받는 print를 호출
+
+
+* 임의의 개수의 문자열을 합치는 함수
+    -> 임의의 길이의 문자열을 합ㅊ주는 함수 
+
+    concat = s1 + s2 + s3; -> concat = s1.operator+(s2).operator+(s3);
+    -> s2를 더할 때 메모리 할당이 발생, s3을 더할 때 메모리 할당이 또 한번 발생
+        -> 
+        std::string concat;
+        concat.reserve(s1.size() + s2.size() + s3.size());  // 여기서 할당 1 번 수행
+        concat.append(s1);
+        concat.append(s2);
+        concat.append(s3);
+        메모리 할당 1번으로 끝낼 수 있다.
+
+    ex1)
+    #include <iostream>
+    #include <string>
+
+    template <typename String>
+    std::string StrCat(const String& s) {
+    return std::string(s);
+    }
+
+    template <typename String, typename... Strings>
+    std::string StrCat(const String& s, Strings... strs) {
+    return std::string(s) + StrCat(strs...);
+    }
+
+    int main() {
+    // std::string 과 const char* 을 혼합해서 사용 가능하다.
+    std::cout << StrCat(std::string("this"), " ", "is", " ", std::string("a"),
+                        " ", std::string("sentence"));
+    }
+
+CODE 16 -> 임의의 개수의 인자를 받아 사용할 수 있게 가변 길이 템플릿을 이용
+
+CODE 4 ~7 -> 재귀 호출의 베이스 케이스
+
+CODE 9 ~ 12 -> 재귀적으로 정의해놓은 함수를 이용하여 문자열들을 더해주는 함수 템플릿 코드
+
+    ex2)
+    #include <cstring>
+    #include <iostream>
+    #include <string>
+
+    size_t GetStringSize(const char* s) { return strlen(s); }
+
+    size_t GetStringSize(const std::string& s) { return s.size(); }
+
+    template <typename String, typename... Strings>
+    size_t GetStringSize(const String& s, Strings... strs) {
+    return GetStringSize(s) + GetStringSize(strs...);
+    }
+
+    void AppendToString(std::string* concat_str) { return; }
+
+    template <typename String, typename... Strings>
+    void AppendToString(std::string* concat_str, const String& s, Strings... strs) {
+    concat_str->append(s);
+    AppendToString(concat_str, strs...);
+    }
+
+    template <typename String, typename... Strings>
+    std::string StrCat(const String& s, Strings... strs) {
+    // 먼저 합쳐질 문자열의 총 길이를 구한다.
+    size_t total_size = GetStringSize(s, strs...);
+
+    // reserve 를 통해 미리 공간을 할당해 놓는다.
+    std::string concat_str;
+    concat_str.reserve(total_size);
+
+    concat_str = s;
+    AppendToString(&concat_str, strs...);
+
+    return concat_str;
+    }
+
+    int main() {
+    // std::string 과 const char* 을 혼합해서 사용 가능하다.
+    std::cout << StrCat(std::string("this"), " ", "is", " ", std::string("a"),
+                        " ", std::string("sentence"));
+    }
+
+CODE 5 ~ 12 -> 합쳐진 문자열의 길이를 먼저 구하는 함수 -> 가변길이 템플릿 이용
+    -> GetStringSize 임의의 개수의 문자열을 받아서 각각의 길이를 더한 것을 리턴
+    -> const char* 와 std::string 모두 잘 작동하게 하기 위해 인자 1개만 받는 -> GetStringSize 오버로드 각 각 작성
+
+CODE 22 ~ 35 -> 수정된 StrCat
+    25 -> 문자열의 총 길이를 계산
+    28 ~ 29 -> 합쳐진 문자열을 보관할 변수
+        -> reserve 함수를 통해 필요한 만큼미리 공간을 할당
+    32 -> concat_str뒤에 나머지 문자열을 가져다 붙이기 위한 수행 함수 AppendToString
+
+CODE 14 ~ 20 -> 첫 번째 인자로는 합쳐진 문자열을 보관할 문자열을 계속 전달, 그리고 뒤에 합쳐질 문자열들을 인자로 전달
+    -> str...가 아무 인자도 없을 때 까지 진행하므로 재귀 호출 끝내기위한 AppendToString(std::string* concat_str)
+
+
+* sizeof... 
+    -> 인자의 크기를 리턴하지만 파라미터 팩에 sizeof... 을 사용할 경우 전체 인자의 개수를 리턴
+    
+    ex1) 원소들의 평균을 구하는 함수
+    #include <iostream>
+
+    // 재귀 호출 종료를 위한 베이스 케이스
+    int sum_all() { return 0; }
+
+    template <typename... Ints>
+    int sum_all(int num, Ints... nums) {
+    return num + sum_all(nums...);
+    }
+
+    template <typename... Ints>
+    double average(Ints... nums) {
+    return static_cast<double>(sum_all(nums...)) / sizeof...(nums);
+    }
+
+    int main() {
+    // (1 + 4 + 2 + 3 + 10) / 5
+    std::cout << average(1, 4, 2, 3, 10) << std::endl;
+    }
+
+CODE 4 ~ 9 -> 전달된 인자들의 합을 리턴하는 함수
+
+CODE 11 ~ 14 -> average 함수의 경우 전달된 전체 인자 개수로 합을 나눠줘야함
+    -> sizeof 연산자가 활용 -> sizeof... 에 파라미터 팩 (nums)를 전달하면 nums에 해당하는 실제 인자의 개수를 리턴
+        -> ex 5개를 전달하였으니 5
+
+* Fold Expression (C++ 17)
+    -> 가변 길이 템플릿 편리하지만 재귀 함수 형태로 구성 -> 종료를 위한 함수 구현 해야하는 단점
+
+    ex1)
+    #include <iostream>
+
+    template <typename... Ints>
+    int sum_all(Ints... nums) {
+    return (... + nums);
+    }
+
+    int main() {
+    // 1 + 4 + 2 + 3 + 10
+    std::cout << sum_all(1, 4, 2, 3, 10) << std::endl;
+    }
+
+->return (... + nums); 문장에서 fold 형식으로 -> return ((((1 + 4) + 2) + 3) + 10); 으로 해석할 수 있다.
+    -> 이 방식을 단항 좌측 fold 라 부름
+        -> 다른 방식도 존재
+        1. 단항 우측
+        2. 단항 좌측
+        3. 이항 우측
+        4. 이항 좌측
+
+
+* 타입이 아닌 템플릿 인자
+-----> 이런 방식으로 다룬 템플렛에서 타입이 마치 인자 인것 처럼 사용하는 것을 일반화 프로그래밍, 제너릭 프로그래밍
+
+    ex1)
+    #include <iostream>
+    #include <typeinfo>
+
+    template <int N>
+    struct Int {
+    static const int num = N;
+    };
+
+    template <typename T, typename U>
+    struct add {
+    typedef Int<T::num + U::num> result;
+    };
+
+    int main() {
+    typedef Int<1> one;
+    typedef Int<2> two;
+
+    typedef add<one, two>::result three;
+
+    std::cout << "Addtion result : " << three::num << std::endl;
+    }
+
+CODE 4 ~ 7 -> static 특성상 클래스가 생성한 객체들 사이에서 공유되는 값
+    -> const 로 값이 변하지 않게 됨
+    -> 즉 객체처럼 타입들을 생성할 수 있다.
+
+CODE 15 ~ 16 -> int 변수를 다루는 것 처럼 연산자를 만들 수 있다.
+
+CODE 9 ~ 12 -> add 클래스의 템플릿은 인자로 두 개의 타입을 받아 num 멤버를 더해 새로운 타입 result를 만듦.
+
+CODE 18 -> 실제 덧셈이 수행되는 부분 -> 함수 내부에서 result가 반횐 되지만 이를 three라 부름
+
+* 템플릿 메타 프로그래밍 (Template Meta Programming - TMP)
+-> 타입을 가지고 컴파일 타임에 생성되는 코드로 프로그래밍하는 것을 메타 프로그래밍
+    -> 템플릿을 가지고 작업하면 템플릿 메타 프로그래밍
+
+    ex1)
+    #include <iostream>
+    template <int N>
+    struct Factorial {
+    static const int result = N * Factorial<N - 1>::result;
+    };
+
+    template <>
+    struct Factorial<1> {
+    static const int result = 1;
+    };
+
+    int main() {
+    std::cout << "6! = 1*2*3*4*5*6 = " << Factorial<6>::result << std::endl;
+    }
+
+CODE 1 ~ 5 -> 함수로 구성하기 위해 재귀 함수 형태로 사용
+
+CODE 7 ~ 10 -> 재귀 함수 호출을 끝나게 하기 위해서 n이 1일 때 따로 처리해줘야한다.
+    -> 이때 템플릿 특수화를 이용해주면 -> Factorial<1> 타입의 경우만 따로 result = 1 만들어주게 되어 재귀적 구조가 끝나게 됨.
+
+* 의존 타입(dependent type)
+    -> 컴파일러에게 result 가 항상 타입인지 값인 지알 수 없기 때문에 
+
+    ex1)
+    template <>
+    struct divide<int a, int b> {
+    static const int result = a + b;
+    };
+
+    되어있는 정의라면 a,b가 int 값이 였다면 result는 static const int 타입의 값이 된다.
+        -> 템플릿 인자에 따라 어떠한 타입이 달라질 수 있는 것을 의존 타입이라고 부른다.
+    -> 간단히 struct check_div<N, typename divide<N, two>::result> 이런식으로 인자를 사용한다.
+
+    ex2)
+    template <typename N, typename d>
+    struct check_div {
+    // result 중에서 한 개라도 true 면 전체가 true
+    static const bool result = (N::num % d::num == 0) ||
+                                check_div<N, typename add<d, one>::result>::result;
+    };
+
+    // 생략
+
+    template <typename N>
+    struct check_div<N, typename divide<N, two>::result> {
+    static const bool result = (N::num % (N::num / 2) == 0);
+    };
+    -> 의존 '값'의 경우에는 typename을 붙이지 않는다.
+
+    ex3)
+    #include <iostream>
+
+    template <int N>
+    struct INT {
+    static const int num = N;
+    };
+
+    template <typename a, typename b>
+    struct add {
+    typedef INT<a::num + b::num> result;
+    };
+
+    template <typename a, typename b>
+    struct divide {
+    typedef INT<a::num / b::num> result;
+    };
+
+    using one = INT<1>;
+    using two = INT<2>;
+    using three = INT<3>;
+
+    template <typename N, typename d>
+    struct check_div {
+    // result 중에서 한 개라도 true 면 전체가 true
+    static const bool result = (N::num % d::num == 0) ||
+                                check_div<N, typename add<d, one>::result>::result;
+    };
+
+    template <typename N>
+    struct _is_prime {
+    static const bool result = !check_div<N, two>::result;
+    };
+
+    template <>
+    struct _is_prime<two> {
+    static const bool result = true;
+    };
+
+    template <>
+    struct _is_prime<three> {
+    static const bool result = true;
+    };
+
+    template <typename N>
+    struct check_div<N, typename divide<N, two>::result> {
+    static const bool result = (N::num % (N::num / 2) == 0);
+    };
+
+    template <int N>
+    struct is_prime {
+    static const bool result = _is_prime<INT<N>>::result;
+    };
+
+    int main() {
+    std::cout << std::boolalpha;
+    std::cout << "Is 2 prime ? :: " << is_prime<2>::result << std::endl;
+    std::cout << "Is 10 prime ? :: " << is_prime<10>::result << std::endl;
+    std::cout << "Is 11 prime ? :: " << is_prime<11>::result << std::endl;
+    std::cout << "Is 61 prime ? :: " << is_prime<61>::result << std::endl;
+    }
+
+CODE 22 ~ 47 -> is_prime 사용하기 위해서 is_prime<INT<11>>::result 코드를 사용
+    -> 이를 위해 is_prime 을 다음과 같이 정의한 뒤에 _is_prime으로 사용
+
+
+* 단위 (Unit) 라이브러리
+    -> 연산자들을 오버로딩 한 뒤에 연산 시에 객체 끼리 단위를 체크해서 거기에 따른 이벤트 처리
+
+    ex1)
+    #include <iostream>
+
+    template <int X, int Y>
+    struct GCD {
+    static const int value = GCD<Y, X % Y>::value;
+    };
+
+    template <int X>
+    struct GCD<X, 0> {
+    static const int value = X;
+    };
+
+    template <int N, int D = 1>
+    struct Ratio {
+    private:
+    const static int _gcd = GCD<N, D>::value;
+
+    public:
+    typedef Ratio<N / _gcd, D / _gcd> type;
+    static const int num = N / _gcd;
+    static const int den = D / _gcd;
+    };
+    template <class R1, class R2>
+    struct _Ratio_add {
+    using type = Ratio<R1::num * R2::den + R2::num * R1::den, R1::den * R2::den>;
+    };
+
+    template <class R1, class R2>
+    struct Ratio_add : _Ratio_add<R1, R2>::type {};
+
+    template <class R1, class R2>
+    struct _Ratio_subtract {
+    using type = Ratio<R1::num * R2::den - R2::num * R1::den, R1::den * R2::den>;
+    };
+
+    template <class R1, class R2>
+    struct Ratio_subtract : _Ratio_subtract<R1, R2>::type {};
+
+    template <class R1, class R2>
+    struct _Ratio_multiply {
+    using type = Ratio<R1::num * R2::num, R1::den * R2::den>;
+    };
+
+    template <class R1, class R2>
+    struct Ratio_multiply : _Ratio_multiply<R1, R2>::type {};
+
+    template <class R1, class R2>
+    struct _Ratio_divide {
+    using type = Ratio<R1::num * R2::den, R1::den * R2::num>;
+    };
+
+    template <class R1, class R2>
+    struct Ratio_divide : _Ratio_divide<R1, R2>::type {};
+
+    template <typename U, typename V, typename W>
+    struct Dim {
+    using M = U;
+    using L = V;
+    using T = W;
+
+    using type = Dim<M, L, T>;
+    };
+
+    template <typename U, typename V>
+    struct add_dim_ {
+    typedef Dim<typename Ratio_add<typename U::M, typename V::M>::type,
+                typename Ratio_add<typename U::L, typename V::L>::type,
+                typename Ratio_add<typename U::T, typename V::T>::type>
+        type;
+    };
+
+    template <typename U, typename V>
+    struct subtract_dim_ {
+    typedef Dim<typename Ratio_subtract<typename U::M, typename V::M>::type,
+                typename Ratio_subtract<typename U::L, typename V::L>::type,
+                typename Ratio_subtract<typename U::T, typename V::T>::type>
+        type;
+    };
+
+    template <typename T, typename D>
+    struct quantity {
+    T q;
+    using dim_type = D;
+
+    quantity operator+(quantity<T, D> quant) {
+        return quantity<T, D>(q + quant.q);
+    }
+
+    quantity operator-(quantity<T, D> quant) {
+        return quantity<T, D>(q - quant.q);
+    }
+
+    quantity(T q) : q(q) {}
+    };
+    int main() {
+    using one = Ratio<1, 1>;
+    using zero = Ratio<0, 1>;
+
+    quantity<double, Dim<one, zero, zero>> kg(1);
+    quantity<double, Dim<zero, one, zero>> meter(1);
+    quantity<double, Dim<zero, zero, one>> second(1);
+
+    // Good
+    kg + kg;
+
+    // Bad
+    //kg + meter;
+    }
+
+CODE 55 ~ 62 -> Dim 클래스는 어떠한 데이터의 단위를 나타내기 위함
+    -> m/s = kg^0 m^1 s^-1 -> Dim<0, 1, -1> 로 나타낼 수 있다.
+        -> 만들었던 Ratio 클래스를 이용해 숫자들을 타입으로 표현해줌
+            -> Dim<Ratio<1, 1>, Ratio<1, 1>, Ratio<-2, 1>>
+
+CODE 64 ~ 79 -> M의 경우 U에 의존, type의 경우 U, V에 의존
+
+CODE 80 ~ 94 -> 데이터를 담고 연산하는 클래스
+    82 -> q라는 멤버 변수에 데이터를 담고, dim_type 에 차원 정보를 담게 됨
+        -> 차원 종보는 데이터와 다르게 dim타입 그 자체로 표현
+    -> 단위가 일치해야함 -> dim_type이 같은 타입이어야만 한다는 뜻과 같음
+    85 ~ 91 -> operator+ , - 정의
+        -> operator가 인자로 받는 quantity 데이터 타입과 Dim 타입이 일치해야하지만 인스턴스화됨.
+            -> 만약 데이터 타입이나 Dim 타입이 일치하지 않았더라면 저 operator 는 오류 발생
+
+
+* 타입 추측 - '- auto' 키워드
+    (??) a = 3; -> int로 추측 가능
+
+    some_class a;
+    (??) b = a; -> some_class로 추측 가능
+
+    위 예제에서
+    quantity<double, Dim<one, zero, zero>> kg(1); -> (??) kg(1)
+    -> 으로 생각했다면 int가 들어가기에 원하는 타입 생성 할 수 없음
+
+    하지만,
+    (??) F = kg * meter / (second * second); -> 연산을 통해서 F의 타입을 정확하게 알아낼 수 있다.
+
+    ex1)
+    #include <iostream>
+    #include <typeinfo>
+
+    int sum(int a, int b) { return a + b; }
+
+    class SomeClass {
+    int data;
+
+    public:
+    SomeClass(int d) : data(d) {}
+    SomeClass(const SomeClass& s) : data(s.data) {}
+    };
+
+    int main() {
+    auto c = sum(1, 2);  // 함수 리턴 타입으로 부터 int 라고 추측 가능
+    auto num = 1.0 + 2.0;  // double 로 추측 가능!
+
+    SomeClass some(10);
+    auto some2 = some;
+
+    auto some3(10);  // SomeClass 객체를 만들까요?
+
+    std::cout << "c 의 타입은? :: " << typeid(c).name() << std::endl;
+    std::cout << "num 의 타입은? :: " << typeid(num).name() << std::endl;
+    std::cout << "some2 의 타입은? :: " << typeid(some2).name() << std::endl;
+    std::cout << "some3 의 타입은? :: " << typeid(some3).name() << std::endl;
+    }
+
+CODE 14 ~ 27 -> auto 키워드가 타입을 잘 추론해줌.
+    15 -> return 타입이 int인 것을 알 수 있음
+    16 -> num의 경우 1.0 + 2.0 결과가 double 이므로 num 역시 double로 변수 초기화
+    21 -> some을 만들 때 SomeClass some(10)으로 만들었기 때문에 some3 도 SomeClass로 추론 한다고 생각하지만 그렇지 않음.
+        -> auto 타입을 추론하는 방법은 템프릿에 들어갈 타입을 추론하는 것과 동일 -> int로 만듦 -> i 출력
+
+-> auto 키워드는 복잡해진 타입 이름들을 간단하게 나타낼 수 있는 획기적인 방법
+-> 짧다면 그냥 타입을 써주면 좋지만, 복잡한 타입의 경우 -> auto 키워드를 활용 하는 것이 좋다.

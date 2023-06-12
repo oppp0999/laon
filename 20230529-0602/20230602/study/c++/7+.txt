@@ -1,123 +1,156 @@
-# 벡터 클래스 (vector)
-    - 기본적인 벡터 클래스의 구성
+* 래퍼런스 
+    #include <iostream>
 
-    class Vector {
-        string* data;
-        int capacity;
-        int length;
-
+    class A {
         public:
-            // 생성자
-            Vector(int n = 1);
-
-            // 맨 뒤에 새로운 원소를 추가한다.
-            void push_back(string s);
-
-            // 임의의 위치의 원소에 접근한다.
-            string operator[](int i);
-
-            // x 번째 위치한 원소를 제거한다.
-            void remove(int x);
-
-            // 현재 벡터의 크기를 구한다.
-            int size();
-
-            ~Vector();
+        virtual void show() { std::cout << "Parent !" << std::endl; }
+    };
+    class B : public A {
+        public:
+            void show() override { std::cout << "Child!" << std::endl; }
     };
 
-CODE 2~ 4 -> 
-    data 데이터를 보관하기 위한 (문자열 배열로 만들 예정)
-    capacity - 현재 할당되어 있는 크기를 알려줌
-    length - 현재 실제로 사용하는 양
+    void test(A& a) { a.show(); }
+    int main() {
+        A a;
+        B b;
+        test(a);
+        test(b);
 
-CODE 8 -> 생성자 인자가 int n = 1로 되어있다는 것은 인자를 지정하지 않으면 n = 1로 지정됨
-    이를 디폴트 인자라고 한다. -> Vector a(), Vector a(1) -> 동일한 작업
-        -> c++ 규칙으로 클래스 내부 함수 선언에서 디폴드 인자를 명시하였다면, 함수 본체에서 명시하지 않고
-            반대로 함수 본체에 명시하였다면 클래스 내부 함수 선언에 명시하면 안됨
+        return 0;
+    }
+
+    -> void test(A& a) { a.show(); } 로 기반 클래스를 인자로 받아도 그의 레퍼런스가 되어도 문제없이 작동
+    -> test(b)를 B클래스의 객체를 전달해도 A 클래스를 상속 받기 때문에 타입 변환되어 전달된다.
+
+* 가상 함수의 구현 원리
+    -> virtual 이라는 키워드로 가상 함수를 만들어도 실제로 존재하는 함수이고 정상적 호출도 가능
+    -> 자바의 경우 모든 함수들이 디폴트로 virtual 선언
+    -> 하지만 c++에서 virtual 로 직접 선언하게 만든 이유는?
+        -> 오버헤드 존재, 반대로 업캐스팅한 객체의 가상 함수 테이블을 참조하여 오버라이드할 수 있다 
+            ->  Parent* c = Child(); -> child 객체를 가리키는 포인터 c를 parent클래스의 포인터로 초기화.
+
+        -> 두 단계를 걸쳐서 함수를 호출함을써 소프트웨어적으로 동적 바인딩을 구현할 수 있다.
+
+* 순수 가상 함수와 추상 클래스
+
+    ex1)
+    #include <iostream>
+
+    class Animal {
+        public:
+            Animal() {}
+            virtual ~Animal() {}
+            virtual void speak() = 0;
+    };
+
+    class Dog : public Animal {
+        public:
+            Dog() : Animal() {}
+            void speak() override { std::cout << "왈왈" << std::endl; }
+    };
+
+    class Cat : public Animal {
+        public:
+            Cat() : Animal() {}
+            void speak() override { std::cout << "야옹야옹" << std::endl; }
+    };
+
+    int main() {
+        Animal* dog = new Dog();
+        Animal* cat = new Cat();
+
+        dog->speak();
+        cat->speak();
+    }
+
+    -> Animal 클래스의 speak 함수를 살펴보면, 다른 함수들과는 달리, 함수의 몸통이 정의되어 있지 않고
+        = 0; 으로 처리되어 있는 가상 함수
+            -> 반드시 오버라이딩 되어야만 하는 함수
+        -> 즉, 순수 가상 함수라고 불림
+            -> 본체가 없기 때문에, 이 함수를 호출하는 것은 불가능 -> Animal 객체를 생성하는 것 또한 불가능
+                ->
+                Animal a;
+                a.speak();
+                    -> 객체 자체를 생성할 수 없다.
+        -> Animal처럼, 순수 가상 함수를 최소 한 개 이상 포함하고 있는 클래스는 객체를 생성할 수 없다.
+        -> 인스턴스화 시키기 위해서는 이 클래스를 상속 받는 클래스를 만들어 모든 순수 가상 함수를 오버라이딩 해야함.
+            -> 순수 가상 함수를 최소 한 개 포함, 반드시 상속 되어야하는 클래스를
+                -> 추상 클래스라 부름
+
+        -> private에 순수 가상 함수를 정의하여도 상관없음
+            -> 오버라이드는 되지만 자식 클래스에서 호출을 못함.
+        
+    -> 객체는 생성할 수 없지만, 추상 클래스를 가리키는 포인터는 문제 없이 만들 수 있다.
+        -> Animal* 의 변수를 생성하여 자식 클래스를 대입 받는다.
+
+* 다중 상속
+    -> 한 클래스가 여러 개의 클래스들을 상속 받는 것
+
+    ex1)
+    class A {
+        public:
+        int a;
+    };
+
+    class B {
+        public:
+        int b;
+    };
+
+    class C : public A, public B {
+        public:
+        int c;+
+    };
+
+    int main() { C c; }
+
+    -> class C : public A, public B -> ---- A >> B >> C
+        class C : public B, public A -> ---- B >> A >> C
+        -> 상속 받는 순서에 따라 함수가 호출되는 순서가 바뀐다. 
 
 
-    ex2)
-    void Vector::push_back(string s) {
-    if (capacity <= length) {
-        string* temp = new string[capacity * 2];
-        for (int i = 0; i < length; i++) {
-        temp[i] = data[i];
+    다중 상속 주의 사항
+        ex2)
+        class A {
+        public:
+            int a;  
+        };
+
+        class B {
+        public:
+            int a;
+        };
+
+        class C : public B, public A {
+        public:
+            int c;
+        };
+
+        int main() {
+        C c;
+        c.a = 3;
         }
-        delete[] data;
-        data = temp;
-        capacity *= 2;
-    }
 
-    data[length] = s;
-    length++;
-    }
+        -> 클래스 C의 객체를 생성해서 중복되는 멤버 변수에 접근하면, B의 a 인지 A의 a인지 구분할 수 없기때문에 오류가 난다.
+            -> 이런 상속으로 다이아몬드 상속이라고 한다.
+        
+        -> 겹치는 멤버 변수의 문제점을 해결하기 위해서는 
+   
+            class Human {
+            public:
+            // ...
+            };
+            class HandsomeHuman : public virtual Human {
+            // ...
+            };
+            class SmartHuman : public virtual Human {
+            // ...
+            };
+            class Me : public HandsomeHuman, public SmartHuman {
+            // ...
+            };
 
-    string Vector::operator[](int i) { return data[i]; }
+            -> 중복되는 멤버 변수를 합치기 위해 베이스 클래스를 만든 후에 human의 클래스를 virtual로 상속을 받게되면
+                -> me에서 다중 상속 시에도, 컴파일러가 언제나 Human을 한 번만 포함하도록 지정할 수 있다.
 
-    void Vector::remove(int x) {
-    for (int i = x + 1; i < length; i++) {
-        data[i - 1] = data[i];
-    }
-    length--;
-    }
-
-    int Vector::size() { return length; }
-
-    Vector::~Vector() {
-    if (data) {
-        delete[] data;
-    }
-
-    -> vector 클래스의 함수들
-
-    -> push_back 함수는 배열 맨 끝에 원소를 집어넣는 클래스이다.
-        -> 배열이 다 차게 되면 1칸을 더 늘리는 것이 아니라 현재 크기의 두 배만 큼 새로 할당하고 새로 할당한 공간에 복사
-        -> 가장 효율적인 공간과 시간을 활용
-
-* 스택 클래스
-    -> linked list 를 이용하기 때문에 node 구조체 이용
-
-    struct Node {
-    Node* prev;
-    string s;
-
-    Node(Node* prev, string s) : prev(prev), s(s) {}
-    };
-    
-    ->
-    1. 자기 보다 하위 node를 가리키는 포인터(prev)
-    2. 자신이 보관하는 데이터에 관한 값 (s)
-
-
-    - 스택 클래스의 구성
-    class Stack {
-    struct Node {
-        Node* prev;
-        string s;
-
-        Node(Node* prev, string s) : prev(prev), s(s) {}
-    };
-
-        Node* current;
-        Node start;
-
-        public:
-        Stack();
-
-        // 최상단에 새로운 원소를 추가한다.
-        void push(string s);
-
-        // 최상단의 원소를 제거하고 반환한다.
-        string pop();
-
-        // 최상단의 원소를 반환한다. (제거 안함)
-        string peek();
-
-        // 스택이 비어있는지의 유무를 반환한다.
-        bool is_empty();
-
-        ~Stack();
-    };
-
-    -> Node 리스트 관리하기 위한 -> current(최상위 노드 가리킴), start(최하위 노드를 가리킴)
-    -> start 노드를 둔 이유는, 마지막 노드에 도달하였을 때 그 여부를 알아야하기 때문
