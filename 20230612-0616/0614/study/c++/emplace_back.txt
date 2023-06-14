@@ -1,0 +1,38 @@
+emplace_back은 C++11부터 제공되는 std::vector의 멤버 함수로, 새로운 요소를 벡터의 끝에 추가하는 기능을 제공
+emplace_back 함수는 인수를 받아 해당 인수를 사용하여 새로운 요소를 직접 생성하고 벡터에 추가
+이를 통해 임시 객체를 생성하고 복사하는 오버헤드를 줄일 수 있음
+
+emplace_back 함수는 가변 인수를 허용하며, 해당 인수를 요소의 생성자로 전달
+벡터는 내부적으로 해당 요소를 직접 생성하고 추가. 따라서, emplace_back 함수를 사용하면 복사 또는 이동 대신 직접 생성되는 장점
+
+emplace_back 함수의 사용 예시 -
+
+#include <iostream>
+#include <vector>
+
+struct Person {
+    std::string name;
+    int age;
+    
+    Person(const std::string& n, int a) : name(n), age(a) {
+        std::cout << "Person constructor: " << name << std::endl;
+    }
+};
+
+int main() {
+    std::vector<Person> people;
+
+    people.emplace_back("Alice", 25);   // Person 객체를 직접 생성하여 추가
+    people.emplace_back("Bob", 30);
+    
+    return 0;
+}
+Person이라는 구조체는 이름(name)과 나이(age)를 저장하는 멤버 변수를 가잠.
+main 함수에서 우리는 std::vector<Person> 타입인 people 벡터를 생성하고, emplace_back 함수를 사용하여 Person 객체를 직접 생성하여 벡터에 추가
+emplace_back("Alice", 25)는 "Alice"와 25를 인수로 받아 Person 객체를 생성하여 벡터에 추가
+마찬가지로 emplace_back("Bob", 30)도 동일한 방식으로 Person 객체를 생성하여 벡터에 추가
+emplace_back 함수는 임시 객체의 생성과 복사를 피할 수 있으므로, 효율적인 벡터 관리를 가능
+
+
+
+
