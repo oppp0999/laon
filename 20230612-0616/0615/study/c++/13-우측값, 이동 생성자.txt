@@ -1,0 +1,224 @@
+* 복사 생략 (copy Elision)
+
+    ex1)
+    #include <iostream>
+
+    class A {
+    int data_;
+
+    public:
+    A(int data) : data_(data) { std::cout << "일반 생성자 호출!" << std::endl; }
+
+    A(const A& a) : data_(a.data_) {
+        std::cout << "복사 생성자 호출!" << std::endl;
+    }
+    };
+
+    int main() {
+    A a(1);  // 일반 생성자 호출
+    A b(a);  // 복사 생성자 호출
+
+    A c(A(2));
+    }
+
+    -> A c(A(2)); -> '일반 생성자 호출' 한 번만 출력
+    -> 이유는 -> 임시 객체를 만들고 이를 복사 생성할 필요가 없음 -> A(2) 로 똑같이 c를 만들거면, 차라리 c 자체를 A(2) 로 만들어진 객체로 해버리는 것과 같음
+    -> 컴파일러 자체에서 복사를 생략해 버리는 작업을 복사 생략(copy Elision) 이라 함
+
+# nullptr -> 새로 추가된 키워드로 기존의 NULL 대체
+    - string_content = nullptr; -> nullptr로 '포인터 주소값 0'을 정확히 명시해 준다면 미연에 발생할 실수를 줄여 줄 수 있게 됨.
+
+
+# str = str1 + str2
+    reserve 함수를 이용해서 공간을 할당하고 -> str1과 str2를 더한 문자열을 복사하게된다.
+    -> str의 복사 생성자를 또 호출할 필요가 없다 이미 똑같이 복사해서 생성할 것이면, 이미 생성된 (str1 + str2) 가 리턴한 객체를 str3 셈 치고 사용하면 되기 때문
+
+    -> 하지만 복사 생략을 최적화하지 않으면 상당한 자원이 소모될 수도 있다.
+    -> 해결법
+        -> str을 먼저 nullptr 의 널 포인터에 가르키게 한다음 (str1 + str2) 더한 값을 소멸자로 없애지 않고 바로 str의 포인터 방향만 변경해준다.
+            -> 하지만 const MyString& 으로 받았다면 인자의 값을 변할 수 없기에 -> 임시 객체의 string_content(nullpointer) 값을 수정할 수 없다.
+                -> 이를 우측값 레퍼런스를 이용하면 된다.
+
+
+* 좌측값(lvalue) 와 우측값(rvalue)
+    int a = 3;
+    -> 좌측값 - a는 메모리 상에 존재하는 변수 - 즉 'a'의 주소값을 & 연산자를 통해 알아 낼 수 있음.
+    -> 우측값 - 3의 값을 주소값으로 취할 수 없음 - 즉 '3' 은 실체가 없는 값 , 주소값을 취할 수 없는 값
+        - 예시
+        int a;         // a 는 좌측값
+        int& l_a = a;  // l_a 는 좌측값 레퍼런스
+        int& r_b = 3;  // 3 은 우측값. 따라서 오류
+
+    -> 다뤄왔던 레퍼런스는 좌측값 에만 사용할 수 있다. 
+        - a의 경우 좌측값이기 때문에, a의 좌측값 레퍼런스인 l_a를 만들 수 있다
+        - 3의 경우 우측값이기 때문에, 3의 우측값 레퍼런스 r_b 를 만들 수 없다.
+
+    -> 좌측값 레퍼런스 - & 하나를 이용해서 정의하는 레퍼런스 -> 좌측값 레퍼런스 자체도 좌측값이 됨.
+    
+    ex1)
+    int& func1(int& a) { return a; }
+    int func2(int b) { return b; }
+
+    int main() {
+    int a = 3;
+    func1(a) = 4;
+    std::cout << &func1(a) << std::endl;
+
+    int b = 2;
+    a = func2(b);               // 가능
+    func2(b) = 5;               // 오류 1
+    std::cout << &func2(b) << std::endl;  // 오류 2
+    }
+
+    -> func1 의 경우 좌측값 레퍼런스를 리턴하고 -> 좌측값에 해당하기에 가능
+        -> func(a) 가 리턴하는 레퍼런스의 값 4 -> 실제 변수 a의 값이 바뀌게 됨.
+        -> func1(a) 가 좌측값 레퍼런스를 리턴하므로, 그 리턴값의 주소값 역시 취함.
+    -> func2 의 경우, 레퍼런스가 아닌 일반 int 값을 리턴
+        -> 리턴되는 값은 a = func2(b) -> 이 문장이 잠시 실행될 때 존재하고 사라짐 -> 즉 실체가 없는 값 func2(b)는 우측값
+            오류 1 ->  func2(b) = 5; 이 되는 건 불가능
+    오류 2 -> 우측값의 주소값을 취할 수 없음
+
+
+# 우측값 레퍼런스
+
+    ex1)
+    #include <iostream>
+    #include <cstring>
+
+    class MyString {
+    char *string_content;  // 문자열 데이터를 가리키는 포인터
+    int string_length;     // 문자열 길이
+
+    int memory_capacity;  // 현재 할당된 용량
+
+    public:
+    MyString();
+
+    // 문자열로 부터 생성
+    MyString(const char *str);
+
+    // 복사 생성자
+    MyString(const MyString &str);
+
+    // 이동 생성자
+    MyString(MyString &&str);
+
+    void reserve(int size);
+    MyString operator+(const MyString &s);
+    ~MyString();
+
+    int length() const;
+
+    void print();
+    void println();
+    };
+
+    MyString::MyString() {
+    std::cout << "생성자 호출 ! " << std::endl;
+    string_length = 0;
+    memory_capacity = 0;
+    string_content = nullptr;
+    }
+
+    MyString::MyString(const char *str) {
+    std::cout << "생성자 호출 ! " << std::endl;
+    string_length = strlen(str);
+    memory_capacity = string_length;
+    string_content = new char[string_length];
+
+    for (int i = 0; i != string_length; i++) string_content[i] = str[i];
+    }
+    MyString::MyString(const MyString &str) {
+    std::cout << "복사 생성자 호출 ! " << std::endl;
+    string_length = str.string_length;
+    memory_capacity = str.string_length;
+    string_content = new char[string_length];
+
+    for (int i = 0; i != string_length; i++)
+        string_content[i] = str.string_content[i];
+    }
+    MyString::MyString(MyString &&str) {
+    std::cout << "이동 생성자 호출 !" << std::endl;
+    string_length = str.string_length;
+    string_content = str.string_content;
+    memory_capacity = str.memory_capacity;
+
+    // 임시 객체 소멸 시에 메모리를 해제하지
+    // 못하게 한다.
+    str.string_content = nullptr;
+    }
+    MyString::~MyString() {
+    if (string_content) delete[] string_content;
+    }
+    void MyString::reserve(int size) {
+    if (size > memory_capacity) {
+        char *prev_string_content = string_content;
+
+        string_content = new char[size];
+        memory_capacity = size;
+
+        for (int i = 0; i != string_length; i++)
+        string_content[i] = prev_string_content[i];
+
+        if (prev_string_content != nullptr) delete[] prev_string_content;
+    }
+    }
+    MyString MyString::operator+(const MyString &s) {
+    MyString str;
+    str.reserve(string_length + s.string_length);
+    for (int i = 0; i < string_length; i++)
+        str.string_content[i] = string_content[i];
+    for (int i = 0; i < s.string_length; i++)
+        str.string_content[string_length + i] = s.string_content[i];
+    str.string_length = string_length + s.string_length;
+    return str;
+    }
+    int MyString::length() const { return string_length; }
+    void MyString::print() {
+    for (int i = 0; i != string_length; i++) std::cout << string_content[i];
+    }
+    void MyString::println() {
+    for (int i = 0; i != string_length; i++) std::cout << string_content[i];
+
+    std::cout << std::endl;
+    }
+
+    int main() {
+        MyString str1("abc");
+        MyString str2("def");
+
+        std::cout << "-------------" << std::endl;
+        MyString str3 = str1 + str2;
+        str3.println();
+    }
+
+CODE 56 ~ 65 -> 우측값 레퍼런스를 사용한 이동 생성자의 정의 부분
+    -> 우측값의 레퍼런스를 정의하기 위해서는 && 을 두 개 사용해서 정의
+        -> 생성자의 경우 MyString 타입의 우측값을 인자로 받고 있다. -> 하지만 str 자체는 좌측값 ( 실체이기 때문 )
+        -> 우측값 레퍼런스인 좌측값 -> 그리고 표현식에는 좌측값에 올 수도 있다.
+                - str.string_content = nullptr; 을 통해서 함수가 끝나면서 소멸을 막기 위해서 바꿔준다.
+                66 ~ 68 -> 소멸자 내부도 바꿔야한다, string_content가 nullptr 이 아닐 때만 delete
+
+
+    int a;
+    int& l_a = a;
+    int& ll_a = 3;  // 불가능
+
+    int&& r_b = 3;
+    int&& rr_b = a;  // 불가능
+
+    -> 우측 값 레퍼런스의 경우 우측 값만 가능
+    -> 우측 값 레퍼런스 하는 임시 객체가 소멸되지 않음.
+        MyString&& str3 = str1 + str2;
+        str3.println();
+
+
+* 이동 생성자 작성 시 주의할 점
+    -> MyString, vector 에 넣기 위해서는 한 가지 주의 점 -> 이동 생성자를 반드시 noexcept 으로 명시
+    -> vector 를 예를 들어 -> vector는 새로운 원소를 추가할 때, 할당해놓은 메모리가 부족 -> 새로운 메모리를 할당한 후에, 기존에 있던 원소들을 새로운 메모리로 옮기게 됨.
+    
+    -> 복사 생성자를 사용 하였을 경우, 하나씩 복사가 되는데 복사 생성 과정 중에 예외 발생
+        -> 새로 할당한 메모리를 소멸 -> 사용자에게 예외 전달
+
+    -> 이동 생성자를 사용 하였을 경우, 새로 할당한 메모리를 소멸해도 이미 기존 메모리에 원소들이 이동되어 사라져버렸기 때문에 메모리를 섯불리 해제 할 수 없다.
+        -> 이런 상황 때문에 vector 는 이동 생성자가 noexcept 가 아닌 이상 이동 생성자를 사용하지 않음.
