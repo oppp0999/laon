@@ -1,0 +1,471 @@
+쓰레드풀이란? - 쓰레드들을 위한 직업 소개소 라고 볼 수 있다.
+    -> 여러 개의 쓰레드들이 대기하다가 할 일이 들어오게 되면, 대기하고 있던 쓰레드들 중 하나가 이를 받아서 실행
+
+    -> 예를 들어 서버의 경우, 클라이언트 (사용자)에서 요청이 들어옴 -> 해당 요청에 대한 처리를 쓰레드풀에 추가
+        -> 그럼 나중에 쓰레드들 중하나가 알아서 처리를 하게 됨.
+        -> 물론 모든 쓰레드들이 다른 일을 하고 있어도 상관 없음
+
+
+* 클래스 설계 하기
+    1. 쓰레드들을 보관할 컨테이너 필요
+        ex1)
+        // 총 Worker 쓰레드의 개수.
+        size_t num_threads_;
+        // Worker 쓰레드를 보관하는 벡터.
+        std::vector<std::thread> worker_threads_
+
+        -> 쓰레드들을 보관하는 worker_threads_ 라는 벡터 (쓰레드풀에서 돌아가는 쓰레드는 Worker라고 가정)
+        -> 전체 쓰레드의 개수를 보관하는 멤버 변수 num_threads_
+            -> 해당 값은 worker_threads_.size() 와 같다
+        
+
+    2. 작업들을 어떻게 저장할지 생각
+        -> 쓰레드풀 사용자는 실행을 원하는 함수들을 쓰레드풀에 전달 -> C++에서 일반적인 타입의 함수 포인터를 저장할 수 있는 컨테이너는 없다.
+        
+        -> void 형의 인자를 받지 않는 함수를 전달한다고 가정
+        ex1)
+        // 할일들을 보관하는 job 큐.
+        std::queue<std::function<void()>> jobs_;
+        
+        -> 컨테이너는 보통 큐를 사용하는데 큐를 사용해서 가장 오래 전에 추가된 작업을 쉽게 알아낼 수 있다.
+        -> 해당 큐는 모든 쓰레들에서 접근 가능한 큐 -> 또한 쓰레드풀 사용자들도 작업들을 각기 다른 쓰레드들에서 쓰레드풀에 추가할 수도 있다.
+            -> 하지만, queue 는 멀티 쓰레드 환경에서 안전하지 않기 때문에 queue를 race condition에서 보호할 장치가 필요
+
+    3. queue에 대한 race condition 보호 장치
+        
+        ex1)
+        std::condition_variable cv_job_q_;
+        std::mutex m_job_q_;
+        
+        -> cv_job_q_와 m_job_q_ 는 생산자-소비자 패턴을 구현할 때 사용
+            -> 생산자 역할은 쓰레드풀을 사용하는 사용자들 (jobs_ 에 작업을 추가하는 사람들)
+            -> 소비자들은 Worker 쓰레드들
+
+    4. Worker 쓰레드들을 종료시킬 조건을 나타내는 멤버 변수
+
+        ex1)
+        // 모든 쓰레드 종료
+        bool stop_all;
+
+        -> Worker 쓰레드들은 기본적으로 jobs_ 들을 처리하는 동안 무한 루프를 돌고 있는데, 위 stop_all 이 설정 된다면 무한 루프를 빠져나가게 됨.
+
+
+* ThreadPool 첫 번째 버전
+    -> 생성자는 간단 -> worker_threads_ 에 쓰레드를 시작시켜주면 됨.
+
+    ex1)
+    ThreadPool::ThreadPool(size_t num_threads)
+        : num_threads_(num_threads), stop_all(false) {
+    worker_threads_.reserve(num_threads_);
+    for (size_t i = 0; i < num_threads_; ++i) {
+        worker_threads_.emplace_back([this]() { this->WorkerThread(); });
+    }
+    }
+
+    -> num_threads_개의 쓰레드를 생성하게 됨. 이때 각 쓰레드들은 ThreadPool에 정의된 WorkerThread 함수를 실행
+        -> 외부에서 멤버 함수에 접근하기 위해서는 이전에 이야기 하듯, mem_fn으로 감싸거나, 람다 함수를 이용하면 되는데 여기서는 간단히 멤버 함수를 사용
+            -> 람다 안에서 멤버 함수에 접근하기 위해서는 this 를 전달
+                -> this->WorkerThread() 를 통해 멤버 함수를 실행
+        
+    ex2) WorkerThread 무슨 일을 해야할까? -> jobs_ 에 작업 이추가될 때 까지 대기하고있다가 작업이 추가되면 받아서 처리
+
+    void ThreadPool::WorkerThread() {
+    while (true) {
+        std::unique_lock<std::mutex> lock(m_job_q_);
+        cv_job_q_.wait(lock, [this]() { return !this->jobs_.empty() || stop_all; });
+        if (stop_all && this->jobs_.empty()) {
+        return;
+        }
+
+        // 맨 앞의 job 을 뺀다.
+        std::function<void()> job = std::move(jobs_.front());
+        jobs_.pop();
+        lock.unlock();
+
+        // 해당 job 을 수행한다 :)
+        job();
+    }
+    }
+
+    -> 조건 변수 cv_job_q_ 에서 jobs_에 원소가 있거나, stop_all 이 설정될 때 까지 기다림.
+        -> 모든 작업들이 설정되어 있고 jobs_ 에 대기중인 작업이 없을 때, 비로소 쓰레드를 종료
+    -> 처리할 일이 있다면 jobs_.front()를 통해 가장 오래 전에 추가된 작업을 얻은 뒤에 해당 작업을 실행
+
+    ex3) 작업을 추가하는 함수
+    void ThreadPool::EnqueueJob(std::function<void()> job) {
+    if (stop_all) {
+        throw std::runtime_error("ThreadPool 사용 중지됨");
+    }
+    {
+        std::lock_guard<std::mutex> lock(m_job_q_);
+        jobs_.push(std::move(job));
+    }
+    cv_job_q_.notify_one();
+    }
+    
+    -> stop_all이 설정된 상태라면 더이상 작업을 추가하면 안되기에 예외를 던짐.
+        -> 그렇지 않을 경우 간단히 작업을 위해 쓰레드 하나만 깨우기 
+
+    ex4) 소멸자
+
+    ThreadPool::~ThreadPool() {
+    stop_all = true;
+    cv_job_q_.notify_all();
+
+    for (auto& t : worker_threads_) {
+        t.join();
+    }
+    }
+    
+    -> stop_all 을 설정 한 뒤에, 모든 worker 쓰레드들에 알려줌 -> 모든 쓰레드들을 join 하면됨
+
+    ex5) 전제 구현
+    #include <chrono>
+    #include <condition_variable>
+    #include <cstdio>
+    #include <functional>
+    #include <mutex>
+    #include <queue>
+    #include <thread>
+    #include <vector>
+
+    namespace ThreadPool {
+    class ThreadPool {
+    public:
+    ThreadPool(size_t num_threads);
+    ~ThreadPool();
+
+    // job 을 추가한다.
+    void EnqueueJob(std::function<void()> job);
+
+    private:
+    // 총 Worker 쓰레드의 개수.
+    size_t num_threads_;
+    // Worker 쓰레드를 보관하는 벡터.
+    std::vector<std::thread> worker_threads_;
+    // 할일들을 보관하는 job 큐.
+    std::queue<std::function<void()>> jobs_;
+    // 위의 job 큐를 위한 cv 와 m.
+    std::condition_variable cv_job_q_;
+    std::mutex m_job_q_;
+
+    // 모든 쓰레드 종료
+    bool stop_all;
+
+    // Worker 쓰레드
+    void WorkerThread();
+    };
+
+    ThreadPool::ThreadPool(size_t num_threads)
+        : num_threads_(num_threads), stop_all(false) {
+    worker_threads_.reserve(num_threads_);
+    for (size_t i = 0; i < num_threads_; ++i) {
+        worker_threads_.emplace_back([this]() { this->WorkerThread(); });
+    }
+    }
+
+    void ThreadPool::WorkerThread() {
+    while (true) {
+        std::unique_lock<std::mutex> lock(m_job_q_);
+        cv_job_q_.wait(lock, [this]() { return !this->jobs_.empty() || stop_all; });
+        if (stop_all && this->jobs_.empty()) {
+        return;
+        }
+
+        // 맨 앞의 job 을 뺀다.
+        std::function<void()> job = std::move(jobs_.front());
+        jobs_.pop();
+        lock.unlock();
+
+        // 해당 job 을 수행한다 :)
+        job();
+    }
+    }
+
+    ThreadPool::~ThreadPool() {
+        stop_all = true;
+        cv_job_q_.notify_all();
+
+        for (auto& t : worker_threads_) {
+            t.join();
+        }
+    }
+
+    void ThreadPool::EnqueueJob(std::function<void()> job) {
+        if (stop_all) {
+            throw std::runtime_error("ThreadPool 사용 중지됨");
+        }
+        {
+            std::lock_guard<std::mutex> lock(m_job_q_);
+            jobs_.push(std::move(job));
+        }
+        cv_job_q_.notify_one();
+    }
+
+    }  // namespace ThreadPool
+
+    void work(int t, int id) {
+    printf("%d start \n", id);
+    std::this_thread::sleep_for(std::chrono::seconds(t));
+    printf("%d end after %ds\n", id, t);
+    }
+
+    int main() {
+        ThreadPool::ThreadPool pool(3);
+
+        for (int i = 0; i < 10; i++) {
+            pool.EnqueueJob([i]() { work(i % 3 + 1, i); });
+        }
+    }
+
+CODE 95 -> 쓰레드풀에 작업을 추가하는 것
+    -> 앞서 쓰레드풀이 받는 함수의 형태가 리턴 타입이 void 이고 인자를 받지 않는다고 하였다.
+        -> 따라서 work 함수를 그대로 전달할 수는 없다.
+        -> int 타입 인자 두 개를 받기 때문
+    -> 문제 될 건 없음 -> void() 형태 처럼 람다 함수로 감싸서 전달하면 되기 때문.
+
+
+* 임의의 함수 받기
+    -> 전달된 함수가 어떤 값을 리턴할 때, 함수에 포인터로 리턴값을 저장할 변수를 전달하면 되기는 함.
+    -> 하지만, 기존의 future처럼 그 값이 설정될 때 까지 기다리는 것은 불가능
+
+    -> 나은 구조로 EnqueueJob 함수가 임의의 형태의 함수를 받고, 그 함수의 리턴값을 보관하는 future를 리턴하는 꼴
+
+CODE 17 -> 
+    // job 을 추가한다.
+    template <class F, class... Args>
+    std::future<typename std::result_of<F(Args...)>::type> EnqueueJob(F f,
+                                                                    Args... args);
+
+    -> 의 구조로 변경하면 가변 길이 템플릿으로 임의의 길이의 인자들을 받을 수 있다.
+        -> EnqueueJob(func, 1,2,3);
+        -> 와 같이 함수 호출
+            -> 첫번째 인자 func 는 f에 들어가게 되고
+            -> 나머지 1,2,3이 args...에 들어가게됨
+        -> 리턴?
+            -> 전달받은 함수 f의 리턴값을 가지는 future을 리턴해야함.
+            -> F의 리턴값은 std::result_of를 사용하면 알 수 있다.
+
+    -> 임의의 함수와 원소들을 받을 수 있다고 해서, 이를 컨테이너에 추가할 수 있다는 것은 아님.
+
+    -> 함수의 실행을 void() 꼴의 함수만 저장할 수 있는 컨테이너 만들기
+        -> jobs_.push([f, args...]() { f(args...); });
+        -> 한다면 worker 쓰레드 안에서 f(args...)를 실행
+            -> 문제점, 리턴값을 얻을 길이 없다진다는 것
+            -> 해결, 비동기적으로 실행되는 함수의 리턴값 받아애는 법 -> packaged_task
+                using return_type = typename std::result_of<F(Args...)>::type;
+                std::packaged_task<return_type()> job(std::bind(f, args...));
+                -> return_type 은 f의 리턴타이을 보관하는 타입의 정의.
+                -> f의 결과값은 저장하는 packaged_task인 job 객체를 정의
+
+                -> packaged_task의 생성자는 함수만을 받기 때문에, 실제 job 을 수행하기위해서 job(args...) 와 같이 호출 -> 인자들을 f에 bind 시켜 주면됨.
+
+
+    -> 쓰레드 폴 접근
+    std::future<return_type> job_result_future = job.get_future();
+    { 
+    std::lock_guard<std::mutex> lock(m_job_q_);
+    jobs_.push([&job]() { job(); });
+    }
+    -> job 의 실행 결과를 보관하는 job_result_future 를 정의 ->jobs_에 job을 실행하는 람다 함수를 추가
+        -> job 이 실행된다면 f의 f 리턴값이 job_result_future에 들어가 쓰레드풀에 사용자가 접근 가능
+
+
+    ex) 최종 코드
+    #include <chrono>
+    #include <condition_variable>
+    #include <cstdio>
+    #include <functional>
+    #include <future>
+    #include <mutex>
+    #include <queue>
+    #include <thread>
+    #include <vector>
+
+    namespace ThreadPool {
+    class ThreadPool {
+    public:
+    ThreadPool(size_t num_threads);
+    ~ThreadPool();
+
+    // job 을 추가한다.
+    template <class F, class... Args>
+    std::future<typename std::result_of<F(Args...)>::type> EnqueueJob(
+        F f, Args... args);
+
+    private:
+    // 총 Worker 쓰레드의 개수.
+    size_t num_threads_;
+    // Worker 쓰레드를 보관하는 벡터.
+    std::vector<std::thread> worker_threads_;
+    // 할일들을 보관하는 job 큐.
+    std::queue<std::function<void()>> jobs_;
+    // 위의 job 큐를 위한 cv 와 m.
+    std::condition_variable cv_job_q_;
+    std::mutex m_job_q_;
+
+    // 모든 쓰레드 종료
+    bool stop_all;
+
+    // Worker 쓰레드
+    void WorkerThread();
+    };
+
+    ThreadPool::ThreadPool(size_t num_threads)
+        : num_threads_(num_threads), stop_all(false) {
+    worker_threads_.reserve(num_threads_);
+    for (size_t i = 0; i < num_threads_; ++i) {
+        worker_threads_.emplace_back([this]() { this->WorkerThread(); });
+    }
+    }
+
+    void ThreadPool::WorkerThread() {
+    while (true) {
+        std::unique_lock<std::mutex> lock(m_job_q_);
+        cv_job_q_.wait(lock, [this]() { return !this->jobs_.empty() || stop_all; });
+        if (stop_all && this->jobs_.empty()) {
+        return;
+        }
+
+        // 맨 앞의 job 을 뺀다.
+        std::function<void()> job = std::move(jobs_.front());
+        jobs_.pop();
+        lock.unlock();
+
+        // 해당 job 을 수행한다 :)
+        job();
+    }
+    }
+
+    ThreadPool::~ThreadPool() {
+    stop_all = true;
+    cv_job_q_.notify_all();
+
+    for (auto& t : worker_threads_) {
+        t.join();
+    }
+    }
+
+    template <class F, class... Args>
+    std::future<typename std::result_of<F(Args...)>::type> ThreadPool::EnqueueJob(
+    F f, Args... args) {
+    if (stop_all) {
+        throw std::runtime_error("ThreadPool 사용 중지됨");
+    }
+
+    using return_type = typename std::result_of<F(Args...)>::type;
+    auto job =
+        std::make_shared<std::packaged_task<return_type()>>(std::bind(f, args...));
+    std::future<return_type> job_result_future = job->get_future();
+    {
+        std::lock_guard<std::mutex> lock(m_job_q_);
+        jobs_.push([job]() { (*job)(); });
+    }
+    cv_job_q_.notify_one();
+
+    return job_result_future;
+    }
+
+    }  // namespace ThreadPool
+
+    int work(int t, int id) {
+    printf("%d start \n", id);
+    std::this_thread::sleep_for(std::chrono::seconds(t));
+    printf("%d end after %ds\n", id, t);
+    return t + id;
+    }
+
+    int main() {
+    ThreadPool::ThreadPool pool(3);
+
+    std::vector<std::future<int>> futures;
+    for (int i = 0; i < 10; i++) {
+        futures.emplace_back(pool.EnqueueJob(work, i % 3 + 1, i));
+    }
+    for (auto& f : futures) {
+        printf("result : %d \n", f.get());
+    }
+    }
+
+//std::packaged_task<return_type()> job(std::bind(f, args...));
+CODE 84 -> 위 주석 처럼 되었다면, promise에 set_value하기전에 promise의 future객체가 파괴되었다면 발생하는 예외
+    -> 파괴된 이유?
+        -> EnqueueJob함수에 정의된 job 객체는 지역변수-> 즉, EnqueueJob 함수가 리턴하면 파괴됨.
+        -> [&job]() { job(); } 안에서 job 을 접근할 때 이미 그 객체는 파괴
+    
+    해결법
+    1. packaged_task를 따로 컨테이너에 저장해서 보관
+    2. shared_ptr에 packaged_task를 보관
+
+    1. 의 경우 packaged_task를 사용하지 않을 때에도 컨테이너에 남아있다는 문제
+    2. packaged_task가 사용하는 일이 없ㅅ어도 shared_ptr가 객체를 소멸시키므로 편함 - 선택
+
+    -> make_shared 을 통해서 shared_ptr을 생성, 대신 람다 함수에 shared_ptr의 복사본을 전달해서 람다 함수 안에서도 packaged_task의 shared_ptr 하나를 붙들게 됨.
+    -> 따라서 job을 실행해도 packaged_task 객체는 살아있게됨.
+
+
+
+* 완벽한 전달
+    -> EnqueueJob 함수의 경우
+    -> ThreadPool::EnqueueJob(F f, Args... args);
+    - 인자들의 복사본을 받는 다는 것.
+        -> 즉 불필요한 복사를 야기하므로 완벽한 전달 패턴 사용
+
+    -> EnqueueJob 함수의 인자들을 우측값 레퍼런스로 바꾼 뒤에; 
+    CODE 76 -> std::future<typename std::result_of<F(Args...)>::type> ThreadPool::EnqueueJob(
+  F&& f, Args&&... args) {
+
+
+    
+    CODE 83~84 -> bind 함수에 forward 로 인자로 전달
+    -> auto job = std::make_shared<std::packaged_task<return_type()>>(
+    std::bind(std::forward<F>(f), std::forward<Args>(args)...));
+
+    -> 불필요한 복사 없이 Enqueue 함수에 인자들을 전달할 수 있다
+
+
+
+
+
+    결론적 ------ 
+    흐름도?..
+
+                                main thread
+                                   |
+                                   v
+                             ThreadPool 생성
+                                   |
+                                   v
+                            Worker Threads 생성
+                                   |
+                                   v
+                           작업을 EnqueueJob으로 추가
+                                   |
+                                   v
+                           Worker Threads 대기 상태
+                                   |
+                              (job 큐에 작업이 있을 때 또는 stop_all 플래그가 설정될 때)
+                                   |
+                     +---------+  (job 큐가 비어있지 않은 경우)
+                     |         |  (job 큐가 비어있는 경우)
+           +-----------------+
+           |                 |
+           v                 v
+    Job 수행 및 job 큐에서 삭제  Worker Threads 종료
+           |                 |
+           v                 v
+     Worker Threads 대기 상태  ThreadPool 소멸
+           |
+      (stop_all 플래그가 설정될 때)
+           |
+           v
+    main thread 종료
+
+ThreadPool 객체가 생성됩니다.
+지정된 개수의 Worker Threads가 생성됩니다.
+작업을 EnqueueJob으로 추가합니다.
+Worker Threads는 작업이 있을 때 또는 stop_all 플래그가 설정될 때까지 대기 상태에 있습니다.
+작업이 큐에 존재하는 경우, Worker Thread는 작업을 가져와 수행하고 작업을 큐에서 삭제합니다.
+작업이 큐에 없는 경우, Worker Thread는 대기 상태로 돌아갑니다.
+ThreadPool이 소멸될 때, stop_all 플래그가 설정되고 Worker Threads가 종료됩니다.
+main 스레드가 종료됩니다.
