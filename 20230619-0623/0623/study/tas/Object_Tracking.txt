@@ -1,0 +1,30 @@
+- Multiple Obejct Tracking (MOT) Problem
+
+1. How to detect, recognize and track multiple objects
+    -> 전체적 절차 : Detection => Recognition => Tracking(Association)
+
+    [1-1] Obejct Detection
+    -> 매 프레임에 대해 convolutional neural network propagation 이 수행되는 작업으로, 해당 프레임에 어떠한 물체가 있는지 존재 여부와 해당 물체의 x,y 좌표 그리고 width, height 값을 가져옴
+        -> 이때 단지 위치 정보를 파악하는 것으로 아직 Recognition, 즉, Classification 작업은 수행되지 않음
+
+    -> 출력물 : 물체의 x,y 좌표와 바운딩 박스의 width 와 height 를 반환
+    -> 어떻게 object detection 과 Recognition 을 수행?
+        -> yolo
+        -> yolo를 사용하여, 물체 탐지와 물체 인식을 동시에 수행할 수 있다.
+
+    [1-2] Obejct Recognition
+    -> detection 된 물체에 대해 어떠한 물체인지 Classification 작업을 수행
+
+    [1-3] Object Tracking (Association)
+    -> 현재 frame에 대한 detection을 하고 나면, 현 frame에 대한 정보와 이전 frame에서의 similar detection 과의 matching process 수행
+        -> object tracking
+        -> 비디오에서 시간 순서에 따라 여러 움직이는 물체를 물체들에 찾는 과정
+        -> Associate detections across frames
+
+    -> object tracking 수행 절차
+        1. 초기 물체 탐지 셋을 필요로 한다.
+        2. 각각의 detections 에 대해 고유의 ID를 만들어준다.
+        3. 물체를 추적하기 위해서는 몇 개의 프레임에 대한 정보까지 받아 줄 것인지를 설정
+        4. 각각의 물체에 대해 고유의 ID를 유지시켜주기 위해 track을 하게 되고, 이때 deep sort가 적용되어, feature appearance 를 추가 고려 대상으로 넣어 occlusion 를 대비한다.
+        
+        
