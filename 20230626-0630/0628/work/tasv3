@@ -1,0 +1,11 @@
+tas
+
+tms, easytraffic log 데이터베이스 값에 따라 enable 기능(conncet부분) - 완료
+
+-> 추가적으로 connectorlmpl.cpp, .h 파일에 setLog 구현 후 주석
+
+
+
+
+---------------------------
+다른 파일에서도 데이터베이스 상태를 가져와서 구현 하는 부분 하기.
