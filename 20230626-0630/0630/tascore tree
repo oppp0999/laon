@@ -1,0 +1,10 @@
+tascore
+
+Core: Core 서브 시스템은 src/Core 디렉토리에 위치한 파일들로 구성됩니다. 이 서브 시스템은 시스템의 핵심 기능을 담당하는 모듈들을 포함,  Core.cpp, CoreImpl.cpp 등의 파일
+
+Analyzer: Analyzer 서브 시스템은 src/Analyzer 디렉토리에 위치한 파일들로 구성 이 서브 시스템은 데이터 분석을 수행하는 모듈을 담당하며, Analyzer.cpp, AnalyzerImpl.cpp 등의 파일, InterInfo 디렉토리 내의 파일들도 Analyzer 서브 시스템의 일부
+
+Connectors: Connectors 서브 시스템은 src/Connectors 디렉토리에 위치한 파일들로 구성 이 서브 시스템은 시스템의 외부와의 연결을 관리하는 모듈을 포함. ConnectorPreset.cpp, EasyTrafficConnectorImpl.cpp, TMSConnectorImpl.cpp 등의 파일
+
+JsonDriver: JsonDriver 서브 시스템은 src/JsonDriver 디렉토리에 위치한 파일들로 구성 이 서브 시스템은 JSON 데이터와의 상호 작용을 처리하는 모듈을 포함 Channel, Connection, Detection, Info, PTZ, ROI, System 등의 하위 디렉토리와 해당 디렉토리 내의 파일
+
