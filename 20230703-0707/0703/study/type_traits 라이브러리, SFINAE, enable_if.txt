@@ -1,0 +1,288 @@
+* 템플릿 메타 함수
+    -> 함수는 아니지만, 함수 처럼 동작하는 템플릿 클래스 
+    -> 메타 함수인 이유는 보통의 함수들은 값에 대해 연산을 수행하지만,
+        메타 함수는 타입에 대해 연산을 수행한다는 점
+
+#is_void
+    -> 함수였다면 ()를 통해서 호출
+    -> is_void는 <> 를 통해서 템플릿 인자를 전달 -> is_void는 클래스로 구현
+
+    ex1)
+    #include <iostream>
+
+    template <typename T>
+    struct is_void {
+    static constexpr bool value = false;
+    };
+
+    template <>
+    struct is_void<void> {
+    static constexpr bool value = true;
+    };
+
+    template <typename T>
+    void tell_type() {
+    if (is_void<T>::value) {
+        std::cout << "T 는 void ! \n";
+    } else {
+        std::cout << "T 는 void 가 아니다. \n";
+    }
+    }
+
+    int main() {
+    tell_type<int>();  // void 아님!
+
+    tell_type<void>();  // void!
+    }
+
+CODE 3 ~ 11 -> is_void의 코드를 가져온 것은 아니지만 is_void 원리만 작동하는지 생각해보기.
+    8~11 -> 을 통해서 특수화된 클래스로 
+        -> is_void<void>를 하게 되면 특수화 된 템플릿이 매칭 되어서 value가 true가 되고,
+            그 외의 타입의 경우에는 맨 위의 일반적인 템플릿 클래스가 매칭이 되어서 value가 false가 될 것 이다.
+
+
+        # is_integral
+            -> 정수 타입인지 확인해주는 템플릿
+
+
+* is_class
+    -> type_traits에 정의되어 있는 메타 함수들 중에서 흥미로운 함수는 is_class가 있다. -> 클래스 인지 아닌지 확인하는 메타 함수
+
+    ex1)
+    namespace detail {
+    template <class T>
+    char test(int T::*);
+    struct two {
+    char c[2];
+    };
+    template <class T>
+    two test(...);
+    }  // namespace detail
+
+    template <class T>
+    struct is_class
+        : std::integral_constant<bool, sizeof(detail::test<T>(0)) == 1 &&
+                                        !std::is_union<T>::value> {};
+
+    -> std::integral_constant<T, T, v>로 정의되어 있다.
+        -> v는 static 인자
+    -> 어떤 값을 static 객체로 가지고 있는 클래스를 만들어주는 템플릿이다.
+
+    -> std::integral_constant<bool, false> 는 그냥 integral_constant<bool, false>::value 가 false
+    -> sizeof(detail::test<T>(0)) == 1 && !std::is_union<T>::value
+        -> 이 부분이 false라면 is_class는 그냥
+        template <class T>
+        struct is_class : std::integral_constant<bool, false> {};
+        로 정의되어 false가 될 것이다. 해당부분이 true 라면 is_class::value 역시 true가 된다.
+
+
+        -> sizeof(detail::test<T>(0)) == 1 && !std::is_union<T>::value
+            -> T 가 클래스라면 참이고, 클래스가 아니라면 거짓이 됨
+
+
+# 데이터 멤버를 가리키는 포인터 (Pointer to Data member)
+    template <class T>
+    char test(int T::*);
+
+    -> T의 int 멤버를 가리키는 포인터 라는 의미
+
+    ex1)
+    #include <iostream>
+    #include <type_traits>
+
+    class A {
+    public:
+    int n;
+
+    A(int n) : n(n) {}
+    };
+
+    int main() {
+    int A::*p_n = &A::n;
+
+    A a(3);
+    std::cout << "a.n : " << a.n << std::endl;
+    std::cout << "a.*p_n : " << a.*p_n << std::endl;
+    }
+
+CODE 12 -> p_n 은 A의 int 멤버를 가리킬 수 있는 포인터를 의미, p_n이 실제로 존재하는 어떠한 객체의 int 멤버를 가리키는 것이 아님.
+    -> int A::*p_n 
+    -> p_n을 역참조 하게 되다면 A의 n 을 참조하는 식으로 사용 가능
+
+CODE 15 ~ 16 -> 은 서로 같은 문장이된다.
+
+
+    -> template <class T>
+    char test(int T::*);
+    따라서 위 문장은 T 가 클래스가 아니라면 불가능한 문장
+    -> T가 클래스라면 해당 클래스에 int 데이터 멤버가 없어도 유효한 문장. -> 아무것도 가리키지 않음 -> 판별하는덴 유용
+
+
+    ex2)
+    template <class T>
+    char test(int T::*);  // (1)
+
+
+    struct two {
+    char c[2];
+    };
+    template <class T>
+    two test(...); // (2)
+
+    -> 1, 2 에서 우선순위는 1번이 오버로딩 그 이유는 인자가 정확하게 더 명시되어 있기 때문.
+
+
+* 치환 오류는 컴파일 오류가 아니다 - SFINAE
+
+    ex1)
+    #include <iostream>
+
+    template <typename T>
+    void test(typename T::x a) {
+    std::cout << "T::x \n";
+    }
+
+    template <typename T>
+    void test(typename T::y b) {
+    std::cout << "T::y \n";
+    }
+
+    struct A {
+    using x = int;
+    };
+
+    struct B {
+    using y = int;
+    };
+
+    int main() {
+    test<A>(33);
+
+    test<B>(22);
+    }
+
+CODE 22 -> 템플릿 인자로 A를 전달
+    두 함수는 각각 치환되어 들어가는데 A에 y라는 타입이 없다 -> 오류 발생하지 않음
+        -> 그 이유는 치환 오류는 컴파일 오류가 아니다 -> SFINAE
+            -> 템플릿 인자 치환 시에 함수 내용 전체가 문법적으로 올바른지 확인 하는 것이 아님
+            -> 컴파일러는 단순히 함수의 인자들과 리턴 타입만이 문법적으로 올바른지를 확인
+
+
+* enable_if
+    -> SFINAE를 통해 조건이 맞지 않은 함수들을 오버로딩 후부군에서 쉽게 뺄 수 있게 도와주는 간단한 템플릿 메타 함수
+
+    template<bool B, class T = void>
+    struct enable_if {};
+    
+    template<class T>
+    struct enable_if<true, T> { typedef T type; };
+
+    -> B 부분에 우리가 확인하고픈 조건을 전달
+    -> B가 참이라면 enable_if::type 타입이 T가 되고 거짓이라면 타입이 존재하지 않게됨.
+
+    ex1)
+
+    #include <iostream>
+    #include <type_traits>
+
+    template <typename T,
+            typename = typename std::enable_if<std::is_integral<T>::value>::type>
+    void test(const T& t) {
+    std::cout << "t : " << t << std::endl;
+    }
+
+    int main() {
+    test(1);      // int
+    test(false);  // bool
+    test('c');    // char
+    }
+
+    -> t : 1
+        t : 0
+        t : c
+
+    으로 결과가 나오는 것을 알 수 있다.
+
+    -> 하지만 정수 타입이 아닌 객체를 전달할 경우에는 컴파일 했을 때 오류가 발생
+        -> std::enable_if 앞에 추가적으로 typename 을 사용하는 이유는 의존 타입이기 때문에 
+
+
+# c++ 14 붙너 enable_if<>::value를 사용하여 alias들을 활용
+    template <typename T, typename = std::enable_if_t<std::is_integral_v<T>>>
+    void test(const T& t) {
+    std::cout << "t : " << t << std::endl;
+    }
+
+
+#enable_if 또 다른 예시
+    벡터를 사용했을 때
+
+    ex1)
+
+    #include <iostream>
+
+    template <typename T>
+    class vector {
+    public:
+    vector(size_t num, const T& element) {
+        std::cout << element << " 를 " << num << " 개 만들기" << std::endl;
+    }
+
+    template <typename Iterator>
+    vector(Iterator start, Iterator end) {
+        std::cout << "반복자를 이용한 생성자 호출" << std::endl;
+    }
+    };
+
+    int main() { vector<int> v(10, 3); }
+
+    -> 반복자를 이용한 생성자 호출 -> 나온 이유는 오버로딩에서 sizt_t 는 부호가 없는 정수 타입이다. 
+    -> Iterator를 int로 오버로딩한다면 완벽하게 v(10,3) 을 매칭할 수 있다.
+        -> Iterator 를 강제할 필요성이 있기에
+        -> is_iteartor 라는 메타함수가 있다면
+
+            template <typename Iterator,
+            typename = std::enable_if_t<is_iterator<Iterator>::value>>
+            vector(Iterator start, Iterator end) {
+            std::cout << "반복자를 이용한 생성자 호출" << std::endl;
+            }
+            를 활용하여 반복자 일 경우 vector 생성자가 오버로딩 후보군에 들어감
+
+* 특정 멤버 함수가 존재하는 타입 만을 받는 함수
+
+    ex1)
+
+    #include <iostream>
+    #include <set>
+    #include <type_traits>
+    #include <vector>
+
+    template <typename Cont, typename = decltype(std::declval<Cont>().begin()),
+            typename = decltype(std::declval<Cont>().end())>
+    void print(const Cont& container) {
+    std::cout << "[ ";
+    for (auto it = container.begin(); it != container.end(); ++it) {
+        std::cout << *it << " ";
+    }
+    std::cout << "]\n";
+    }
+
+    int main() {
+    std::vector<int> v = {1, 2, 3, 4, 5};
+    print(v);
+
+    std::set<char> s = {'a', 'b', 'f', 'i'};
+    print(s);
+    }
+
+    -> decltype(std::declval<T>().func()) 을 통해서 func() -> 즉, begin(), end()가 있는지 확인한다. 없으면 컴파일 오류
+
+
+* c++ 17 에선 void_t
+
+    template <typename Cont>
+    std::void_t<decltype(std::declval<Cont>().begin()),
+                decltype(std::declval<Cont>().end())>
+    print(const Cont& container)
+
+    를 이용하여 타입 체크하는 부분을 템플릿의 디폴트 인자에서 함수의 리턴 타입으로 옮겨짐.
