@@ -1,0 +1,35 @@
+1. vim /etc/systemd/system/tasv3.service 를 생성
+
+[Unit]
+Description=tasv3 server
+
+[Service]
+ExecStart=/opt/laonpeople/tasv3/bin/tas
+Restart=alway
+RestartSec=100ms
+
+[Install]
+WantedBy=multi-user.target
+
+
+Sec를 주지 않으면 너무 빠른 리스타트가 일어나 에러 발생.
+
+1.  journalctl -xefu <UNIT> 를 통해서 실시간 로그를 확인할 수 있다.
+
+2. 대신 직접 로그를 확인해야한다.
+
+
+로그를 자동으로 실행시키기 위해서 # Failed to parse arguments: Cannot open display:
+를 해결해야함.
+
+
+
+
+-------------------------------------
+1. systemctl에 service를 등록해서 재부팅 구성
+2. 실행 로그를 확인하기 위해서는 journalctl 로 직접 실행 로그를 확인
+3. 재부팅눌렀을 때 다시 로그를 보기 위해서는 이에 대한 조치 필요
+	- c++ 코드 상에서는 display를 해결할 수 없음
+	- GUI를 가진 부분에서 해결해야함.
+
+	3.1 또는 service에 journalctl 코드를 입력시켜 다시 한 번 묶어서 실행

@@ -1,0 +1,9 @@
+tasv3 -> reboot ->서버 재부팅에서 타스 서버 서비스 재시작으로 재구현
+
+
+
+1. pid 개념
+
+2. killall tas -> 경로를 타고 들어가서 tas를 실행했을 때 killall로 종료 가능? -> 이유 찾기
+
+3. tas를 demon에 등록 후에 sysytemctl 관리

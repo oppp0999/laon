@@ -1,0 +1,29 @@
+1. PID -> process identification number로 
+    1번 부터 시작하고 프로세스가 실행되면서 고유한 번호를 가진다. 이를 통해
+        - 프로세스 정보, cpu양 등 알 수 있다.
+
+2. 프로세스 종료 명령어
+    2.1 kill PID -> 프로세스 종료 (pid번호를 기입)
+    2.2 kill -9 pid -> 프로세스 강제 종료 신호
+    2.3 pkill -x CMD -> pid가 아닌 명령 이름으로 프로세스를 찾아 종료 (중복 모두 종료)
+
+3. daemon ? -> 리눅스 시스템이 첫 가동 될 때 백그라운드로 프로세스의 일종으로 메모리에 상주하면서
+    특정 요청이 오면 즉시 대응할 수 있도록 대기 중인 프로세스 
+
+    데몬(Daemon)의 실행 방식은 크게 2가지이다.
+    * standalone
+    독자적으로 구동되는 방식으로 혼자서 요청을 받아 처리하며 메모리 상에 항상 구동되고 있으므로 응답속도가 빠르나 메모리에 부하를 줄 수 있다. 요청이 빈번하게 일어나는 프로세스에서 많이 쓰인다고 한다.
+    ex) sendmail, apache, mysqld 등등xinetd 방식
+
+    * xinetd
+    수퍼 데몬(Super Daemon)이라고도 하며 다른 데몬들의 상위에 존재한다. 요청이 오면 xinetd에 종속되어 있는 하위 데몬(Daemon)을 실행시키는 방식이지만 xinetd 자체는 standalone 방식으로 작동한다. 응답처리 속도가 
+    standalone 방식에 비해 느리지만 요청이 들어오지 않을 때는 휴면 상태로 메모리를 사용하지 않으며 요청이 빈번하지 않은 서비스에서 사용된다
+    ex) Telnet 등등
+
+
+#실행 방법
+    centos6까지는 /etc/rc.d/init.d 디렉토리에 서비스 관련 파일들이 있었고 이를 service 명령어를 통해 제어한다.
+    ex) service [데몬이름] start
+    centos7부터는 서비스들이 대부분 Unit으로 분리되었고, 서비스.service 형식의 파일명을 가지며, systemctl 명령어로 제어한다.
+    ex) systemctl start [데몬이름]
+
