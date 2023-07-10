@@ -1,0 +1,38 @@
+TAS v3 배포 준비 [사무실]
+tas 및 서브모듈들 master branch에 push
+jenkins > tas-package project에서 지금 빌드 버튼 누르기
+11번 서버 (10.101.0.11)에서 /opt/laonpeople/tasupdater2/package 폴더에서 버전에 맞는 pkg 챙기기
+USB 혹은 외장 하드에 챙겨가기
+TAS v3 배포 [안양시청]
+안양시청 7층에 이주신 주무관한테 라온로드 PC로 파일 옮기기 부탁하기
+20번 서버(192.168.44.20)에 pkg 파일 옮기기
+20번 서버에서 /opt/lanopeople/tasupdater/script/tasupdater.sh 를 사용해서 pkg 업데이트하기
+20번 서버에 있는 script : bitbucket > TAS > tasupdater2 > script > tasupdater.sh (아마도)
+11:23
+[오전 11:20]
+http://10.20.0.23:9500/
+laon
+laon2022!
+11:24
+각 이벤트 별로 동영상 30개씩 뽑기 & 사무실에서 정확도 분석하기
+
+
+임경묵
+  오전 11:31
+1. What
+카메라 주소 정보 추가
+2. Why
+화성시 요구사항
+카메라의 실제 주소를 저장하기를 요청
+3. How
+프로토콜
+NAS → 02.프로젝트 →0001 TAS → v2 → 07.프로토콜정의서 →2021.06.16 TAS_APP - TAS_WEB.osheet 파일
+CMD_PROTOCOL sheet →Channel → Source →IP
+코드
+bitbucket tas-hwaseong repository (tasv2 code)
+UI : tas-ui > master branch
+4. When
+이번주 금
+11:33
+vi /etc/ld.so.conf.d/tas.conf
+
