@@ -1,0 +1,19 @@
+1. What
+카메라 주소 정보 추가
+2. Why
+화성시 요구사항
+카메라의 실제 주소를 저장하기를 요청
+3. How
+프로토콜
+NAS → 02.프로젝트 →0001 TAS → v2 → 07.프로토콜정의서 →2021.06.16 TAS_APP - TAS_WEB.osheet 파일
+CMD_PROTOCOL sheet →Channel → Source →IP
+코드
+bitbucket tas-hwaseong repository (tasv2 code)
+UI : tas-ui > master branch
+4. When
+이번주 금
+11:33
+vi /etc/ld.so.conf.d/tas.conf
+
+
+-> 추가 비디오소스의 클래스에서 ip를 만든 후에 -> 아날라이저에서 jonv의 값을 받아온다 근데 if문제에서 비교값이 동작하지 않아 == 의 오버로딩 시작 comp추가한 후에 실행 정상적으로 동작 할 수 있다. 

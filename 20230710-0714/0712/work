@@ -1,0 +1,21 @@
+TAS v3 배포 준비 [사무실]
+tas 및 서브모듈들 master branch에 push
+jenkins > tas-package project에서 지금 빌드 버튼 누르기
+11번 서버 (10.101.0.11)에서 /opt/laonpeople/tasupdater2/package 폴더에서 버전에 맞는 pkg 챙기기
+USB 혹은 외장 하드에 챙겨가기
+TAS v3 배포 [안양시청]
+안양시청 7층에 이주신 주무관한테 라온로드 PC로 파일 옮기기 부탁하기
+20번 서버(192.168.44.20)에 pkg 파일 옮기기
+20번 서버에서 /opt/lanopeople/tasupdater/script/tasupdater.sh 를 사용해서 pkg 업데이트하기
+20번 서버에 있는 script : bitbucket > TAS > tasupdater2 > script > tasupdater.sh (아마도)
+
+-> 도착해서 클린 피시와 부장님을 통해서 sh파일과 pkg 옮기기
+-> pkg 는 scp -P 9300 (보낼 파일) user@(받는 주소) 을 입력하여 downloads로 옮긴 후 download에서  /opt/lanopeople/tasupdater/script/tasupdater.sh 파일을 실행한다.
+
+-> ssh 는 -p - 소문자이다.
+
+-> 왜냐하면 sh 파일이 다운로드에 있고 파일명 path기준이 downloads 에 있기 때문
+
+
+-> 장비 모니터링에서 업데이트 됐는지 아이피 확인 한 후에 업데이트 되지 않은 것들은 포트번호 :9010 으로 들어가서 직접 업데이트
+tas 아이디 비밀번호는 anyang - ayits@5501, ssh도 비밀번호 ayits@5501
