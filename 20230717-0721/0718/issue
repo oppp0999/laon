@@ -1,0 +1,12 @@
+기존 화성 1차 사업 1~7번 서버까지는 rc.local 파일
+2차 사업 SYSTEMD -> systemctl status tas.service
+LimitNOFILE=131072
+
+결론은 " systemd 가 /etc/security/limits 설정을 무시하는 것으로 확인".
+https://serverfault.com/questions/628610/increasing-nproc-for-processes-launched-by-systemd-on-centos-7/678861#678861
+
+-> rc.local에 의해 계속해서 다시 시작되는 현상이 일어남 -> 모든 사업 systemctl로 전향 근데 LimitNOFILE 은 따로 추가.
+
+-> tasupdater/script/updatePkg.sh 에 보면 데몬 등록할 수 있도록 스크립트로 되어있다.
+
+

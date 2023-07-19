@@ -1,0 +1,55 @@
+#std::bind
+참고 : http://egloos.zum.com/sweeper/v/3007638
+
+	- std::bind(함수의주소, 인자1, 인자2, ....);
+	-> 간단히 말해 호출이 가능한 객체에 인수를 바인딩 하는 것
+
+	ex)
+	void hello(const string& s)
+	{
+		cout << s << endl;
+	}
+
+	int main()
+	{
+		....
+		auto func = std::bind(hello, "hello world");
+		func();
+	}
+	=> hello world
+
+
+#std::placeholder
+	- 인자값을 새로운 함수의 인자로 받을 수 있도록 해준다.
+
+	ex1)
+	int sum(int a, int b, int c)
+	{
+	return a+b+c;
+	}
+
+	int main()
+	{
+	....
+	auto func1 = std::bind(sum, std::placeholder::_1, 2, 3);
+	cout<< func1(1) << endl;
+	}
+	=> 6
+		-> 즉, sum의 두 번째, 세번째 인수는 2와 3으로 고정이 되고,
+		첫 번째 인수만 변수로 받을 수 있도록 새로운 함수 func1이 정의 되었다고 생각할 수 있음
+
+	
+	ex2)
+	int sum(int a, int b, int c)
+	{
+	return a+b*10+c;
+	}
+
+	int main()
+	{
+	....
+	auto func2 = std::bind(sum, std::placeholder::_1, std::placeholder::_2, 3);
+	cout<< func2(2,3) << endl;
+	}
+	=> 35
+	둘 이상의 placeholder를 사용할 수 있다.
