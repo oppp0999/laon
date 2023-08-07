@@ -11,6 +11,10 @@
 8. /opt/laonpeople/tasv3/bin/tas -> 서버 실행
 
 
+
+그전에 tas 설치 -> clone 받은 후에 install -l 로 전체 tas src 받기
+
+
 오류  Train file List init fail -> lptm 확인하기.
 
 3 ~7 -> ./install.sh --pull --all

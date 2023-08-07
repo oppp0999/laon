@@ -1,0 +1,11 @@
+SignalHandler에서 tp 지우기
+bindSignalHander에서 hander_name 필요없음 (map일 필요없음)
+cycleSignalHandler -> 동사 + 명사 (ex. getCycle, setCycle)
+cycleSignalHandler 함수 내부 간단하게
+signalHandler에서 변경 체크하는 부분 삭제하기
+주석 지우기
+
++ for 문 부분에서
+inter : signal -> inter : inter_signal
+
+-> 컴퓨터 환경 22.04 셋팅
