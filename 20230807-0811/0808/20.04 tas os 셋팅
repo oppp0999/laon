@@ -1,0 +1,134 @@
+1. instlall manager down -> checkout -t <version>
+chmod +x install_manager.sh # require root permission
+	a. cuda, cudnn, tensorRT, Tversioncheck check disable
+	b. install
+2. nas -> cuda, cudnn, tensorrt down
+
+3. nvidia driver install -> just 535. no 535-server-open.
+
+
+4. cuda run file install -> driver disable
+https://sanglee325.github.io/environment/install-CUDA-11-2/#11-%EC%97%90%EB%9F%AC%EA%B0%80-%EB%B0%9C%EC%83%9D%ED%95%9C-%EA%B2%BD%EC%9A%B0-building-kernel-modules
+
+5. cuda link set
+
+sudo -s -> vi ~/.bashrc
+export PATH=/usr/local/cuda-11.4/bin${PATH:+:${PATH}}
+export LD_LIBRARY_PATH=/usr/local/cuda-11.4/lib64:${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
+
+    
+  source ~/.bashrc
+  nvcc --version
+  
+6. install manager -> cudnn, tensorrt down
+
+7. tas db setting command check
+
+8. tas-hw, tasv3, tas-ui clone
+
+9. tas-ui -> v2 (master), v3(anyang, tasv3)
+	1. cd fe -> yarn, yarn build
+	2. cd be -> yarn, yarn start
+	
+	
+----- /etc/ld.soconf.d/tas.conf add --------
+/usr/local/lib
+/usr/local/cuda/lib64
+/opt/intel/mediasdk/lib
+#/opt/laonpeople/tas/lib
+/opt/laonpeople/tasv3/lib
+#/opt/laonpeople/tas-plate/lib
+/opt/laonpeople/3rdparty/lib
+/home/kmlim/workspace/sockettesttool/lib
+------------------------------------------
+ldconfig
+
+
+---------- /usr/local/etc/odbc.ini -------
+1. /etc/odbcinst use option -j -> SYSTEM DATA SOURCES: /usr/local/etc/odbc.ini edit
+
+[MariaDB-server]
+Description=MariaDB server
+Driver=MariaDB ODBC 3.1 Driver
+SERVER=127.0.0.1
+USER=tas
+PASSWORD=nvidia
+DATABASE=tas
+PORT=3306
+-------------------------------------
+	
+10. tas(v2 - hw)
+	1. chmod +x install.sh
+	2. ./install.sh
+	3. /opt/laonpeople/tas/bin/tas -> ini error -> create ini when first start
+	4. default.lptm -> cp default.lptm /opt/laonpeople/tas/share/train/
+	
+	
+	
+	
+11. tas(v3-anyang)
+	1. chmod +x install.sh
+	2. ./install.sh -l -a
+		id, password
+	3. ./install --all 다시 한 번
+	4. 주석을 해제 후에 tas.ini, easytraffic.ini 파일 을 만들어준다.
+		- tas.ini
+		# Laonroad TAS Initial Setting File.
+		# Copyright 2021. Laonroad All right reserved.
+		# Change the initial settings and run the application. 
+		# The file will be rewritten after execution.
+		 
+		[DSN]
+		name=MariaDB-server
+		userName=tas
+		userPassword=nvidia
+		 
+		[Core]
+		tasId=43
+		webCmdPort=8001
+		maxChannels=96
+		maxGPU=-1
+		 
+		[AppInfo]
+		isUsePT=0
+		hwType=3
+		customer=Anyang
+		 
+		[EasyTraffic]
+		signalIniKey=easytraffic port
+		signalIsTcp=0
+		signalIsEnable=1
+		 
+		[Event]
+		isEnableANPR=1
+		encodeMode=0
+		decodeMode=2
+		imagePortStart=9100
+		trackerType=0
+
+----------------------------
+
+		- easytraffic.ini 
+		[easytraffic port]
+		103=1
+		
+	5. lptm 만들어서 옮겨주기 -> anyang_v3 -> default, ocr은 그대로 두기
+	
+	6. tas-ui 는 anyang, tasv3 로 git checkout -t orgin/<>
+	
+	7. fe -> yarn, yarn build
+	8. be -> yarn, yarn start
+	
+	9. be 폴더를 /opt/laonpeople/tasv3/에서 web폴더를 만들어 그 안에 be 복사해서 넣어주기
+		cp -r be /opt/laonpeople/tasv3/web
+			
+		
+--------------------------------
+cat - /etc/network/interfaces 
+sudo vim interfaces
+
+add
+	# interfaces(5) file used by ifup(8) and ifdown(8)
+	auto lo
+	iface lo inet loopback
+-------------------------------
